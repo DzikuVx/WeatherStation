@@ -47,10 +47,9 @@ void dht11_read_val() {
 		}
 	}
 
-	// verify cheksum and print the verified data
-
+	//Output data if verified
 	if((j>=40)&&(dht11_val[4]==((dht11_val[0]+dht11_val[1]+dht11_val[2]+dht11_val[3])& 0xFF))) {
-		printf("%d.%d|%d.%d",dht11_val[0],dht11_val[1],dht11_val[2],dht11_val[3]);
+		printf("%d|%d",dht11_val[0],dht11_val[2]);
 	}
 	else {
 		printf("|");
@@ -64,10 +63,7 @@ int main(void) {
 		exit(1);
 	}
 
-	// while(1) {
 	dht11_read_val();
-		// delay(5000);
-	// }
 
 	return 0;
 }
