@@ -16,16 +16,27 @@ db_user = "pi_temperature"
 db_password = "pi_temperature"
 db_name = "pi_temperature"
 
+def saveDebug(line):
+	connection = MySQLdb.connect(db_host, db_user, db_password, db_name)
+
+	connection.begin()
+
+	cursor = connection.cursor()
+	cursor.execute("INSERT INTO `debug`(`text`) VALUES('"+line+"')")
+
+	connection.commit()
 
 def getReadout():
-	p = subprocess.Popen('sudo ./dht11_sensor', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+	p = subprocess.Popen('sudo /home/pi/raspberry_temperature_log/dht11_sensor', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	
 	for line in p.stdout.readlines():
-	    
-	    if len(line) < 2:
-	    	return None
-	    else:
-	    	return line.split("|")
+		saveDebug(line)
+
+		if len(line) < 2:
+			return None
+		else:
+			return line.split("|")
+
 
 def saveReadout(data):
 	connection = MySQLdb.connect(db_host, db_user, db_password, db_name)

@@ -18,6 +18,20 @@ USE `pi_temperature`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `debug`
+--
+
+DROP TABLE IF EXISTS `debug`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `debug` (
+  `iddebug` int(11) NOT NULL AUTO_INCREMENT,
+  `text` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`iddebug`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `readouts`
 --
 
@@ -30,7 +44,7 @@ CREATE TABLE `readouts` (
   `Humidity` tinyint(4) NOT NULL,
   `Temperature` tinyint(4) NOT NULL,
   PRIMARY KEY (`ReadoutID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,4 +60,4 @@ CREATE TABLE `readouts` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-30 18:09:35
+-- Dump completed on 2013-03-30 20:09:27
