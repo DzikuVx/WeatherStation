@@ -30,13 +30,12 @@ def getReadout():
 	p = subprocess.Popen('sudo /home/pi/raspberry_temperature_log/dht11_sensor', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	
 	for line in p.stdout.readlines():
-		saveDebug(line)
 
-		if len(line) < 2:
+		if len(line) < 2 or len(line) > 5:
+			saveDebug(line)
 			return None
 		else:
 			return line.split("|")
-
 
 def saveReadout(data):
 	connection = MySQLdb.connect(db_host, db_user, db_password, db_name)
@@ -52,7 +51,11 @@ def main():
 
 	readout = None
 
-	while (readout == None):
+	counter = 0
+
+	while (readout == None and counter < 5):
+
+		counter += 1 
 
 		readout = getReadout()
 
