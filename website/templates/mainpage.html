@@ -1,5 +1,19 @@
 <div class="container">
 	<div class="row">
+		<div class="span4">
+			<div class="well">
+				<h4>{T:Temperature}</h4>
+				<h1>{Temperature}&deg;C</h1>
+				<p>24h average: {1dTempAvg}&deg;C</p>
+				<p>7d average: {7dTempAvg}&deg;C</p>
+			</div>
+			<div class="well">
+				<h4>{T:Humidity}</h4>
+				<h1>{Humidity}%</h1>
+				<p>24h average: {1dHumidityAvg}%</p>
+				<p>7d average: {7dHumidityAvg}%</p>
+			</div>
+		</div>
 		<div class="span8">
 			<h2>{T:Readouts history}</h2>
 			<table class="table table-striped">
@@ -15,20 +29,6 @@
 				{Table}	
 			</tbody>
 			</table>
-		</div>
-		<div class="span4">
-			<div class="well">
-				<h4>{T:Temperature}</h4>
-				<h1>{Temperature}&deg;C</h1>
-				<p>24h average: {1dTempAvg}&deg;C</p>
-				<p>7d average: {7dTempAvg}&deg;C</p>
-			</div>
-			<div class="well">
-				<h4>{T:Humidity}</h4>
-				<h1>{Humidity}%</h1>
-				<p>24h average: {1dHumidityAvg}%</p>
-				<p>7d average: {7dHumidityAvg}%</p>
-			</div>
 		</div>
 	</div>
 </div>

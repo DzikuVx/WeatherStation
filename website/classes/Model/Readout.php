@@ -19,12 +19,11 @@ class Readout extends Base implements \Interfaces\Model
 			'Temperature'
 	);
 
-	public function getAverage($days) {
+	public function getAverage($days = 1) {
 		
 		$db = \Database\Factory::getInstance();
 		
-		$stamp = date('Y-m-d H:i',strtotime ( '-1 day' , time() ) );
-		
+		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
 		
 		$rResult = $db->execute("SELECT AVG(Temperature) Temperature, AVG(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'");
 		
