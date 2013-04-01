@@ -2,6 +2,8 @@
 
 Turn Raspberry Pi into temperature and humidity logging station with DHT11 sensor
 
+![screenshot](/assets/img/1.png)
+
 ## Requirements
 
 * wiringPi
