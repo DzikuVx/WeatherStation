@@ -11,6 +11,7 @@ import subprocess
 import MySQLdb
 import time
 import sqlite3
+import os
 
 db_host = "localhost"
 db_user = "pi_temperature"
@@ -41,7 +42,9 @@ def getReadout():
 
 
 def saveSQLite(data):
-	conn = sqlite3.connect('data.db')
+	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
+
+	#print os.path.dirname(os.path.realpath(__file__)) + '/data.db'
 
 	c = conn.cursor()
 	c.execute('CREATE TABLE IF NOT EXISTS readouts(`Date` text, Temperature int, Humidity int)')
