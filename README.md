@@ -1,5 +1,3 @@
-# In Development, do not use
-
 # raspberry_temperature_log
 
 Turn Raspberry Pi into temperature and humidity logging station with DHT11 sensor
@@ -11,9 +9,17 @@ Turn Raspberry Pi into temperature and humidity logging station with DHT11 senso
 
 * wiringPi
 * python
-* SQLite
+* mysql-server: sudo apt-get install mysql-server
+* python mysql: sudo apt-get install python-mysqldb
 * php5
 * any web server: nginx recomended
+
+## MySQL database
+
+Project uses MySQL database to store temp/humidity readout
+Database structure avaible in sqldump.sql
+
+To configure, edit log_data and enter correct host, user, password and db name
 
 ### wiringPi
 
