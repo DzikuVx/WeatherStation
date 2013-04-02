@@ -10,6 +10,7 @@ http://www.spychalski.info
 import subprocess
 import MySQLdb
 import time
+import sqlite3
 
 db_host = "localhost"
 db_user = "pi_temperature"
@@ -37,14 +38,24 @@ def getReadout():
 		else:
 			return line.split("|")
 
+
+
+def saveSQLite(data):
+	conn = sqlite3.connect('data.db')
+
+	c = conn.cursor()
+	c.execute('CREATE TABLE IF NOT EXISTS readouts(`Date` text, Temperature int, Humidity int)')
+
+	c.execute("INSERT INTO readouts(`Date`, Humidity, Temperature) VALUES(datetime(), "+data[0]+","+data[1]+")")
+
+	conn.commit()
+	conn.close()
+
 def saveReadout(data):
 	connection = MySQLdb.connect(db_host, db_user, db_password, db_name)
-
 	connection.begin()
-
 	cursor = connection.cursor()
 	cursor.execute("INSERT INTO `readouts`(Humidity,Temperature) VALUES("+data[0]+","+data[1]+")")
-
 	connection.commit()
 
 def main():
@@ -62,6 +73,7 @@ def main():
 		if readout != None:
 
 			saveReadout(readout)
+			saveSQLite(readout)
 
 			humidity = readout[0]
 			temperature = readout[1]
