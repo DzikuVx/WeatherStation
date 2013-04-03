@@ -8,7 +8,6 @@ http://www.spychalski.info
 '''
 
 import subprocess
-import MySQLdb
 import time
 import sqlite3
 import os
@@ -18,23 +17,13 @@ db_user = "pi_temperature"
 db_password = "pi_temperature"
 db_name = "pi_temperature"
 
-def saveDebug(line):
-	connection = MySQLdb.connect(db_host, db_user, db_password, db_name)
-
-	connection.begin()
-
-	cursor = connection.cursor()
-	cursor.execute("INSERT INTO `debug`(`text`) VALUES('"+line+"')")
-
-	connection.commit()
-
 def getReadout():
 	p = subprocess.Popen('sudo /home/pi/raspberry_temperature_log/dht11_sensor', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	
 	for line in p.stdout.readlines():
 
 		if len(line) < 2 or len(line) > 5:
-			saveDebug(line)
+			print "Error from driver: " + line
 			return None
 		else:
 			return line.split("|")
@@ -52,13 +41,6 @@ def saveSQLite(data):
 	conn.commit()
 	conn.close()
 
-def saveReadout(data):
-	connection = MySQLdb.connect(db_host, db_user, db_password, db_name)
-	connection.begin()
-	cursor = connection.cursor()
-	cursor.execute("INSERT INTO `readouts`(Humidity,Temperature) VALUES("+data[0]+","+data[1]+")")
-	connection.commit()
-
 def main():
 
 	readout = None
@@ -73,7 +55,6 @@ def main():
 
 		if readout != None:
 
-			saveReadout(readout)
 			saveSQLite(readout)
 
 			humidity = readout[0]
@@ -86,6 +67,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
