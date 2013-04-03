@@ -44,12 +44,10 @@ def getReadout():
 def saveSQLite(data):
 	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
 
-	#print os.path.dirname(os.path.realpath(__file__)) + '/data.db'
-
 	c = conn.cursor()
 	c.execute('CREATE TABLE IF NOT EXISTS readouts(`Date` text, Temperature int, Humidity int)')
 
-	c.execute("INSERT INTO readouts(`Date`, Humidity, Temperature) VALUES(datetime(), "+data[0]+","+data[1]+")")
+	c.execute("INSERT INTO readouts(`Date`, Humidity, Temperature) VALUES(datetime('now','localtime'), "+data[0]+","+data[1]+")")
 
 	conn.commit()
 	conn.close()
