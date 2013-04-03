@@ -26,9 +26,9 @@ class Frontpage extends Base {
 			
 			$sTable .= '<tr>';
 			$sTable .= '<td>'.($iIndex+1).'</td>';
-			$sTable .= '<td>'.Formater::formatDateTime($oReadout->Date).'</td>';
-			$sTable .= '<td>'.$oReadout->Temperature.'&deg;C</td>';
-			$sTable .= '<td>'.$oReadout->Humidity.'%</td>';
+			$sTable .= '<td>'.Formater::formatDateTime($oReadout['Date']).'</td>';
+			$sTable .= '<td>'.$oReadout['Temperature'].'&deg;C</td>';
+			$sTable .= '<td>'.$oReadout['Humidity'].'%</td>';
 			
 			$sTable .= '</tr>';
 			
