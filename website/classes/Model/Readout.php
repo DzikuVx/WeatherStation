@@ -47,8 +47,8 @@ class Readout extends Base implements \Interfaces\Model
 		$db = \Database\Factory::getInstance();
 		
 		$rResult = $db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT {$limit} OFFSET {$skip}");
-		
-		while ($tResult = $db->fetch($rResult)) {
+
+		while ($tResult = $db->fetchAssoc($rResult)) {
 			array_push($retVal, $tResult);
 		}
 		

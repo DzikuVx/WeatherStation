@@ -13,14 +13,14 @@ class Factory {
 	}
 
 	/**
-	 * @var MySQLiWrapper
+	 * @var SQLiteWrapper
 	 */
 	private static $instance = null;
 
 	/**
 	 * Pobranie obiektu bazy danych gameplay
 	 * @throws Exception
-	 * @return \Database\MySQLiWrapper
+	 * @return \Database\SQLiteWrapper
 	 */
 	public static function getInstance() {
 
@@ -40,7 +40,7 @@ class Factory {
 	 * Połączenie z bazą danych gameplay
 	 */
 	private static function connect() {
-		self::$instance = new MySQLiWrapper ( Config::getInstance() );
+		self::$instance = new SQLiteWrapper ( Config::getInstance() );
 
 	}
 
