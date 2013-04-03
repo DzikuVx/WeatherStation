@@ -35,13 +35,29 @@ class Frontpage extends Base {
 		}
 		$oTemplate->add('Table', $sTable);
 		
-		$o1DayAvg = $oModel->getAverage(1);
-		$oTemplate->add('1dTempAvg', Formater::formatFloat($o1DayAvg->Temperature, 2));
-		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($o1DayAvg->Humidity, 2));
+		$oData = $oModel->getAverage(1);
+		$oTemplate->add('1dTempAvg', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
 		
-		$o7DayAvg = $oModel->getAverage(7);
-		$oTemplate->add('7dTempAvg', Formater::formatFloat($o7DayAvg->Temperature, 2));
-		$oTemplate->add('7dHumidityAvg', Formater::formatFloat($o7DayAvg->Humidity, 2));
+		$oData = $oModel->getMin(1);
+		$oTemplate->add('1dTempMin', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('1dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $oModel->getMax(1);
+		$oTemplate->add('1dTempMax', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('1dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $oModel->getAverage(7);
+		$oTemplate->add('7dTempAvg', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('7dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $oModel->getMin(7);
+		$oTemplate->add('7dTempMin', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('7dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $oModel->getMax(7);
+		$oTemplate->add('7dTempMax', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('7dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
 		
 		return (string) $oTemplate;
 	}

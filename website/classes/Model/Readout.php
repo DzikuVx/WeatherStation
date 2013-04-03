@@ -31,6 +31,30 @@ class Readout extends Base implements \Interfaces\Model
 		
 	}
 	
+	public function getMin($days = 1) {
+		
+		$db = \Database\Factory::getInstance();
+		
+		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
+		
+		$rResult = $db->execute("SELECT MIN(Temperature) Temperature, MIN(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'");
+		
+		return $db->fetch($rResult);
+		
+	}
+	
+	public function getMax($days = 1) {
+		
+		$db = \Database\Factory::getInstance();
+		
+		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
+		
+		$rResult = $db->execute("SELECT MAX(Temperature) Temperature, MAX(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'");
+		
+		return $db->fetch($rResult);
+		
+	}
+	
 	public function getCurrent() {
 		
 		$db = \Database\Factory::getInstance();
