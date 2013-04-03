@@ -1,5 +1,3 @@
-# Branch In Development, use master
-
 # raspberry_temperature_log
 
 Turn Raspberry Pi into temperature and humidity logging station with DHT11 sensor
@@ -11,7 +9,8 @@ Turn Raspberry Pi into temperature and humidity logging station with DHT11 senso
 
 * wiringPi
 * python
-* php5
+* php5 with SQLite3 enabled
+* SQLite3
 * any web server: nginx recomended
 
 ### wiringPi
