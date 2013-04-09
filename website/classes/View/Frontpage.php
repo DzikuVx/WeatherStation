@@ -19,6 +19,9 @@ class Frontpage extends Base {
 		$oCurrent = $oModel->getCurrent();
 		$oTemplate->add($oCurrent);
 
+		/*
+		 * Get readout history
+		 */
 		$aHistory = $oModel->getHistory();
 
 		$sTable = '';
@@ -29,11 +32,30 @@ class Frontpage extends Base {
 			$sTable .= '<td>'.Formater::formatDateTime($oReadout['Date']).'</td>';
 			$sTable .= '<td>'.$oReadout['Temperature'].'&deg;C</td>';
 			$sTable .= '<td>'.$oReadout['Humidity'].'%</td>';
-			
 			$sTable .= '</tr>';
 			
 		}
 		$oTemplate->add('Table', $sTable);
+		
+		/*
+		 * Get daily aggregate
+		 */
+		$aHistory = $oModel->getDayAggregate(14);
+		$sTable = '';
+		foreach ($aHistory as $iIndex => $oReadout) {
+			
+			$sTable .= '<tr>';
+			$sTable .= '<td>'.Formater::formatDate($oReadout['Date']).'</td>';
+			$sTable .= '<td>'.Formater::formatFloat($oReadout['MinTemperature'],2).'&deg;C</td>';
+			$sTable .= '<td>'.Formater::formatFloat($oReadout['Temperature'],2).'&deg;C</td>';
+			$sTable .= '<td>'.Formater::formatFloat($oReadout['MaxTemperature'],2).'&deg;C</td>';
+			$sTable .= '<td>'.Formater::formatFloat($oReadout['MinHumidity'],2).'%</td>';
+			$sTable .= '<td>'.Formater::formatFloat($oReadout['Humidity'],2).'%</td>';
+			$sTable .= '<td>'.Formater::formatFloat($oReadout['MaxHumidity'],2).'%</td>';
+			$sTable .= '</tr>';
+			
+		}
+		$oTemplate->add('DailyTable', $sTable);
 		
 		$oData = $oModel->getAverage(1);
 		$oTemplate->add('1dTempAvg', Formater::formatFloat($oData->Temperature, 2));

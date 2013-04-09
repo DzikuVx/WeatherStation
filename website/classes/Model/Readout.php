@@ -80,4 +80,34 @@ class Readout extends Base implements \Interfaces\Model
 		
 	}
 	
+	public function getDayAggregate($days = 7) {
+		$retVal = array();
+	
+		$db = \Database\Factory::getInstance();
+	
+		$rResult = $db->execute("select 
+					date(`Date`) Date, AVG(Temperature) Temperature 
+					, AVG(Humidity) Humidity
+					, MIN(Temperature) MinTemperature
+					, MAX(Temperature) MaxTemperature
+					, MIN(Humidity) MinHumidity
+					, MAX(Humidity) MaxHumidity
+				FROM
+					{$this->tableName}
+    			where 
+					`Date`>(SELECT DATETIME('now', '-{$days} day'))
+				group by 
+					date(`Date`)
+				ORDER BY
+					date(`Date`) DESC
+    			");
+	
+		while ($tResult = $db->fetchAssoc($rResult)) {
+			array_push($retVal, $tResult);
+		}
+	
+		return $retVal;
+	
+	}
+	
 }

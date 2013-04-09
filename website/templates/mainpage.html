@@ -23,20 +23,49 @@
 			</div>
 		</div>
 		<div class="span8">
-			<h2>{T:Readouts history}</h2>
-			<table class="table table-striped">
-			<thead>
-					<tr>
-						<th>#</th>
-						<th>{T:Date}</th>
-						<th>{T:Temperature}</th>
-						<th>{T:Humidity}</th>
-					</tr>
-			</thead>
-			<tbody>
-				{Table}	
-			</tbody>
-			</table>
+			<div class="row">
+				<div class="span8">
+					<h2>Daily stats</h2>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th colspan="3">{T:Temperature}</th>
+							<th colspan="3">{T:Humidity}</th>
+						</tr>
+						<tr>
+							<th>{T:Date}</th>
+							<th>{T:Min.}</th>
+							<th>{T:Avg.}</th>
+							<th>{T:Max.}</th>
+							<th>{T:Min.}</th>
+							<th>{T:Avg.}</th>
+							<th>{T:Max.}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{DailyTable}
+					</tbody>
+				</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span8">
+					<h2>{T:Readouts history}</h2>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>{T:Date}</th>
+								<th>{T:Temperature}</th>
+								<th>{T:Humidity}</th>
+							</tr>
+						</thead>
+						<tbody>{Table}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
