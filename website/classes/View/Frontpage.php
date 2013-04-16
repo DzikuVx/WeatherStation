@@ -84,4 +84,26 @@ class Frontpage extends Base {
 		return (string) $oTemplate;
 	}
 
+	/**
+	 * render average temperature chart head for google charts
+	 * @return string
+	 */
+	public function chartHead() {
+		
+		$oTemplate = new Templater('chartHead.html');
+		
+		$oModel = new \Model\Readout();
+		$aHistory = $oModel->getDayAggregate(14,"ASC");
+		
+		$aData = array();
+		foreach ($aHistory as $iIndex => $oReadout) {
+			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Temperature'],2)."]";
+		}
+		
+		$oTemplate->add('data',implode(',', $aData));
+		
+		return (string) $oTemplate;
+		
+	}
+	
 }

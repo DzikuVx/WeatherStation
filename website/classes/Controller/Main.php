@@ -118,6 +118,7 @@ class Main extends Base implements \Interfaces\Singleton {
 			$template->add('mainContent',\General\Debug::cThrow ( null, $e ));
 		}
 
+		$template->add('chartHead', '');
 		$template->add('listeners', '');
 		$template->add('menu', '');
 		$template->add('mainContent', '');

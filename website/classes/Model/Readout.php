@@ -80,7 +80,7 @@ class Readout extends Base implements \Interfaces\Model
 		
 	}
 	
-	public function getDayAggregate($days = 7) {
+	public function getDayAggregate($days = 7, $orderBy = "DESC") {
 		$retVal = array();
 	
 		$db = \Database\Factory::getInstance();
@@ -99,7 +99,7 @@ class Readout extends Base implements \Interfaces\Model
 				group by 
 					date(`Date`)
 				ORDER BY
-					date(`Date`) DESC
+					date(`Date`) {$orderBy}
     			");
 	
 		while ($tResult = $db->fetchAssoc($rResult)) {

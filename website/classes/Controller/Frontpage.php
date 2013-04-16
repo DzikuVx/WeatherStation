@@ -52,5 +52,6 @@ class Frontpage extends Base implements \Interfaces\Singleton {
 	public function render(array $aParams, \General\Templater $template) {
 		$oView = new \View\Frontpage($aParams);
 		$template->add('mainContent', $oView->mainpage());
+		$template->add('chartHead', $oView->chartHead());
 	}
 }
