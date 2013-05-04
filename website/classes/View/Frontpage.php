@@ -102,6 +102,13 @@ class Frontpage extends Base {
 		
 		$oTemplate->add('data',implode(',', $aData));
 		
+		$aData = array();
+		foreach ($aHistory as $iIndex => $oReadout) {
+			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Humidity'],2)."]";
+		}
+		
+		$oTemplate->add('dataHumidity',implode(',', $aData));
+		
 		return (string) $oTemplate;
 		
 	}

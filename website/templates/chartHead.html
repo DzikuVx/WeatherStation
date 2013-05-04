@@ -17,5 +17,23 @@
 		var chart = new google.visualization.LineChart(document
 				.getElementById('chart'));
 		chart.draw(data, options);
+		
+		/*
+			Humidity chart
+		*/
+		data = google.visualization.arrayToDataTable([
+		    [ 'Date', 'Humidity'], {dataHumidity} ]);
+
+   		var options = {
+   			title : 'Humidity',
+   			legend: {position: 'none'}
+   		};
+   		
+
+   		var chart = new google.visualization.LineChart(document
+   				.getElementById('chart2'));
+   		chart.draw(data, options);
+		
+		
 	}
 </script>
