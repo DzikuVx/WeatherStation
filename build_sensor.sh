@@ -1,3 +1,1 @@
-gcc -o dht11_sensor dht11_sensor.c -L/usr/loc/lib -lwiringPi
-
-gcc -o dht22_sensor dht22_sensor.c -L/usr/loc/lib -lwiringPi
+gcc sensor_driver.c -l bcm2835 -std=gnu99 -o sensor_driver
