@@ -14,7 +14,7 @@ class Frontpage extends Base {
 	{
 		$oTemplate = new Templater('mainpage.html');
 
-		$oModel = new \Model\Readout();
+		$oModel = new \Model\InternalReadout();
 		
 		$oCurrent = $oModel->getCurrent();
 		$oTemplate->add($oCurrent);
@@ -92,7 +92,7 @@ class Frontpage extends Base {
 		
 		$oTemplate = new Templater('chartHead.html');
 		
-		$oModel = new \Model\Readout();
+		$oModel = new \Model\InternalReadout();
 		$aHistory = $oModel->getDayAggregate(14,"ASC");
 		
 		$aData = array();

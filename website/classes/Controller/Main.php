@@ -124,6 +124,8 @@ class Main extends Base implements \Interfaces\Singleton {
 		$template->add('mainContent', '');
 		$template->add('titleSecond', '');
 		$template->add('pageTitle', '{T:Product Name}');
+		$template->add('menu-active-external', '');
+		$template->add('menu-active-internal', '');
 		
 		return (string) $template;
 

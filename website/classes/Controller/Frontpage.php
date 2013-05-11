@@ -53,5 +53,6 @@ class Frontpage extends Base implements \Interfaces\Singleton {
 		$oView = new \View\Frontpage($aParams);
 		$template->add('mainContent', $oView->mainpage());
 		$template->add('chartHead', $oView->chartHead());
+		$template->add('menu-active-internal','active');
 	}
 }
