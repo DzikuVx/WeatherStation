@@ -124,4 +124,35 @@ abstract class Readout extends Base implements \Interfaces\Model
 	
 	}
 	
+	public function getHourAggregate($hours = 24, $orderBy = "DESC") {
+		$retVal = array();
+	
+		$db = \Database\Factory::getInstance();
+
+		$rResult = $db->execute("select
+				strftime('%Y-%m-%d %H:00:00', `Date`) Date
+				, AVG(Temperature) Temperature
+				, AVG(Humidity) Humidity
+				, MIN(Temperature) MinTemperature
+				, MAX(Temperature) MaxTemperature
+				, MIN(Humidity) MinHumidity
+				, MAX(Humidity) MaxHumidity
+				FROM
+					{$this->tableName}
+				where
+					datetime(`Date`)>(SELECT DATETIME('now', '-{$hours} hour'))
+				group by
+					strftime('%Y-%m-%d %H:00:00', `Date`)
+				ORDER BY
+					datetime(`Date`) {$orderBy}
+				");
+	
+		while ($tResult = $db->fetchAssoc($rResult)) {
+			array_push($retVal, $tResult);
+		}
+
+		return $retVal;
+
+	}
+	
 }

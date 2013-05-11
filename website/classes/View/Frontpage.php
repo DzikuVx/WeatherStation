@@ -8,21 +8,30 @@ use General\Templater;
 
 use Database\Factory;
 
-class Frontpage extends Base {
+abstract class Frontpage extends Base {
 
+	protected $model = null;
+	
+	protected $modelName = '';
+	
+	public function __construct(array $aParams) {
+		parent::__construct($aParams);
+		
+		$this->model = new $this->modelName();
+		
+	}
+	
 	public function mainpage()
 	{
 		$oTemplate = new Templater('mainpage.html');
 
-		$oModel = new \Model\InternalReadout();
-		
-		$oCurrent = $oModel->getCurrent();
+		$oCurrent = $this->model->getCurrent();
 		$oTemplate->add($oCurrent);
 
 		/*
 		 * Get readout history
 		 */
-		$aHistory = $oModel->getHistory();
+		$aHistory = $this->model->getHistory();
 
 		$sTable = '';
 		foreach ($aHistory as $iIndex => $oReadout) {
@@ -40,7 +49,7 @@ class Frontpage extends Base {
 		/*
 		 * Get daily aggregate
 		 */
-		$aHistory = $oModel->getDayAggregate(14);
+		$aHistory = $this->model->getDayAggregate(14);
 		$sTable = '';
 		foreach ($aHistory as $iIndex => $oReadout) {
 			
@@ -57,27 +66,27 @@ class Frontpage extends Base {
 		}
 		$oTemplate->add('DailyTable', $sTable);
 		
-		$oData = $oModel->getAverage(1);
+		$oData = $this->model->getAverage(1);
 		$oTemplate->add('1dTempAvg', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
 		
-		$oData = $oModel->getMin(1);
+		$oData = $this->model->getMin(1);
 		$oTemplate->add('1dTempMin', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('1dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
 		
-		$oData = $oModel->getMax(1);
+		$oData = $this->model->getMax(1);
 		$oTemplate->add('1dTempMax', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('1dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
 		
-		$oData = $oModel->getAverage(7);
+		$oData = $this->model->getAverage(7);
 		$oTemplate->add('7dTempAvg', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('7dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
 		
-		$oData = $oModel->getMin(7);
+		$oData = $this->model->getMin(7);
 		$oTemplate->add('7dTempMin', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('7dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
 		
-		$oData = $oModel->getMax(7);
+		$oData = $this->model->getMax(7);
 		$oTemplate->add('7dTempMax', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('7dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
 		
@@ -92,8 +101,7 @@ class Frontpage extends Base {
 		
 		$oTemplate = new Templater('chartHead.html');
 		
-		$oModel = new \Model\InternalReadout();
-		$aHistory = $oModel->getDayAggregate(14,"ASC");
+		$aHistory = $this->model->getDayAggregate(14,"ASC");
 		
 		$aData = array();
 		foreach ($aHistory as $iIndex => $oReadout) {
@@ -108,6 +116,23 @@ class Frontpage extends Base {
 		}
 		
 		$oTemplate->add('dataHumidity',implode(',', $aData));
+		
+		/*
+		 * 24 hours charts
+		 */
+		$aHistory = $this->model->getHourAggregate(24,"ASC");
+		$aData = array();
+		foreach ($aHistory as $iIndex => $oReadout) {
+			$aData[] = "['".Formater::formatTime($oReadout['Date'])."', ".number_format($oReadout['Temperature'],2)."]";
+		}
+		$oTemplate->add('chartHourTemperature',implode(',', $aData));
+		
+		$aData = array();
+		foreach ($aHistory as $iIndex => $oReadout) {
+			$aData[] = "['".Formater::formatTime($oReadout['Date'])."', ".number_format($oReadout['Humidity'],2)."]";
+		}
+		$oTemplate->add('chartHourHumidity',implode(',', $aData));
+		
 		
 		return (string) $oTemplate;
 		

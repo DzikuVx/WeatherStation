@@ -50,9 +50,28 @@ class Frontpage extends Base implements \Interfaces\Singleton {
 	}
 
 	public function render(array $aParams, \General\Templater $template) {
-		$oView = new \View\Frontpage($aParams);
+		
+		if (empty($aParams['sensor'])) {
+			$aParams['sensor'] = 'external';
+		}
+		
+		switch ($aParams['sensor']) {
+			
+			case 'internal':
+				$oView = new \View\FrontpageInternal($aParams);
+				$template->add('menu-active-internal','active');
+				break;
+				
+			case 'external':
+			default:
+				$oView = new \View\FrontpageExternal($aParams);
+				$template->add('menu-active-external','active');
+				break;
+			
+		}
+		
 		$template->add('mainContent', $oView->mainpage());
 		$template->add('chartHead', $oView->chartHead());
-		$template->add('menu-active-internal','active');
+		
 	}
 }

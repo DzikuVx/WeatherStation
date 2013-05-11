@@ -33,7 +33,39 @@
    		var chart = new google.visualization.LineChart(document
    				.getElementById('chart2'));
    		chart.draw(data, options);
+
+   		/*
+   		* 24h temperature
+   		*/
+		data = google.visualization.arrayToDataTable([
+	    [ 'Hour', 'Temperature'], {chartHourTemperature} ]);
+
+		var options = {
+			title : 'Temperature',
+			legend: {position: 'none'}
+		};
 		
+
+		var chart = new google.visualization.LineChart(document
+				.getElementById('chartHourTemperature'));
+		chart.draw(data, options);
+
+   		/*
+   		* 24h humidity
+   		*/
+		data = google.visualization.arrayToDataTable([
+	    [ 'Hour', 'Humidity'], {chartHourHumidity} ]);
+
+		var options = {
+			title : 'Humidity',
+			legend: {position: 'none'}
+		};
+		
+
+		var chart = new google.visualization.LineChart(document
+				.getElementById('chartHourHumidity'));
+		chart.draw(data, options);
+   		
 		
 	}
 </script>

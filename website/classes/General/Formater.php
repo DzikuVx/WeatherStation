@@ -89,7 +89,7 @@ class Formater extends StaticUtils {
      * @param $date
      * @return sformatowana data
      */
-    function formatTime($date)
+    static public function formatTime($date)
     {
 
         $retVal = date("H:i", strtotime($date));
