@@ -12,6 +12,29 @@ import sys
 import os
 import getopt
 
+def computeSensor(sensor, dayMinus):
+	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
+
+	c = conn.cursor()
+
+	#Create missing tables
+	c.execute('CREATE TABLE IF NOT EXISTS daily_aggregate(`Sensor` text, `Date` text, AvgTemperature real, AvgHumidity real, MinTempetaure real, MinHumidity real, MaxTemperature real, MaxHumidity real)')
+
+	#Drop data for that day
+	c.execute("DELETE FROM daily_aggregate WHERE `Sensor`='"+sensor+"' AND date(`Date`)=(SELECT date('now','-"+str(dayMinus)+" day'))")
+
+	if sensor == "internal":
+		tableName = "readouts"
+	elif sensor == "external":
+		tableName = "readouts_external"
+	else:
+		sys.exit(2)
+
+	c.execute("INSERT INTO daily_aggregate SELECT '" + sensor + "', date(`Date`), Avg(Temperature), Avg(Humidity), Min(Temperature), Min(Humidity), Max(Temperature), Max(Humidity) FROM " + tableName + " WHERE date(`Date`)=(SELECT date('now','-" + str(dayMinus) + " day'))")
+
+	conn.commit()
+	conn.close()
+
 def main(args):
 	print "hello"
 
@@ -31,23 +54,10 @@ def main(args):
 		if arg[0] == "-d":
 			dayMinus = int(arg[1]);
 
-		
-	print "Computing average values for today -" + str(dayMinus) + " days"
+	print "Computing sensors values for today -" + str(dayMinus) + " days"
 
-
-	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
-
-	c = conn.cursor()
-
-	#Create missing tables
-	c.execute('CREATE TABLE IF NOT EXISTS readouts(`Date` text, Temperature real, Humidity real)')
-
-
-	conn.commit()
-	conn.close()
-
-	'''Drop that day
-
+	computeSensor('internal', dayMinus)
+	computeSensor('external', dayMinus)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
