@@ -120,7 +120,7 @@ abstract class Frontpage extends Base {
 		/*
 		 * 24 hours charts
 		 */
-		$aHistory = $this->model->getHourAggregate(24,"ASC");
+		$aHistory = $this->model->getHourAggregate(72,"ASC");
 		$aData = array();
 		foreach ($aHistory as $iIndex => $oReadout) {
 			$aData[] = "['".Formater::formatTime($oReadout['Date'])."', ".number_format($oReadout['Temperature'],2)."]";

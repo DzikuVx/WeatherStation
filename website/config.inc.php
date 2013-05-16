@@ -2,4 +2,4 @@
 
 $config = array();
 
-$config['cacheMethod'] = 'mem';
+$config['cacheMethod'] = 'Apc';

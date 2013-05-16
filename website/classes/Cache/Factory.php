@@ -28,9 +28,16 @@ class Factory implements \Interfaces\Singleton {
 	 */
 	static private function create() {
 
+		
 		if (empty(self::$cacheInstance)) {
 
-			switch (\General\Config::getInstance()->get('cacheMethod')) {
+			$sCachingMethod = \General\Config::getInstance()->get('cacheMethod');
+
+			if ($sCachingMethod === 'apc' && !(extension_loaded('apc') && ini_get('apc.enabled'))) {
+				$sCachingMethod = 'Mem';
+			}
+			
+			switch ($sCachingMethod) {
 
 				case 'Apc':
 					self::$cacheInstance = Apc::getInstance();

@@ -12,7 +12,7 @@ class Apc implements \Interfaces\Singleton  {
 	 * Prefix nazw klucza
 	 * @var string
 	 */
-	static private $sCachePrefix = 'JST';
+	static private $sCachePrefix = 'apc';
 
 	/**
 	 * Enter description here ...
