@@ -11,8 +11,11 @@ import sqlite3
 import sys
 import os
 import getopt
+import logging
+import datetime
 
 def computeSensor(sensor, dayMinus):
+
 	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
 
 	c = conn.cursor()
@@ -28,6 +31,7 @@ def computeSensor(sensor, dayMinus):
 	elif sensor == "external":
 		tableName = "readouts_external"
 	else:
+		logging.error('Unknown sensor ' + sensor)
 		sys.exit(2)
 
 	c.execute("INSERT INTO daily_aggregate SELECT '" + sensor + "', date(`Date`), Avg(Temperature), Avg(Humidity), Min(Temperature), Min(Humidity), Max(Temperature), Max(Humidity) FROM " + tableName + " WHERE date(`Date`)=(SELECT date('now','-" + str(dayMinus) + " day'))")
@@ -36,13 +40,13 @@ def computeSensor(sensor, dayMinus):
 	conn.close()
 
 def main(args):
-	print "hello"
+	
+	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/aggregate.log',level=logging.ERROR)
 
 	dayMinus = 1;
 
-	'''
-	Parse input parameters
-	'''
+	logging.info('Started at ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'));
+
 	try:
 		options, arguments = getopt.getopt(args, "d:")
 	except getopt.GetoptError:
@@ -53,8 +57,6 @@ def main(args):
 
 		if arg[0] == "-d":
 			dayMinus = int(arg[1]);
-
-	print "Computing sensors values for today -" + str(dayMinus) + " days"
 
 	computeSensor('internal', dayMinus)
 	computeSensor('external', dayMinus)
