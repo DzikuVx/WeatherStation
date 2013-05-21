@@ -4,7 +4,7 @@ Turn Raspberry Pi into temperature and humidity logging station with DHT11 senso
 
 ![screenshot](/assets/img/3.png)
 ![raspberry with sensor](/assets/img/2.jpg)
-![raspberry with sensor](/assets/img/4.jpg)
+![raspberry with sensor](/assets/img/4.jpeg)
 
 #Electrical diagram
 
@@ -66,10 +66,6 @@ server {
 
 ```
 
-# external sensor DHT22 on GPIO 17
+## Legal stuff
 
-dht22_sensor readout is based on https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/tree/master/Adafruit_DHT_Driver by Adafruit
-
-to make:
-
-gcc sensor_driver.c -l bcm2835 -std=gnu99 -o sensor_driver
+sensor_driver.c readout is based on https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/tree/master/Adafruit_DHT_Driver by Adafruit
