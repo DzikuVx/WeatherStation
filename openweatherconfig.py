@@ -1,7 +1,7 @@
 config = {
     'user': 'myaccount',
     'password': 'mypassword',
-    'api': 'myapikey'
+    'api': 'myapikey',
     'location': 'mylocationaname',
     'coords': 'mylocationcoordinates'
 }
