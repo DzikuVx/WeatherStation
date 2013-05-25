@@ -28,6 +28,63 @@ abstract class Frontpage extends Base {
 		$oCurrent = $this->model->getCurrent();
 		$oTemplate->add($oCurrent);
 
+		$oData = $this->model->getAverage(1);
+		$oTemplate->add('1dTempAvg', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $this->model->getMin(1);
+		$oTemplate->add('1dTempMin', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('1dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $this->model->getMax(1);
+		$oTemplate->add('1dTempMax', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('1dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $this->model->getAverage(7);
+		$oTemplate->add('7dTempAvg', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('7dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $this->model->getMin(7);
+		$oTemplate->add('7dTempMin', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('7dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
+		
+		$oData = $this->model->getMax(7);
+		$oTemplate->add('7dTempMax', Formater::formatFloat($oData->Temperature, 2));
+		$oTemplate->add('7dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
+
+		/*
+		 * External data from Open Weather Map
+		 */
+		$oOpenWeatherMap = new \Model\OpenWeatherMap();
+		$oCurrent = $oOpenWeatherMap->getCurrent();
+		$oTemplate->add($oCurrent);
+		
+		$oData = $oOpenWeatherMap->getAverage(1);
+		$oTemplate->add('1dPressureAvg', Formater::formatFloat($oData->Pressure, 2));
+		
+		$oData = $oOpenWeatherMap->getMin(1);
+		$oTemplate->add('1dPressureMin', Formater::formatFloat($oData->Pressure, 2));
+		
+		$oData = $oOpenWeatherMap->getMax(1);
+		$oTemplate->add('1dPressureMax', Formater::formatFloat($oData->Pressure, 2));
+		
+		$oData = $oOpenWeatherMap->getAverage(7);
+		$oTemplate->add('7dPressureAvg', Formater::formatFloat($oData->Pressure, 2));
+		
+		$oData = $oOpenWeatherMap->getMin(7);
+		$oTemplate->add('7dPressureMin', Formater::formatFloat($oData->Pressure, 2));
+		
+		$oData = $oOpenWeatherMap->getMax(7);
+		$oTemplate->add('7dPressureMax', Formater::formatFloat($oData->Pressure, 2));
+		
+		return (string) $oTemplate;
+		
+	}
+	
+	public function tables()
+	{
+		$oTemplate = new Templater('tables.html');
+
 		/*
 		 * Get readout history
 		 */
@@ -66,30 +123,13 @@ abstract class Frontpage extends Base {
 		}
 		$oTemplate->add('DailyTable', $sTable);
 		
-		$oData = $this->model->getAverage(1);
-		$oTemplate->add('1dTempAvg', Formater::formatFloat($oData->Temperature, 2));
-		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
-		
-		$oData = $this->model->getMin(1);
-		$oTemplate->add('1dTempMin', Formater::formatFloat($oData->Temperature, 2));
-		$oTemplate->add('1dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
-		
-		$oData = $this->model->getMax(1);
-		$oTemplate->add('1dTempMax', Formater::formatFloat($oData->Temperature, 2));
-		$oTemplate->add('1dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
-		
-		$oData = $this->model->getAverage(7);
-		$oTemplate->add('7dTempAvg', Formater::formatFloat($oData->Temperature, 2));
-		$oTemplate->add('7dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
-		
-		$oData = $this->model->getMin(7);
-		$oTemplate->add('7dTempMin', Formater::formatFloat($oData->Temperature, 2));
-		$oTemplate->add('7dHumidityMin', Formater::formatFloat($oData->Humidity, 2));
-		
-		$oData = $this->model->getMax(7);
-		$oTemplate->add('7dTempMax', Formater::formatFloat($oData->Temperature, 2));
-		$oTemplate->add('7dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
-		
+		return (string) $oTemplate;
+	}
+	
+	public function charts()
+	{
+		$oTemplate = new Templater('charts.html');
+	
 		return (string) $oTemplate;
 	}
 
@@ -108,14 +148,14 @@ abstract class Frontpage extends Base {
 			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Temperature'],2)."]";
 		}
 		
-		$oTemplate->add('data',implode(',', $aData));
+		$oTemplate->add('chartDailyTemperature',implode(',', $aData));
 		
 		$aData = array();
 		foreach ($aHistory as $iIndex => $oReadout) {
 			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Humidity'],2)."]";
 		}
 		
-		$oTemplate->add('dataHumidity',implode(',', $aData));
+		$oTemplate->add('chartDailyHumidity',implode(',', $aData));
 		
 		/*
 		 * 24 hours charts
@@ -133,6 +173,24 @@ abstract class Frontpage extends Base {
 		}
 		$oTemplate->add('chartHourHumidity',implode(',', $aData));
 		
+		/**
+		 * Data from OpenWeatherMap.orh
+		 */
+		$oOpenWeatherMap = new \Model\OpenWeatherMap();
+		
+		$aHistory = $oOpenWeatherMap->getHourAggregate(72,"ASC");
+		$aData = array();
+		foreach ($aHistory as $iIndex => $oReadout) {
+			$aData[] = "['".Formater::formatTime($oReadout['Date'])."', ".number_format($oReadout['Pressure'],2,'.','')."]";
+		}
+		$oTemplate->add('chartHourPressure',implode(',', $aData));
+		
+		$aHistory = $oOpenWeatherMap->getDayAggregate(72,"ASC");
+		$aData = array();
+		foreach ($aHistory as $iIndex => $oReadout) {
+			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Pressure'],2,'.','')."]";
+		}
+		$oTemplate->add('chartDailyPressure',implode(',', $aData));
 		
 		return (string) $oTemplate;
 		

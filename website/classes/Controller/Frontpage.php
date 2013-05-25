@@ -54,6 +54,9 @@ class Frontpage extends Base implements \Interfaces\Singleton {
 		if (empty($aParams['sensor'])) {
 			$aParams['sensor'] = 'external';
 		}
+		if (empty($aParams['type'])) {
+			$aParams['type'] = 'chart';
+		}
 		
 		switch ($aParams['sensor']) {
 			
@@ -71,7 +74,28 @@ class Frontpage extends Base implements \Interfaces\Singleton {
 		}
 		
 		$template->add('mainContent', $oView->mainpage());
-		$template->add('chartHead', $oView->chartHead());
+		
+		switch ($aParams['type']) {
+			
+			case 'table':
+				$template->add('pageContent', $oView->tables());
+				$template->add('menu-active-table','active');
+				break;
+
+			case 'chart':
+			default:
+				$template->add('chartHead', $oView->chartHead());
+				$template->add('pageContent', $oView->charts());
+				$template->add('menu-active-chart','active');
+				break;
+				
+		}
+		
+		$template->add('menu-active-external', '');
+		$template->add('menu-active-internal', '');
+		$template->add('menu-active-table','');
+		$template->add('menu-active-chart','');
+		$template->add('param:sensor', $aParams['sensor']);
 		
 	}
 }

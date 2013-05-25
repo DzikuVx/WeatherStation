@@ -1,4 +1,5 @@
 <div class="container">
+
 	<div class="row">
 		<div class="span3">
 			<div class="well">
@@ -21,70 +22,31 @@
 				<p>7d min: {7dHumidityMin}%</p>
 				<p>7d max: {7dHumidityMax}%</p>
 			</div>
+			<div class="well">
+				<h4>{T:Pressure}</h4>
+				<h1>{Pressure}hPa</h1>
+				<p>24h average: {1dPressureAvg}hPa</p>
+				<p>24h min: {1dPressureMin}hPa</p>
+				<p>24h max: {1dPressureMax}hPa</p>
+				<p>7d average: {7dPressureAvg}hPa</p>
+				<p>7d min: {7dPressureMin}hPa</p>
+				<p>7d max: {7dPressureMax}hPa</p>
+			</div>
 		</div>
 		<div class="span9">
-			
-			<div class="row">
-				<div class="span9">
-					<h2>Last 72 hours</h2>
-					<div id="chartHourTemperature" class="span9" style="height: 250px;"></div>
-					<div id="chartHourHumidity" class="span9" style="height: 250px;"></div>
+
+			<div class="navbar">
+				<div class="navbar-inner">
+					<span class="brand">Show as:</span>
+					<ul class="nav">
+						<li class="{menu-active-chart}"><a href="?sensor={param:sensor}&type=chart">{T:Charts}</a></li>
+						<li class="{menu-active-table}"><a href="?sensor={param:sensor}&type=table">{T:Tables}</a></li>
+					</ul>
 				</div>
 			</div>
 			
+			{pageContent}
 			
-			<div class="row">
-				<div class="span9">
-					<h2>Last 14 days</h2>
-					<div id="chart" class="span9" style="height: 250px;"></div>
-					<div id="chart2" class="span9" style="height: 250px;"></div>
-				</div>
-			</div>
-			
-			
-			<div class="row">
-				<div class="span9">
-					<h2>Daily stats</h2>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>&nbsp;</th>
-							<th colspan="3">{T:Temperature}</th>
-							<th colspan="3">{T:Humidity}</th>
-						</tr>
-						<tr>
-							<th>{T:Date}</th>
-							<th>{T:Min.}</th>
-							<th>{T:Avg.}</th>
-							<th>{T:Max.}</th>
-							<th>{T:Min.}</th>
-							<th>{T:Avg.}</th>
-							<th>{T:Max.}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{DailyTable}
-					</tbody>
-				</table>
-				</div>
-			</div>
-			<div class="row">
-				<div class="span9">
-					<h2>{T:Readouts history}</h2>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>{T:Date}</th>
-								<th>{T:Temperature}</th>
-								<th>{T:Humidity}</th>
-							</tr>
-						</thead>
-						<tbody>{Table}
-						</tbody>
-					</table>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
