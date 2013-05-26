@@ -18,7 +18,7 @@ def main():
 
 	callScript = "curl -d 'humidity="+str(data[1])+"&temp="+str(data[0])+"&"+config['coords']+"' --user '"+config['user']+":"+config['password']+"' http://openweathermap.org/data/post"
 
-	print callScript
+	#print callScript
 
 	p = subprocess.Popen(callScript, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)	
 
