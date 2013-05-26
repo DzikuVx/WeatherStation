@@ -5,97 +5,13 @@
 	});
 	google.setOnLoadCallback(drawChart);
 	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-				[ 'Date', 'Temperature'], {chartDailyTemperature} ]);
 
-		var options = {
-			title : 'Temperature',
-			legend: {position: 'none'}
-		};
-		
-
-		var chart = new google.visualization.LineChart(document
-				.getElementById('chartDailyTemperature'));
-		chart.draw(data, options);
-		
-		/*
-			Humidity chart
-		*/
-		data = google.visualization.arrayToDataTable([
-		    [ 'Date', 'Humidity'], {chartDailyHumidity} ]);
-
-   		var options = {
-   			title : 'Humidity',
-   			legend: {position: 'none'}
-   		};
+       	{chartHourTemperature}
+       	{chartHourHumidity}
+       	{chartHourPressure}
+       	{chartDailyPressure}
+       	{chartDailyHumidity}
+       	{chartDailyTemperature}
    		
-
-   		var chart = new google.visualization.LineChart(document
-   				.getElementById('chartDailyHumidity'));
-   		chart.draw(data, options);
-
-   		/*
-   		* 72h temperature
-   		*/
-		data = google.visualization.arrayToDataTable([
-	    [ 'Hour', 'Temperature'], {chartHourTemperature} ]);
-
-		var options = {
-			title : 'Temperature',
-			legend: {position: 'none'}
-		};
-		
-
-		var chart = new google.visualization.LineChart(document
-				.getElementById('chartHourTemperature'));
-		chart.draw(data, options);
-
-   		/*
-   		* 72h humidity
-   		*/
-		data = google.visualization.arrayToDataTable([
-	    [ 'Hour', 'Humidity'], {chartHourHumidity} ]);
-
-		var options = {
-			title : 'Humidity',
-			legend: {position: 'none'}
-		};
-		
-
-		var chart = new google.visualization.LineChart(document
-				.getElementById('chartHourHumidity'));
-		chart.draw(data, options);
-   		
-		/*
-		72h Pressure
-		*/
-		data = google.visualization.arrayToDataTable([
-   	    [ 'Hour', 'Pressure'], {chartHourPressure} ]);
-
-   		var options = {
-   			title : 'Pressure',
-   			legend: {position: 'none'}
-   		};
-   		
-
-   		var chart = new google.visualization.LineChart(document
-   				.getElementById('chartHourPressure'));
-   		chart.draw(data, options);
-   		
-		/*
-		14d Pressure
-		*/
-		data = google.visualization.arrayToDataTable([
-   	    [ 'Hour', 'Pressure'], {chartDailyPressure} ]);
-
-   		var options = {
-   			title : 'Pressure',
-   			legend: {position: 'none'}
-   		};
-   		
-
-   		var chart = new google.visualization.LineChart(document
-   				.getElementById('chartDailyPressure'));
-   		chart.draw(data, options);
 	}
 </script>
