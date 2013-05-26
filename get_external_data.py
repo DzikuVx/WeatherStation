@@ -1,3 +1,13 @@
+'''
+Following script gets weather data from OpenWeathcerMap.org using 
+JSON API 
+
+Data acquisited:
+- Pressure
+- Wind speed
+- Wind Direction
+
+'''
 import urllib2, json, sqlite3, os
 
 from openweatherconfig import config
