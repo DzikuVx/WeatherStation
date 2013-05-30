@@ -20,9 +20,9 @@ db_name = "pi_temperature"
 def getReadout(type):
 
 	if type == "internal":
-		p = subprocess.Popen('sudo /home/pi/raspberry_temperature_log/sensor_driver 11 4', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		p = subprocess.Popen('sudo /home/pi/WeatherStation/sensor_driver 11 4', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	elif type == "external":
-		p = subprocess.Popen('sudo /home/pi/raspberry_temperature_log/sensor_driver 2302 17', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		p = subprocess.Popen('sudo /home/pi/WeatherStation/sensor_driver 2302 17', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	else:
 		return None
 
@@ -60,31 +60,6 @@ def saveSQLite(data, type):
 	
 def main():
 
-	print "Internal Sensor:"
-
-	readout = None
-
-	counter = 0
-
-	while (readout == None and counter < 5):
-
-		counter += 1 
-
-		readout = getReadout("internal")
-
-		if readout != None:
-
-			saveSQLite(readout, "internal")
-
-			humidity = readout[0]
-			temperature = readout[1]
-		
-			print "Humidity: " + humidity
-			print "Temperature: " + temperature
-		else:
-			time.sleep(1)
-
-	print ""
 	print "External Sensor:"
 
 	readout = None
