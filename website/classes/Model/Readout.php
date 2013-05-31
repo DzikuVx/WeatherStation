@@ -2,18 +2,14 @@
 
 namespace Model;
 
-abstract class Readout extends Base implements \Interfaces\Model
+ class Readout extends Base implements \Interfaces\Model
 {
 
-	/*
-	Those properties have to be set in child classes. Example for internal sensor
-	
-	protected $selectList = "readouts.*";
-	protected $tableName = "readouts";
+	protected $selectList = "readouts_external.*";
+	protected $tableName = "readouts_external";
 	protected $tableJoin = "";
 	protected $extraList = "";
-	protected $selectCountField = "readouts.ReadoutID";
-	*/
+	protected $selectCountField = "readouts_external.ReadoutID";	
 	
 	/**
 	 * @var string

@@ -30,6 +30,9 @@ class Enviroment extends StaticUtils {
 	
 		\Cache\Memcached::$host = Config::getInstance()->get('memcachedIP');
 		\Cache\Memcached::$port = Config::getInstance()->get('memcachedPort');
+		\Cache\Apc::sSetPrefix('weather');
+		
+		\Translate\Controller::setDefaultLanguage('pl');
 		
 	}
 	

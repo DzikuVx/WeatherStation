@@ -16,11 +16,13 @@ class Main extends Base implements \Interfaces\Singleton {
 
 	private static $instance;
 
+	private $aParams = array();
+	
 	/**
 	 * Konstruktor prywatny
 	 */
 	private function __construct() {
-
+		$this->aParams = $_REQUEST;
 	}
 
 	/**
@@ -52,8 +54,7 @@ class Main extends Base implements \Interfaces\Singleton {
 			 * Quotowana tablica request
 			 * @var array
 			 */
-			$aRequest = $_REQUEST;
-			\Database\Factory::getInstance()->quoteAll($aRequest);
+			\Database\Factory::getInstance()->quoteAll($this->aParams);
 
 			/**
 			 * Inicjacja szablonu
@@ -64,14 +65,14 @@ class Main extends Base implements \Interfaces\Singleton {
 			/*
 			 * Rejestracja listenerów
 			*/
-			\Listeners\Message::getInstance()->register($aRequest, $template);
+			\Listeners\Message::getInstance()->register($this->aParams, $template);
 
-			if (empty ( $aRequest ['class'] )) {
-				$aRequest ['class'] = 'Frontpage';
+			if (empty ( $this->aParams ['class'] )) {
+				$this->aParams ['class'] = 'Overview';
 			}
 
-			if (empty ( $aRequest ['method'] )) {
-				$aRequest ['method'] = 'render';
+			if (empty ( $this->aParams ['method'] )) {
+				$this->aParams ['method'] = 'render';
 			}
 
 			if (! isset ( $HTTP_RAW_POST_DATA )) {
@@ -81,19 +82,19 @@ class Main extends Base implements \Interfaces\Singleton {
 			$retVal = '';
 
 			$className = '';
-			switch ($aRequest ['class']) {
+			switch ($this->aParams ['class']) {
 
 				default:
-					$className = '\\Controller\\'.$aRequest ['class'];
+					$className = '\\Controller\\'.$this->aParams ['class'];
 					break;
 			}
 
 
 			$methodName = '';
-			switch ($aRequest ['method']) {
+			switch ($this->aParams ['method']) {
 
 				default :
-					$methodName = $aRequest ['method'];
+					$methodName = $this->aParams ['method'];
 					break;
 
 			}
@@ -104,11 +105,11 @@ class Main extends Base implements \Interfaces\Singleton {
 				$tObject = $className::getInstance();
 
 				if (method_exists($tObject, $methodName)) {
-					$tObject->{$methodName}($aRequest, $template);
+					$tObject->{$methodName}($this->aParams, $template);
 				}
 			}
 
-			\Listeners\LowLevelMessage::getInstance()->register($aRequest, $template);
+			\Listeners\LowLevelMessage::getInstance()->register($this->aParams, $template);
 			
 		}
 		catch ( CustomException $e ) {
@@ -125,8 +126,37 @@ class Main extends Base implements \Interfaces\Singleton {
 		$template->add('titleSecond', '');
 		$template->add('pageTitle', '{T:Product Name}');
 		
-		return (string) $template;
+		$sHtml = (string) $template;
+		
+		/*
+		 * Remove all menu-active-* occurences
+		 */
+		$sHtml = preg_replace('!({submenu-active-[^}]*})!', '', $sHtml);
+		$sHtml = preg_replace('!({menu-active-[^}]*})!', '', $sHtml);
+		
+		/*
+		 * Add params
+		 */
+		$sHtml = preg_replace_callback('!({params:[^}]*})!', array($this, 'paramsInjecter'), $sHtml);
+		
+		
+		return $sHtml;
 
 	}
 
+	private function paramsInjecter($matches)
+	{
+	
+		$retval = $matches [1];
+		$retval = mb_substr($retval, 8, - 1);
+	
+		if (isset($this->aParams[$retval])) {
+			$retval = $this->aParams[$retval];
+		}else {
+			$retval = '';
+		}
+		
+		return $retval;
+	}
+	
 }

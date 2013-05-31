@@ -8,16 +8,14 @@ use General\Templater;
 
 use Database\Factory;
 
-abstract class Frontpage extends Base {
+class Overview extends Base {
 
 	protected $model = null;
-	
-	protected $modelName = '';
 	
 	public function __construct(array $aParams) {
 		parent::__construct($aParams);
 		
-		$this->model = new $this->modelName();
+		$this->model = new \Model\Readout();
 		
 	}
 	
@@ -106,7 +104,7 @@ abstract class Frontpage extends Base {
 		/*
 		 * Get daily aggregate
 		 */
-		$aHistory = $this->model->getDayAggregate(14);
+		$aHistory = $this->model->getDayAggregate(30);
 		$sTable = '';
 		foreach ($aHistory as $iIndex => $oReadout) {
 			
@@ -141,31 +139,12 @@ abstract class Frontpage extends Base {
 		
 		$oTemplate = new Templater('chartHead.html');
 		
-		/*
-		$aHistory = $this->model->getDayAggregate(14,"ASC");
-		
-		$aData = array();
-		foreach ($aHistory as $iIndex => $oReadout) {
-			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Temperature'],2)."]";
-		}
-		
-		$oTemplate->add('chartDailyTemperature',implode(',', $aData));
-		
-		$aData = array();
-		foreach ($aHistory as $iIndex => $oReadout) {
-			$aData[] = "['".Formater::formatDate($oReadout['Date'])."', ".number_format($oReadout['Humidity'],2)."]";
-		}
-		
-		$oTemplate->add('chartDailyHumidity',implode(',', $aData));
-		
-		*/
-		
 		/**
 		 * Data from OpenWeatherMap.orh
 		 */
 		$oOpenWeatherMap = new \Model\OpenWeatherMap();
 		
-		$aHistory = $oOpenWeatherMap->getHourAggregate(72,"ASC");
+		$aHistory = $oOpenWeatherMap->getHourAggregate(168,"ASC");
 
 		$oChartHourPressure = new \General\GoogleChart();
 		$oChartHourPressure->setTitle('Pressure');
@@ -193,7 +172,7 @@ abstract class Frontpage extends Base {
 		$oChartDailyPressure->add('Max', array());
 		$oChartDailyPressure->add('Min', array());
 		
-		$aHistory = $oOpenWeatherMap->getDayAggregate(72,"ASC");
+		$aHistory = $oOpenWeatherMap->getDayAggregate(30,"ASC");
 		foreach ($aHistory as $iIndex => $oReadout) {
 			
 			$oChartDailyPressure->push('Hour', Formater::formatDate($oReadout['Date']));
@@ -209,7 +188,7 @@ abstract class Frontpage extends Base {
 		/*
 		 * Hour Aggregate charts
 		 */
-		$aHistory = $this->model->getHourAggregate(72,"ASC");
+		$aHistory = $this->model->getHourAggregate(168,"ASC");
 		
 		$oChartHourTemperature = new \General\GoogleChart();
 		$oChartHourTemperature->setTitle('Temperature');
@@ -247,7 +226,7 @@ abstract class Frontpage extends Base {
 		 * Day aggregate charts
 		 */
 		
-		$aHistory = $this->model->getDayAggregate(14,"ASC");
+		$aHistory = $this->model->getDayAggregate(30,"ASC");
 		
 		$oChartDailyTemperature = new \General\GoogleChart();
 		$oChartDailyTemperature->setTitle('Temperature');

@@ -12,15 +12,17 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-<link rel="stylesheet" type="text/css"
+<!-- <link rel="stylesheet" type="text/css"
 	href="assets/bootstrap/css/bootstrap.min.css" />
+	 -->
+<link rel="stylesheet" type="text/css"
+	href="assets/bootswatch/united.min.css" />
 <link href="assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/docs.css" />
 <link rel="stylesheet" type="text/css" href="css/index.css" />
 {chartHead}
 <script type="text/javascript" src="assets/jquery/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/engine.js"></script>
-<script type="text/javascript" src="js/form-validator.js"></script>
+<script type="text/javascript" src="js/weather-station.js"></script>
 <script type='text/javascript'>
 	jQuery().ready(function() {
 
@@ -39,8 +41,9 @@
 					{T:Product Short Name}</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-					<li class="menu-item {menu-active-external}" ><a href="?sensor=external">External sensor</a></li>
-					<li class="menu-item {menu-active-internal}"><a href="?sensor=internal">Internal sensor</a></li>
+					<li class="menu-item {menu-active-overview}" ><a href="?class=Overview">{T:Overview}</a></li>
+					<li class="menu-item {menu-active-forecast}"><a href="?class=Forecast">{T:Forecast}</a></li>
+					<li class="menu-item {menu-active-current}"><a href="?class=Current">{T:Current conditions}</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
