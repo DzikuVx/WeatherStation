@@ -1,6 +1,89 @@
 <div class="container">
 
 	<div class="row">
+
+		<div class="span12">
+	
+			<table class="table table-overview">
+				<thead>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>{T:Temperature}</td>
+						<td>{T:Humidity}</td>
+						<td>{T:Pressure}</td>
+						<td>{T:Wind speed}</td>
+						<td>{T:Wind direction}</td>
+					</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<th>{T:Now}</th>
+					<td><img id="icon-current" class="hidden" /></td>
+					<td>{Temperature}&deg;C</td>
+					<td>{Humidity}%</td>
+					<td>{Pressure}hPa</td>
+					<td>{WindSpeed}m/s</td>
+					<td>{WindDirection}&deg;</td>
+				</tr>
+				<tr>
+					<th>{T:Today}</th>
+					<td><img id="icon-today" class="hidden" /></td>
+					<td><span id="today-temperature"></span>&deg;C</td>
+					<td><span id="today-humidity"></span>%</td>
+					<td><span id="today-pressure"></span>hPa</td>
+					<td>{WindSpeed}m/s</td>
+					<td>{WindDirection}&deg;</td>
+				</tr>
+				<tr>
+					<th>{T:Today}</th>
+					<td><img id="icon-tomorrow" class="hidden" /></td>
+					<td>{Temperature}&deg;C</td>
+					<td>{Humidity}%</td>
+					<td>{Pressure}hPa</td>
+					<td>{WindSpeed}m/s</td>
+					<td>{WindDirection}&deg;</td>
+				</tr>
+				
+				</tbody>
+			</table>
+		
+			<div class="row">
+				<div class="span1"><h4>{T:Tomorrow}</h4></div>
+				<div class="span1"><img id="icon-tomorrow" class="hidden" /></div>
+				<div class="span1 current-data">
+					<span id="tomorrow-temperature"></span>&deg;C
+					<label>{T:Temperature}</label>
+				</div>			
+				<div class="span1 current-data">
+					<span id="tomorrow-humidity"></span>%
+					<label>{T:Humidity}</label>
+				</div>			
+				<div class="span1 current-data">
+					<span id="tomorrow-pressure"></span>hPa
+					<label>{T:Pressure}</label>
+				</div>			
+				<div class="span1 current-data">
+					{WindSpeed}m/s
+					<label>{T:Wind speed}</label>
+				</div>			
+				<div class="span1 current-data">
+					{WindDirection}&deg;
+					<label>{T:Wind direction}</label>
+				</div>			
+			</div>
+	
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div class="span4">
+			<div id="chart-wind" style="height: 200px; margin: 0 auto" ></div>
+		</div>
+	</div>
+
+	<div class="row">
 		<div class="span3">
 			<div class="well">
 				<h4>{T:Temperature}</h4>

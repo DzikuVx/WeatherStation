@@ -7,3 +7,18 @@ body {
 .center {
 	text-align: center;
 }
+
+.hidden {
+	display: none;
+}
+
+.current-data {
+	font-size: 1.3em;
+	padding-top: 0.3em;
+	text-align: center;
+	height: 60px;
+}
+
+.current-data label {
+	font-size: 0.6em;
+}
