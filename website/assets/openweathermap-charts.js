@@ -119,18 +119,16 @@ function showBars(chartName, forecast)
 
 	var tmp = new Array();
 	var categories = new Array();
-//	var categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	for(var i = 0; i <  forecast.length; i ++){
 		categories.push(forecast[i]['dt'] * 1000);
 		tmp.push( 
 			[
-forecast[i]['dt'] * 1000,
-			Math.round( (forecast[i]['main']['temp_min']-273.15) * 100) / 100,
-			Math.round( (forecast[i]['main']['temp_max']-273.15) * 100) / 100 
+			 	forecast[i]['dt'] * 1000,
+			 	Math.round( (forecast[i]['main']['temp_min']-273.15) * 100) / 100,
+			 	Math.round( (forecast[i]['main']['temp_max']-273.15) * 100) / 100 
 			]
-		)
+		);
 	}
-//console.log(tmp);
 
 	window.chart = new Highcharts.Chart({
 	
@@ -223,7 +221,7 @@ var tmp = [
 //	console.log(tmp);		
 
 	for(var i = 0; i <  forecast.length; i ++){
-		var deg = forecast[i]['wind']['deg'] 
+		var deg = forecast[i]['wind']['deg'];
 		var s = forecast[i]['wind']['speed'];
 
 		var step = 24;
@@ -246,8 +244,6 @@ var tmp = [
 	for(var i in n) 
 		for(var g = 0; g <  7; g ++)
 			tmp[g]['data'][i] = Math.round(100 * tmp[g]['data'][i] / fl);
-
-//	console.log(tmp);	
 
 options = {
 xAxis:{
@@ -336,8 +332,6 @@ function getDeg(d) {
 	}
 }
 
-	var tmp = new Array();
-
 	for(var i = 0; i <  forecast.length; i ++){
 		var l = getDeg(forecast[i]['wind']['deg'] );
 		n[l]['cn'] ++; 
@@ -368,10 +362,7 @@ function getDeg(d) {
 
 	}
 
-//console.log(n);
-//console.log(tmp);
-
-    var chart = new Highcharts.Chart({
+    new Highcharts.Chart({
         
 	    chart: {
 	        renderTo: chartName,
@@ -388,7 +379,6 @@ function getDeg(d) {
 	    },
 	
 	    xAxis: {
-//		categories: n,
 	        tickInterval: 24,
 	        min: 0,
 	        max: 360,
@@ -432,7 +422,7 @@ function getDeg(d) {
 
 function chartDoublePress(chartName, forecast)
 {
-    var chart = new Highcharts.Chart({
+    new Highcharts.Chart({
 	
 	    chart: {
 	        renderTo: chartName,
@@ -519,7 +509,7 @@ function chartDoublePress(chartName, forecast)
 
 function chartSpeed(chartName, forecast)
 {
-    var chart = new Highcharts.Chart({
+    new Highcharts.Chart({
 	
 	    chart: {
 	        renderTo: chartName,
@@ -629,10 +619,10 @@ function showTempMinMax(chartName, forecast)
 			Math.round( (forecast[i]['main']['temp_min']-273.15) * 100) / 100,
 			Math.round( (forecast[i]['main']['temp_max']-273.15) * 100) / 100 
 			]
-		)
+		);
 	}
-//console.log(tmp);
-    	chart = new Highcharts.Chart({
+
+	chart = new Highcharts.Chart({
     	
 		    chart: {
 		        renderTo: chartName,
@@ -782,7 +772,6 @@ chart = new Highcharts.Chart({
 function showWind(chartName, forecast)
 {
 	var wind = new Array();
-	var gust = new Array();
 	var tm = new Array();
 
 	for(var i = 0; i <  forecast.length; i ++){
@@ -802,8 +791,7 @@ function showWind(chartName, forecast)
                 text: 'Wind speed'
             },
             xAxis: {
-			type: 'datetime',
-//			categories: tm
+            	type: 'datetime'
             },
             yAxis: {
                 title: {

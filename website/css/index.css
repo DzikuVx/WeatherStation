@@ -22,3 +22,7 @@ body {
 .current-data label {
 	font-size: 0.6em;
 }
+
+.table-overview tbody tr {
+	height: 70px;
+}

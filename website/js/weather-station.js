@@ -158,6 +158,42 @@ WeatherStation.API = (function() {
 
 	};
 
+	self.getHistory = function(onSuccess, onFailure) {
+		
+		var cache = myStorage.get('history-json');
+
+		if (cache === null) {
+		
+			var curd = new Date();
+			var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
+			var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
+	
+			$
+					.ajax({
+						url : "http://openweathermap.org/data/2.1/history/city/?id=3083829&cnt=80&mode=json&start="
+								+ s,
+						dataType : 'jsonp',
+						success : function(json) {
+	
+							myStorage.set('history-json', json, 1800);
+	
+							if (onSuccess) {
+								onSuccess(json);
+							}
+						},
+						error : function() {
+							$.pnotify({
+								title : 'U la la...',
+								text : 'Chyba nie udało mi się pobrać historii...',
+								type : 'error'
+							});
+						},
+					});
+		}else {
+			onSuccess(cache);
+		}
+	};
+	
 	return self;
 })();
 
@@ -193,6 +229,8 @@ WeatherStation.overview = (function() {
 		$('#today-temperature').html(json['list'][0]['temp']['day']);
 		$('#today-humidity').html(json['list'][0]['humidity']);
 		$('#today-pressure').html(parseInt(json['list'][0]['pressure']));
+		$('#today-speed').html(parseInt(json['list'][0]['speed']));
+		$('#today-direction').html(parseInt(json['list'][0]['deg']));
 
 		/*
 		 * Tomorrow
@@ -207,14 +245,21 @@ WeatherStation.overview = (function() {
 		$('#tomorrow-temperature').html(json['list'][1]['temp']['day']);
 		$('#tomorrow-humidity').html(json['list'][1]['humidity']);
 		$('#tomorrow-pressure').html(parseInt(json['list'][1]['pressure'], 10));
+		$('#tomorrow-speed').html(parseInt(json['list'][1]['speed']));
+		$('#tomorrow-direction').html(parseInt(json['list'][1]['deg']));
 	};
 
+	self.windRose = function(json) {
+		showPolarSpeed('chart-wind', json.list);
+	};
+	
 	/**
 	 * Constructor
 	 */
 	init = function() {
 		WeatherStation.API.getCurrent(self.renderCurrent);
 		WeatherStation.API.getForecast(self.renderForecast);
+		WeatherStation.API.getHistory(self.windRose);
 	};
 
 	init();
@@ -224,47 +269,3 @@ WeatherStation.overview = (function() {
 })();
 
 WeatherStation.overview;
-
-var curd = new Date();
-var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
-var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
-
-$
-		.ajax({
-			url : "http://openweathermap.org/data/2.1/history/city/?id=3083829&cnt=80&mode=json&start="
-					+ s,
-			dataType : 'jsonp',
-			success : function(json) {
-
-				var data = json.list;
-				showPolarSpeed('chart-wind', data);
-
-			},
-			error : function() {
-				$.pnotify({
-					title : 'U la la...',
-					text : 'Chyba nie udało mi się pobrać historii...',
-					type : 'error'
-				});
-			},
-		});
-
-/*
-function getData(JSONtext) {
-	// JSONobject = ParseJson(JSONtext);
-	data = JSONobject.list;
-	showPolarSpeed('chart-wind', data);
-	// showPolar('chart-wind', data);
-	// showTempMinMax('chart-temp', data);
-	chartDoublePress('chart-press', data);
-	// chartSpeed('chart-wind', data);
-	// showIconsChart('chart-wind', data);
-	// showSimpleChart('chart-wind', data);
-	showBarsDouble('chart-temp', data);
-	// showWind('chart-wind', data);
-}
-
-function errorHandler(e) {
-	ShowAlertMess(e.status + ' ' + e.statusText);
-}
-*/

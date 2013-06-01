@@ -4,11 +4,11 @@
 
 		<div class="span12">
 	
-			<table class="table table-overview">
+			<table class="table table-overview table-striped">
 				<thead>
 					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
+						<td class="span2">&nbsp;</td>
+						<td class="span2">&nbsp;</td>
 						<td>{T:Temperature}</td>
 						<td>{T:Humidity}</td>
 						<td>{T:Pressure}</td>
@@ -32,54 +32,84 @@
 					<td><span id="today-temperature"></span>&deg;C</td>
 					<td><span id="today-humidity"></span>%</td>
 					<td><span id="today-pressure"></span>hPa</td>
-					<td>{WindSpeed}m/s</td>
-					<td>{WindDirection}&deg;</td>
+					<td><span id="today-speed"></span>m/s</td>
+					<td><span id="today-direction"></span>&deg;</td>
 				</tr>
 				<tr>
-					<th>{T:Today}</th>
+					<th>{T:Tomorrow}</th>
 					<td><img id="icon-tomorrow" class="hidden" /></td>
-					<td>{Temperature}&deg;C</td>
-					<td>{Humidity}%</td>
-					<td>{Pressure}hPa</td>
-					<td>{WindSpeed}m/s</td>
-					<td>{WindDirection}&deg;</td>
+					<td><span id="tomorrow-temperature"></span>&deg;C</td>
+					<td><span id="tomorrow-humidity"></span>%</td>
+					<td><span id="tomorrow-pressure"></span>hPa</td>
+					<td><span id="tomorrow-speed"></span>m/s</td>
+					<td><span id="tomorrow-direction"></span>&deg;</td>
 				</tr>
 				
 				</tbody>
 			</table>
-		
-			<div class="row">
-				<div class="span1"><h4>{T:Tomorrow}</h4></div>
-				<div class="span1"><img id="icon-tomorrow" class="hidden" /></div>
-				<div class="span1 current-data">
-					<span id="tomorrow-temperature"></span>&deg;C
-					<label>{T:Temperature}</label>
-				</div>			
-				<div class="span1 current-data">
-					<span id="tomorrow-humidity"></span>%
-					<label>{T:Humidity}</label>
-				</div>			
-				<div class="span1 current-data">
-					<span id="tomorrow-pressure"></span>hPa
-					<label>{T:Pressure}</label>
-				</div>			
-				<div class="span1 current-data">
-					{WindSpeed}m/s
-					<label>{T:Wind speed}</label>
-				</div>			
-				<div class="span1 current-data">
-					{WindDirection}&deg;
-					<label>{T:Wind direction}</label>
-				</div>			
-			</div>
-	
 		</div>
-
 	</div>
 
 	<div class="row">
 		<div class="span4">
-			<div id="chart-wind" style="height: 200px; margin: 0 auto" ></div>
+			<div id="chart-wind" style="height: 300px; margin: 0 auto" ></div>
+		</div>
+		<div class="span8">
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<td>&nbsp;</td>
+					<th>{T:Temperature}</th>
+					<th>{T:Humidity}</th>
+					<th>{T:Pressure}</th>
+					<th>{T:Wind speed}</th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>{T:24h average}</th>
+						<td>{1dTempAvg}&deg;C</td>
+						<td>{1dHumidityAvg}%</td>
+						<td>{1dPressureAvg}hPa</td>
+						<td>{1dWindAvg}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:24h min}</th>
+						<td>{1dTempMin}&deg;C</td>
+						<td>{1dHumidityMin}%</td>
+						<td>{1dPressureMin}hPa</td>
+						<td>{1dWindMin}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:24h max}</th>
+						<td>{1dTempMax}&deg;C</td>
+						<td>{1dHumidityMax}%</td>
+						<td>{1dPressureMax}hPa</td>
+						<td>{1dWindMax}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:7d average}</th>
+						<td>{7dTempAvg}&deg;C</td>
+						<td>{7dHumidityAvg}%</td>
+						<td>{7dPressureAvg}hPa</td>
+						<td>{7dWindAvg}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:7d min}</th>
+						<td>{7dTempMin}&deg;C</td>
+						<td>{7dHumidityMin}%</td>
+						<td>{7dPressureMin}hPa</td>
+						<td>{7dWindMin}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:7d max}</th>
+						<td>{7dTempMax}&deg;C</td>
+						<td>{7dHumidityMax}%</td>
+						<td>{7dPressureMax}hPa</td>
+						<td>{7dWindMax}m/s</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
@@ -88,7 +118,7 @@
 			<div class="well">
 				<h4>{T:Temperature}</h4>
 				<h1>{Temperature}&deg;C</h1>
-				<p>24h average: {1dTempAvg}&deg;C</p>
+				<p>24h average: </p>
 				<p>24h min: {1dTempMin}&deg;C</p>
 				<p>24h max: {1dTempMax}&deg;C</p>
 				<p>7d average: {7dTempAvg}&deg;C</p>
@@ -108,7 +138,7 @@
 			<div class="well">
 				<h4>{T:Pressure}</h4>
 				<h1>{Pressure}hPa</h1>
-				<p>24h average: {1dPressureAvg}hPa</p>
+				<p>24h average: </p>
 				<p>24h min: {1dPressureMin}hPa</p>
 				<p>24h max: {1dPressureMax}hPa</p>
 				<p>7d average: {7dPressureAvg}hPa</p>

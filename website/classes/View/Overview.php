@@ -59,21 +59,27 @@ class Overview extends Base {
 		
 		$oData = $oOpenWeatherMap->getAverage(1);
 		$oTemplate->add('1dPressureAvg', Formater::formatFloat($oData->Pressure, 2));
+		$oTemplate->add('1dWindAvg', Formater::formatFloat($oData->WindSpeed, 2));
 		
 		$oData = $oOpenWeatherMap->getMin(1);
 		$oTemplate->add('1dPressureMin', Formater::formatFloat($oData->Pressure, 2));
+		$oTemplate->add('1dWindMin', Formater::formatFloat($oData->WindSpeed, 2));
 		
 		$oData = $oOpenWeatherMap->getMax(1);
 		$oTemplate->add('1dPressureMax', Formater::formatFloat($oData->Pressure, 2));
+		$oTemplate->add('1dWindMax', Formater::formatFloat($oData->WindSpeed, 2));
 		
 		$oData = $oOpenWeatherMap->getAverage(7);
 		$oTemplate->add('7dPressureAvg', Formater::formatFloat($oData->Pressure, 2));
+		$oTemplate->add('7dWindAvg', Formater::formatFloat($oData->WindSpeed, 2));
 		
 		$oData = $oOpenWeatherMap->getMin(7);
 		$oTemplate->add('7dPressureMin', Formater::formatFloat($oData->Pressure, 2));
+		$oTemplate->add('7dWindMin', Formater::formatFloat($oData->WindSpeed, 2));
 		
 		$oData = $oOpenWeatherMap->getMax(7);
 		$oTemplate->add('7dPressureMax', Formater::formatFloat($oData->Pressure, 2));
+		$oTemplate->add('7dWindMax', Formater::formatFloat($oData->WindSpeed, 2));
 		
 		return (string) $oTemplate;
 		
