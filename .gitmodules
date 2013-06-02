@@ -1,0 +1,3 @@
+[submodule "website/assets/pnotify"]
+	path = website/assets/pnotify
+	url = git@github.com:sciactive/pnotify.git
