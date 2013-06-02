@@ -12,17 +12,41 @@ body {
 	display: none;
 }
 
-.current-data {
+img.no-resize {
+	max-width: inherit;
+}
+
+.weather-icon {
+	height: 50px;
+	width: 50px;
+	float: right;
+}
+
+.overview-box label {
 	font-size: 1.3em;
-	padding-top: 0.3em;
-	text-align: center;
-	height: 60px;
+	font-weight: bold;
 }
 
-.current-data label {
-	font-size: 0.6em;
+.overview-box table {
+	font-size: 0.9em;
 }
 
-.table-overview tbody tr {
-	height: 70px;
+footer {
+	font-size: 0.8em;
+}
+
+.chart {
+	height: 250px;
+	margin-bottom: 1em;
+	border-radius: 1em;
+	padding: 1em;
+	background-color: #fff;
+}
+
+.overview-row {
+	margin-top: 1em;
+}
+
+.statistics-box {
+	font-size: 0.9em;
 }

@@ -15,6 +15,7 @@ var myStorage = (function() {
 
 	/**
 	 * Method gets value from localStorage
+	 * @param key 
 	 */
 	self.get = function(key) {
 
@@ -24,11 +25,7 @@ var myStorage = (function() {
 
 		var object = JSON.parse(localStorage[key]);
 
-		if (object.timestamp === null) {
-			return object.value;
-		}
-
-		if (new Date().getTime() < object.timestamp) {
+		if (object.timestamp === null || new Date().getTime() < object.timestamp) {
 			return object.value;
 		} else {
 			return null;
@@ -41,8 +38,7 @@ var myStorage = (function() {
 	 * 
 	 * @param key
 	 * @param value
-	 * @param expire
-	 *            in seconds
+	 * @param expire in seconds
 	 */
 	self.set = function(key, value, expire) {
 

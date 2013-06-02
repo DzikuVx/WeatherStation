@@ -1,152 +1,212 @@
 <div class="container">
 
-	<div class="row">
-
-		<div class="span12">
+	<div class="row overview-row">
 	
-			<table class="table table-overview table-striped">
-				<thead>
-					<tr>
-						<td class="span2">&nbsp;</td>
-						<td class="span2">&nbsp;</td>
-						<td>{T:Temperature}</td>
-						<td>{T:Humidity}</td>
-						<td>{T:Pressure}</td>
-						<td>{T:Wind speed}</td>
-						<td>{T:Wind direction}</td>
-					</tr>
-				</thead>
-				<tbody>
+		<div class="span4 overview-box">
+			<img id="icon-current" class="hidden no-resize weather-icon" />
+			<h3>{T:Now}</h3>
+			<table class="table table-striped">
 				<tr>
-					<th>{T:Now}</th>
-					<td><img id="icon-current" class="hidden" /></td>
+					<th>{T:Temperature}</th>
 					<td>{Temperature}&deg;C</td>
+				</tr>
+				<tr>
+					<th>{T:Humidity}</th>
 					<td>{Humidity}%</td>
+				</tr>
+				<tr>
+					<th>{T:Pressure}</th>
 					<td>{Pressure}hPa</td>
+				</tr>
+				<tr>
+					<th>{T:Wind speed}</th>
 					<td>{WindSpeed}m/s</td>
+				</tr>
+				<tr>
+					<th>{T:Wind direction}</th>
 					<td>{WindDirection}&deg;</td>
 				</tr>
+			</table>
+		</div>
+		
+		<div class="span4 overview-box">
+			<img id="icon-today" class="hidden no-resize weather-icon" />
+			<h3>{T:Today}</h3>
+			<table class="table table-striped">
 				<tr>
-					<th>{T:Today}</th>
-					<td><img id="icon-today" class="hidden" /></td>
+					<th>{T:Temperature}</th>
 					<td><span id="today-temperature"></span>&deg;C</td>
+				</tr>
+				<tr>
+					<th>{T:Humidity}</th>
 					<td><span id="today-humidity"></span>%</td>
+				</tr>
+				<tr>
+					<th>{T:Pressure}</th>
 					<td><span id="today-pressure"></span>hPa</td>
+				</tr>
+				<tr>
+					<th>{T:Wind speed}</th>
 					<td><span id="today-speed"></span>m/s</td>
+				</tr>
+				<tr>
+					<th>{T:Wind direction}</th>
 					<td><span id="today-direction"></span>&deg;</td>
 				</tr>
+			</table>
+		</div>
+		
+		<div class="span4 overview-box">
+			<img id="icon-tomorrow" class="hidden no-resize weather-icon" />
+			<h3>{T:Tomorrow}</h3>
+			<table class="table table-striped">
 				<tr>
-					<th>{T:Tomorrow}</th>
-					<td><img id="icon-tomorrow" class="hidden" /></td>
+					<th>{T:Temperature}</th>
 					<td><span id="tomorrow-temperature"></span>&deg;C</td>
+				</tr>
+				<tr>
+					<th>{T:Humidity}</th>
 					<td><span id="tomorrow-humidity"></span>%</td>
+				</tr>
+				<tr>
+					<th>{T:Pressure}</th>
 					<td><span id="tomorrow-pressure"></span>hPa</td>
+				</tr>
+				<tr>
+					<th>{T:Wind speed}</th>
 					<td><span id="tomorrow-speed"></span>m/s</td>
+				</tr>
+				<tr>
+					<th>{T:Wind direction}</th>
 					<td><span id="tomorrow-direction"></span>&deg;</td>
 				</tr>
-				
-				</tbody>
 			</table>
 		</div>
-	</div>
-
-	<div class="row">
-		<div class="span4">
-			<div id="chart-wind" style="height: 300px; margin: 0 auto" ></div>
-		</div>
-		<div class="span8">
-			<table class="table table-striped">
-				<thead>
-				<tr>
-					<td>&nbsp;</td>
-					<th>{T:Temperature}</th>
-					<th>{T:Humidity}</th>
-					<th>{T:Pressure}</th>
-					<th>{T:Wind speed}</th>
-				</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<th>{T:24h average}</th>
-						<td>{1dTempAvg}&deg;C</td>
-						<td>{1dHumidityAvg}%</td>
-						<td>{1dPressureAvg}hPa</td>
-						<td>{1dWindAvg}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:24h min}</th>
-						<td>{1dTempMin}&deg;C</td>
-						<td>{1dHumidityMin}%</td>
-						<td>{1dPressureMin}hPa</td>
-						<td>{1dWindMin}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:24h max}</th>
-						<td>{1dTempMax}&deg;C</td>
-						<td>{1dHumidityMax}%</td>
-						<td>{1dPressureMax}hPa</td>
-						<td>{1dWindMax}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:7d average}</th>
-						<td>{7dTempAvg}&deg;C</td>
-						<td>{7dHumidityAvg}%</td>
-						<td>{7dPressureAvg}hPa</td>
-						<td>{7dWindAvg}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:7d min}</th>
-						<td>{7dTempMin}&deg;C</td>
-						<td>{7dHumidityMin}%</td>
-						<td>{7dPressureMin}hPa</td>
-						<td>{7dWindMin}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:7d max}</th>
-						<td>{7dTempMax}&deg;C</td>
-						<td>{7dHumidityMax}%</td>
-						<td>{7dPressureMax}hPa</td>
-						<td>{7dWindMax}m/s</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		
 	</div>
 
 	<div class="row">
 		<div class="span3">
-			<div class="well">
-				<h4>{T:Temperature}</h4>
-				<h1>{Temperature}&deg;C</h1>
-				<p>24h average: </p>
-				<p>24h min: {1dTempMin}&deg;C</p>
-				<p>24h max: {1dTempMax}&deg;C</p>
-				<p>7d average: {7dTempAvg}&deg;C</p>
-				<p>7d min: {7dTempMin}&deg;C</p>
-				<p>7d max: {7dTempMax}&deg;C</p>
+			<div id="chart-wind" style="height: 300px; margin: 0 auto" ></div>
+			<div class="">
+				<h3>{T:Temperature}</h3>
+				<table class="table table-striped statistics-box">
+					<tr>
+						<th>{T:24h average}</th>
+						<td>{1dTempAvg}&deg;C</td>
+					</tr>
+					<tr>
+						<th>{T:24h min}</th>
+						<td>{1dTempMin}&deg;C</td>
+					</tr>
+					<tr>
+						<th>{T:24h max}</th>
+						<td>{1dTempMax}&deg;C</td>
+					</tr>
+					<tr>
+						<th>{T:7d average}</th>
+						<td>{7dTempAvg}&deg;C</td>
+					</tr>
+					<tr>
+						<th>{T:7d min}</th>
+						<td>{7dTempMin}&deg;C</td>
+					</tr>
+					<tr>
+						<th>{T:7d max}</th>
+						<td>{7dTempMax}&deg;C</td>
+					</tr>
+				</table>
 			</div>
-			<div class="well">
-				<h4>{T:Humidity}</h4>
-				<h1>{Humidity}%</h1>
-				<p>24h average: {1dHumidityAvg}%</p>
-				<p>24h min: {1dHumidityMin}%</p>
-				<p>24h max: {1dHumidityMax}%</p>
-				<p>7d average: {7dHumidityAvg}%</p>
-				<p>7d min: {7dHumidityMin}%</p>
-				<p>7d max: {7dHumidityMax}%</p>
+			<div>
+				<h3>{T:Humidity}</h3>
+				<table class="table table-striped statistics-box">
+					<tr>
+						<th>{T:24h average}</th>
+						<td>{1dHumidityAvg}%</td>
+					</tr>
+					<tr>
+						<th>{T:24h min}</th>
+						<td>{1dHumidityMin}%</td>
+					</tr>
+					<tr>
+						<th>{T:24h max}</th>
+						<td>{1dHumidityMax}%</td>
+					</tr>
+					<tr>
+						<th>{T:7d average}</th>
+						<td>{7dHumidityAvg}%</td>
+					</tr>
+					<tr>
+						<th>{T:7d min}</th>
+						<td>{7dHumidityMin}%</td>
+					</tr>
+					<tr>
+						<th>{T:7d max}</th>
+						<td>{7dHumidityMax}%</td>
+					</tr>
+				</table>
 			</div>
-			<div class="well">
-				<h4>{T:Pressure}</h4>
-				<h1>{Pressure}hPa</h1>
-				<p>24h average: </p>
-				<p>24h min: {1dPressureMin}hPa</p>
-				<p>24h max: {1dPressureMax}hPa</p>
-				<p>7d average: {7dPressureAvg}hPa</p>
-				<p>7d min: {7dPressureMin}hPa</p>
-				<p>7d max: {7dPressureMax}hPa</p>
+			<div>
+				<h3>{T:Pressure}</h3>
+				<table class="table table-striped statistics-box">
+					<tr>
+						<th>{T:24h average}</th>
+						<td>{1dPressureAvg}hPa</td>
+					</tr>
+					<tr>
+						<th>{T:24h min}</th>
+						<td>{1dPressureMin}hPa</td>
+					</tr>
+					<tr>
+						<th>{T:24h max}</th>
+						<td>{1dPressureMax}hPa</td>
+					</tr>
+					<tr>
+						<th>{T:7d average}</th>
+						<td>{7dPressureAvg}hPa</td>
+					</tr>
+					<tr>
+						<th>{T:7d min}</th>
+						<td>{7dPressureMin}hPa</td>
+					</tr>
+					<tr>
+						<th>{T:7d max}</th>
+						<td>{7dPressureMax}hPa</td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>{T:Wind speed}</h3>
+				<table class="table table-striped statistics-box">
+					<tr>
+						<th>{T:24h average}</th>
+						<td>{1dWindAvg}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:24h min}</th>
+						<td>{1dWindMin}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:24h max}</th>
+						<td>{1dWindMax}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:7d average}</th>
+						<td>{7dWindAvg}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:7d min}</th>
+						<td>{7dWindMin}m/s</td>
+					</tr>
+					<tr>
+						<th>{T:7d max}</th>
+						<td>{7dWindMax}m/s</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="span9">
+			{pageContent}
 
 			<div class="navbar">
 				<div class="navbar-inner">
@@ -157,8 +217,6 @@
 					</ul>
 				</div>
 			</div>
-			
-			{pageContent}
 			
 		</div>
 	</div>
