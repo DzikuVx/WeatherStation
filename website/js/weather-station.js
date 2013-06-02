@@ -99,12 +99,15 @@ WeatherStation.API = (function() {
 							if (onFailure) {
 								onFailure();
 							} else {
+								alert('1');
+								/*
 								$
 										.pnotify({
 											title : 'U la la...',
 											text : 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
 											type : 'error'
 										});
+										*/
 							}
 						},
 					});
@@ -138,12 +141,15 @@ WeatherStation.API = (function() {
 							if (onFailure) {
 								onFailure();
 							} else {
+								alert('2');
+								/*
 								$
 										.pnotify({
 											title : 'U la la...',
 											text : 'Chyba nie udało mi się pobrać prognozy pogody...',
 											type : 'error'
 										});
+									*/
 							}
 						},
 					});
@@ -178,11 +184,14 @@ WeatherStation.API = (function() {
 							}
 						},
 						error : function() {
+							alert('3');
+							/*
 							$.pnotify({
 								title : 'U la la...',
 								text : 'Chyba nie udało mi się pobrać historii...',
 								type : 'error'
 							});
+							*/
 						},
 					});
 		}else {
@@ -246,6 +255,7 @@ WeatherStation.overview = (function() {
 	};
 
 	self.windRose = function(json) {
+		console.log(json);
 		showPolarSpeed('chart-wind', json.list);
 	};
 	
