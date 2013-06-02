@@ -99,17 +99,14 @@ WeatherStation.API = (function() {
 							if (onFailure) {
 								onFailure();
 							} else {
-								alert('1');
-								/*
 								$
 										.pnotify({
 											title : 'U la la...',
 											text : 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
 											type : 'error'
 										});
-										*/
 							}
-						},
+						}
 					});
 
 		} else {
@@ -141,17 +138,14 @@ WeatherStation.API = (function() {
 							if (onFailure) {
 								onFailure();
 							} else {
-								alert('2');
-								/*
 								$
 										.pnotify({
 											title : 'U la la...',
 											text : 'Chyba nie udało mi się pobrać prognozy pogody...',
 											type : 'error'
 										});
-									*/
 							}
-						},
+						}
 					});
 
 		} else {
@@ -184,15 +178,12 @@ WeatherStation.API = (function() {
 							}
 						},
 						error : function() {
-							alert('3');
-							/*
 							$.pnotify({
 								title : 'U la la...',
 								text : 'Chyba nie udało mi się pobrać historii...',
 								type : 'error'
 							});
-							*/
-						},
+						}
 					});
 		}else {
 			onSuccess(cache);
@@ -208,8 +199,6 @@ WeatherStation.overview = (function() {
 
 	self.renderCurrent = function(json) {
 
-		console.log(json);
-
 		$('#icon-current').attr(
 				'src',
 				'http://openweathermap.org/img/w/' + json['weather'][0]['icon']
@@ -219,8 +208,6 @@ WeatherStation.overview = (function() {
 	};
 
 	self.renderForecast = function(json) {
-
-		console.log(json);
 
 		/*
 		 * Today
@@ -255,7 +242,6 @@ WeatherStation.overview = (function() {
 	};
 
 	self.windRose = function(json) {
-		console.log(json);
 		showPolarSpeed('chart-wind', json.list);
 	};
 	
