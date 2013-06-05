@@ -50,3 +50,11 @@ footer {
 .statistics-box {
 	font-size: 0.9em;
 }
+
+process {
+	display: none;
+}
+
+#forecast-template {
+	display: none;
+}

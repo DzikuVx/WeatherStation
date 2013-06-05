@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-class Overview extends Base implements \Interfaces\Singleton {
+class Forecast extends Base implements \Interfaces\Singleton {
 
 	protected $aExcluded = array();
 
@@ -27,31 +27,18 @@ class Overview extends Base implements \Interfaces\Singleton {
 		return self::$instance;
 	}
 
+	
+
 	public function render(array $aParams, \General\Templater $template) {
 
 		if (empty($aParams['type'])) {
 			$aParams['type'] = 'chart';
 		}
 
-		$oView = new \View\Overview($aParams);
-		$template->add('menu-active-overview','active');
+		$oView = new \View\Forecast($aParams);
+		$template->add('menu-active-forecast','active');
 
 		$template->add('mainContent', $oView->mainpage());
 
-		switch ($aParams['type']) {
-				
-			case 'table':
-				$template->add('pageContent', $oView->tables());
-				$template->add('submenu-active-table','active');
-				break;
-
-			case 'chart':
-			default:
-				$template->add('chartHead', $oView->chartHead());
-				$template->add('pageContent', $oView->charts());
-				$template->add('submenu-active-chart','active');
-				break;
-
-		}
 	}
 }

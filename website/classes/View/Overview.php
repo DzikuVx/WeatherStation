@@ -21,7 +21,7 @@ class Overview extends Base {
 	
 	public function mainpage()
 	{
-		$oTemplate = new Templater('mainpage.html');
+		$oTemplate = new Templater('overview.html');
 
 		$oCurrent = $this->model->getCurrent();
 		$oTemplate->add($oCurrent);

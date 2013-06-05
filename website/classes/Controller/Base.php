@@ -62,4 +62,26 @@ class Base implements \Interfaces\Singleton {
 		return $sRetVal;
 	}
 
+	public function module(array $aParams, \General\Templater $template) {
+	
+		if (isset($aParams['module'])) {
+	
+			$className = '\\Module\\'.$aParams['module'];
+	
+			if (class_exists($className)) {
+					
+				$tObject = $className::getInstance();
+					
+				if (method_exists($tObject, 'execute')) {
+					$tObject->execute($aParams, $template);
+	
+					Main::$mainContentProcessed = true;
+	
+				}
+			}
+	
+		}
+	
+	}
+	
 }

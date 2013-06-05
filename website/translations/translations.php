@@ -26,3 +26,4 @@ $translationTable['pl']['Wind direction'] = 'Kierunek wiatru';
 $translationTable['pl']['Now'] = 'Teraz';
 $translationTable['pl']['Today'] = 'Dziś';
 $translationTable['pl']['Tomorrow'] = 'Jutro';
+$translationTable['pl']['History'] = 'Historia';

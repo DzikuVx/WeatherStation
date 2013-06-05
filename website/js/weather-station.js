@@ -1,3 +1,5 @@
+function pad(a,b){return(1e15+a+"").slice(-b)}
+
 var WeatherStation = WeatherStation || {};
 
 /**
@@ -123,7 +125,7 @@ WeatherStation.API = (function() {
 
 			$
 					.ajax({
-						url : "http://api.openweathermap.org/data/2.5/forecast/daily?id=3083829&cnt=5&mode=json&units=metric",
+						url : "http://api.openweathermap.org/data/2.5/forecast/daily?id=3083829&cnt=9&mode=json&units=metric",
 						dataType : 'jsonp',
 						success : function(json) {
 
@@ -207,7 +209,7 @@ WeatherStation.overview = (function() {
 
 	};
 
-	self.renderForecast = function(json) {
+	self.renderOverview = function(json) {
 
 		/*
 		 * Today
@@ -244,14 +246,85 @@ WeatherStation.overview = (function() {
 	self.windRose = function(json) {
 		showPolarSpeed('chart-wind', json.list);
 	};
+
+	self.renderForecast = function(json) {
+		
+		var template = $('#forecast-template').html();
+		var rowTemplate = $('#row-template').html();
+		var rowCount = Math.ceil(json['cnt'] / 3);
+		var rowNumber;
+		
+		/*
+		 * Remove tampletes as unneeded anymore
+		 */
+		$('#forecast-template').remove();
+		$('#row-template').remove();
+		
+		var currentElement;
+		
+		for (var i = 0; i < rowCount; i++) {
+			$('#container').append(rowTemplate);
+			
+			$('#container .overview-row').last().attr('id', 'row-' + (i+1));
+			
+		}
+		
+		var date;
+		
+		for (var i = 0; i < json['cnt']; i++) {
+			
+			rowNumber = Math.ceil((i+1) / 3);
+			
+			$('#row-' + rowNumber).append(template);
+
+			currentElement = $('.overview-box').last();
+			
+			currentElement.find('[data-type=icon]').attr(
+					'src',
+					'http://openweathermap.org/img/w/'
+							+ json['list'][i]['weather'][0]['icon'] + '.png');
+			
+			currentElement.find('[data-type=temperature]').html(json['list'][i]['temp']['day']);
+			currentElement.find('[data-type=humidity]').html(json['list'][i]['humidity']);
+			currentElement.find('[data-type=pressure]').html(json['list'][i]['pressure']);
+			currentElement.find('[data-type=speed]').html(json['list'][i]['speed']);
+			currentElement.find('[data-type=direction]').html(json['list'][i]['deg']);
+			
+			date = new Date(json['list'][i]['dt']*1000);
+			currentElement.find('[data-type=date]').html(date.getFullYear() + '-' + pad((date.getMonth()+1),2) + '-' + date.getDate());
+			
+		}
+		
+		console.log(json);
+		
+	};
 	
 	/**
 	 * Constructor
 	 */
 	init = function() {
-		WeatherStation.API.getCurrent(self.renderCurrent);
-		WeatherStation.API.getForecast(self.renderForecast);
-		WeatherStation.API.getHistory(self.windRose);
+		
+		var process = $('process');
+		
+		if (process.length != 1) {
+			return false;
+		}
+		
+		if (process.attr('data-type') === 'overview') {
+		
+			WeatherStation.API.getCurrent(self.renderCurrent);
+			WeatherStation.API.getForecast(self.renderOverview);
+			WeatherStation.API.getHistory(self.windRose);
+		
+		}else if (process.attr('data-type') === 'forecast') {
+
+			WeatherStation.API.getForecast(self.renderForecast);
+			
+		}
+		
+		
+		return true;
+		
 	};
 
 	init();
