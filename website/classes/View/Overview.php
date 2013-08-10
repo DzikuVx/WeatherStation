@@ -168,27 +168,6 @@ class Overview extends Base {
 		}
 		$oTemplate->add('chartHourPressure',$oChartHourPressure->getHead());
 
-		$oChartDailyPressure = new \General\GoogleChart();
-		$oChartDailyPressure->setTitle($t->get('Pressure'));
-		$oChartDailyPressure->setDomID('chartDailyPressure');
-		$oChartDailyPressure->add('Hour', array());
-		$oChartDailyPressure->add('Avg', array());
-		$oChartDailyPressure->add('Max', array());
-		$oChartDailyPressure->add('Min', array());
-		
-		$aHistory = $oOpenWeatherMap->getDayAggregate(30,"ASC");
-		foreach ($aHistory as $iIndex => $oReadout) {
-			
-			$oChartDailyPressure->push('Hour', Formater::formatDate($oReadout['Date']));
-			$oChartDailyPressure->push('Avg', number_format($oReadout['Pressure'],2,'.',''));
-			$oChartDailyPressure->push('Max', number_format($oReadout['MaxPressure'],2,'.',''));
-			$oChartDailyPressure->push('Min', number_format($oReadout['MinPressure'],2,'.',''));
-			
-		}
-		
-		$oTemplate->add('chartDailyPressure',$oChartDailyPressure->getHead());
-		
-		
 		/*
 		 * Hour Aggregate charts
 		 */
@@ -218,46 +197,7 @@ class Overview extends Base {
 		$oTemplate->add('chartHourTemperature',$oChartHourTemperature->getHead());
 		$oTemplate->add('chartHourHumidity',$oChartHourHumidity->getHead());
 
-		/*
-		 * Day aggregate charts
-		 */
-		
-		$aHistory = $this->model->getDayAggregate(30,"ASC");
-		
-		$oChartDailyTemperature = new \General\GoogleChart();
-		$oChartDailyTemperature->setTitle($t->get('Temperature'));
-		$oChartDailyTemperature->setDomID('chartDailyTemperature');
-		$oChartDailyTemperature->add('Day', array());
-		$oChartDailyTemperature->add('Avg', array());
-		$oChartDailyTemperature->add('Max', array());
-		$oChartDailyTemperature->add('Min', array());
-		
-		$oChartDailyHumidity = new \General\GoogleChart();
-		$oChartDailyHumidity->setTitle($t->get('Humidity'));
-		$oChartDailyHumidity->setDomID('chartDailyHumidity');
-		$oChartDailyHumidity->add('Day', array());
-		$oChartDailyHumidity->add('Avg', array());
-		$oChartDailyHumidity->add('Max', array());
-		$oChartDailyHumidity->add('Min', array());
-		
-		foreach ($aHistory as $iIndex => $oReadout) {
-				
-			$oChartDailyTemperature->push('Day', Formater::formatDate($oReadout['Date']));
-			$oChartDailyTemperature->push('Avg', number_format($oReadout['Temperature'],2));
-			$oChartDailyTemperature->push('Max', number_format($oReadout['MaxTemperature'],2));
-			$oChartDailyTemperature->push('Min', number_format($oReadout['MinTemperature'],2));
-				
-			$oChartDailyHumidity->push('Day', Formater::formatDate($oReadout['Date']));
-			$oChartDailyHumidity->push('Avg', number_format($oReadout['Humidity'],2));
-			$oChartDailyHumidity->push('Max', number_format($oReadout['MaxHumidity'],2));
-			$oChartDailyHumidity->push('Min', number_format($oReadout['MinHumidity'],2));
-				
-		}
-		$oTemplate->add('chartDailyTemperature',$oChartDailyTemperature->getHead());
-		$oTemplate->add('chartDailyHumidity',$oChartDailyHumidity->getHead());
-		
 		return (string) $oTemplate;
-		
 	}
 	
 }
