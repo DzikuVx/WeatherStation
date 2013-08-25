@@ -1,6 +1,6 @@
-# raspberry_temperature_log
+# WeatherStation
 
-Turn Raspberry Pi into temperature and humidity logging station with DHT11 sensor
+Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
 ![screenshot](/assets/img/3.png)
 ![raspberry with sensor](/assets/img/2.jpg)
@@ -30,12 +30,12 @@ Turn Raspberry Pi into temperature and humidity logging station with DHT11 senso
 # Installation
 
 * Do electrical stuff like showed on diagram. It's really simple
-* clone this repository `git clone https://github.com/DzikuVx/raspberry_temperature_log.git`
-* `cd raspberry_temperature_log`
+* clone this repository `git clone git@github.com:DzikuVx/WeatherStation.git`
+* `cd WeatherStation`
 * build sensor driver `sh build_sensor.sh`
 * check if sensors are working `python get_data.py`
-* add following line to cron (with `crontab -e`), it will get save data do database every 10 minutes: `*/10 * * * * sudo python /home/pi/raspberry_temperature_log/get_data.py`
-* configure Raspberry Pi web server, example configuration for nginx, PHP5-FMP and domain http://temperature.spychalski.info included below
+* add following line to cron (with `crontab -e`), it will get save data do database every 10 minutes: `*/10 * * * * sudo python /home/pi/WeatherStation/get_data.py`
+* configure Raspberry Pi web server, example configuration for nginx, PHP5-FMP and domain http://weather.spychalski.info included below
 * that's all
 
 ## Example nginx configuration
@@ -68,4 +68,4 @@ server {
 
 ## Legal stuff
 
-sensor_driver.c readout is based on https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/tree/master/Adafruit_DHT_Driver by Adafruit
+sensor_driver.c readout is based on https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/tree/master/Adafruit_DHT_Driver by Adafruite
