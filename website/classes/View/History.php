@@ -46,7 +46,6 @@ class History extends Base {
 		
 		//TODO cleanup
 // 		Debug::print_r($this->externalData);
-		
 	}
 
 	public function mainpage()
