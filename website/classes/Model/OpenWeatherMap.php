@@ -137,11 +137,11 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 					date(`Date`) {$orderBy}
 					");
 
-					while ($tResult = $db->fetchAssoc($rResult)) {
-						array_push($retVal, $tResult);
-					}
+				while ($tResult = $db->fetchAssoc($rResult)) {
+					array_push($retVal, $tResult);
+				}
 
-					$cache->set($sModule, $sProperty, $retVal, 3600);
+				$cache->set($sModule, $sProperty, $retVal, 3600);
 
 		}else {
 			$retVal = $cache->get($sModule, $sProperty);
@@ -151,4 +151,47 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 
 	}
 
+	public function getMonthlyAggregate($days = 24, $orderBy = "DESC") {
+		$retVal = array();
+	
+		$cache = \Cache\Factory::getInstance();
+	
+		$sModule = get_class($this).'::getMonthlyAggregate';
+		$sProperty = $days.'|'.$orderBy;
+	
+		if (!$cache->check($sModule, $sProperty)) {
+	
+			$db = \Database\Factory::getInstance();
+	
+			$rResult = $db->execute("select
+					strftime('%Y-%m', `Date`) Date
+					, AVG(Pressure) Pressure
+					, AVG(WindSpeed) WindSpeed
+					, MIN(Pressure) MinPressure
+					, MAX(Pressure) MaxPressure
+					, MIN(WindSpeed) MinWindSpeed
+					, MAX(WindSpeed) MaxWindSpeed
+					FROM
+					{$this->tableName}
+					where
+					datetime(`Date`)>(SELECT DATETIME('now', '-{$days} day'))
+					group by
+					strftime('%Y-%m', `Date`)
+					ORDER BY
+					datetime(`Date`) {$orderBy}
+					");
+	
+					while ($tResult = $db->fetchAssoc($rResult)) {
+					array_push($retVal, $tResult);
+					}
+	
+				$cache->set($sModule, $sProperty, $retVal, 3600);
+	
+		}else {
+			$retVal = $cache->get($sModule, $sProperty);
+		}
+	
+		return $retVal;
+	}
+	
 }

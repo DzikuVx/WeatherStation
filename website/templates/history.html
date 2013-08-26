@@ -1,14 +1,25 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
+		
+			<div class="navbar">
+				<div class="navbar-inner">
+					<span class="brand">{T:Data range}:</span>
+					<ul class="nav">
+						<li class="{submenu-active-month}"><a href="?class={params:class}&range=month">{T:Last 30 days}</a></li>
+						<li class="{submenu-active-year}"><a href="?class={params:class}&range=year">{T:Last year}</a></li>
+					</ul>
+				</div>
+			</div>
+		
 			{pageContent}
 
 			<div class="navbar">
 				<div class="navbar-inner">
-					<span class="brand">Show as:</span>
+					<span class="brand">{T:TShow as}:</span>
 					<ul class="nav">
-						<li class="{submenu-active-chart}"><a href="?class={params:class}&type=chart">{T:Charts}</a></li>
-						<li class="{submenu-active-table}"><a href="?class={params:class}&type=table">{T:Tables}</a></li>
+						<li class="{submenu-active-chart}"><a href="?class={params:class}&range={params:range}&type=chart">{T:Charts}</a></li>
+						<li class="{submenu-active-table}"><a href="?class={params:class}&range={params:range}&type=table">{T:Tables}</a></li>
 					</ul>
 				</div>
 			</div>

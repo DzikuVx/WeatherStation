@@ -32,6 +32,10 @@ class History extends Base implements \Interfaces\Singleton {
 		if (empty($aParams['type'])) {
 			$aParams['type'] = 'chart';
 		}
+		
+		if (empty($aParams['range'])) {
+			$aParams['range'] = 'month';
+		}
 
 		$oView = new \View\History($aParams);
 		$template->add('menu-active-history','active');
