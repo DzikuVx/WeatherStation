@@ -33,9 +33,16 @@
 					{T:Product Short Name}</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-					<li class="menu-item {menu-active-overview}" ><a href="?class=Overview">{T:Overview}</a></li>
-					<li class="menu-item {menu-active-forecast}"><a href="?class=Forecast">{T:Forecast}</a></li>
-					<li class="menu-item {menu-active-history}"><a href="?class=History">{T:History}</a></li>
+						<li class="menu-item {menu-active-overview}" ><a href="?class=Overview">{T:Overview}</a></li>
+						<li class="menu-item {menu-active-forecast}"><a href="?class=Forecast">{T:Forecast}</a></li>
+						<li class="dropdown {menu-active-history}">
+                        	<a href="#" class="dropdown-toggle" data-toggle="dropdown">{T:History} <b class="caret"></b></a>
+	                        <ul class="dropdown-menu">
+	                          <li class="{submenu-active-month}"><a href="?class=History&range=month">{T:Last 30 days}</a></li>
+	                          <li class="{submenu-active-year}"><a href="?class=History&range=year">{T:Last year}</a></li>
+	                        </ul>
+                      </li>
+						
 					</ul>
 				</div>
 				<!--/.nav-collapse -->

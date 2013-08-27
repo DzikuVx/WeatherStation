@@ -44,8 +44,6 @@ class History extends Base {
 				
 		}
 		
-		//TODO cleanup
-// 		Debug::print_r($this->externalData);
 	}
 
 	public function mainpage()
@@ -55,10 +53,27 @@ class History extends Base {
 		return (string) $oTemplate;
 	}
 
+	private function titleHelper($oTemplate) {
+		switch ($this->aParams['range']) {
+				
+			case 'year':
+				$oTemplate->add('title', \Translate\Controller::getDefault()->get('Last year'));
+				break;
+					
+			default:
+				$oTemplate->add('title', \Translate\Controller::getDefault()->get('Last 30 days'));
+				break;
+					
+		}
+		
+	}	
+	
 	public function tables()
 	{
 		$oTemplate = new Templater('history-tables.html');
-
+	
+		$this->titleHelper($oTemplate);
+		
 		/*
 		 * Get daily aggregate
 		*/
@@ -85,6 +100,8 @@ class History extends Base {
 	{
 		$oTemplate = new Templater('history-charts.html');
 
+		$this->titleHelper($oTemplate);
+		
 		return (string) $oTemplate;
 	}
 

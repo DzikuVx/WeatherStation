@@ -54,8 +54,6 @@ class History extends Base implements \Interfaces\Singleton {
 				$template->add('chartHead', $oView->chartHead());
 				$template->add('pageContent', $oView->charts());
 				$template->add('submenu-active-chart','active');
-// 				var_dump('here');
-// 				die();
 				break;
 
 		}
