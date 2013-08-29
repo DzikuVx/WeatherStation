@@ -36,12 +36,6 @@ class Apc implements \Interfaces\Singleton  {
 	private static $instance;
 
 	/**
-	 * Wewnętrzny cache klasy
-	 * @var array
-	 */
-	private $internalCache = Array();
-
-	/**
 	 * Konstruktor statyczny
 	 * @return \Cache\Apc
 	 */
