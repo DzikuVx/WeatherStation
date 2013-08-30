@@ -1,6 +1,6 @@
 function pad(a,b){
 	return(1e15+a+"").slice(-b);
-};
+}
 
 var WeatherStation = WeatherStation || {};
 
@@ -170,8 +170,7 @@ WeatherStation.API = (function() {
 	
 			$
 					.ajax({
-						url : "http://openweathermap.org/data/2.1/history/city/?id=3083829&cnt=80&mode=json&start="
-								+ s,
+						url : "http://api.openweathermap.org/data/2.5/history/city?id=3083829&type=hour&cnt=80&units=metric",
 						dataType : 'jsonp',
 						success : function(json) {
 	
@@ -205,8 +204,7 @@ WeatherStation.overview = (function() {
 
 		$('#icon-current').attr(
 				'src',
-				'http://openweathermap.org/img/w/' + json['weather'][0]['icon']
-						+ '.png');
+				'http://openweathermap.org/img/w/' + json.weather[0].icon + '.png');
 		$('#icon-current').removeClass('hidden');
 
 	};
@@ -251,10 +249,11 @@ WeatherStation.overview = (function() {
 
 	self.renderForecast = function(json) {
 		
-		var template = $('#forecast-template').html();
-		var rowTemplate = $('#row-template').html();
-		var rowCount = Math.ceil(json['cnt'] / 3);
-		var rowNumber;
+		var template = $('#forecast-template').html(),
+			rowTemplate = $('#row-template').html(),
+			rowCount = Math.ceil(json.cnt / 3),
+			rowNumber,
+			i;
 		
 		/*
 		 * Remove tampletes as unneeded anymore
@@ -264,7 +263,7 @@ WeatherStation.overview = (function() {
 		
 		var currentElement;
 		
-		for (var i = 0; i < rowCount; i++) {
+		for (i = 0; i < rowCount; i++) {
 			$('#container').append(rowTemplate);
 			
 			$('#container .overview-row').last().attr('id', 'row-' + (i+1));
@@ -273,7 +272,7 @@ WeatherStation.overview = (function() {
 		
 		var date;
 		
-		for (var i = 0; i < json['cnt']; i++) {
+		for (i = 0; i < json.cnt; i++) {
 			
 			rowNumber = Math.ceil((i+1) / 3);
 			
@@ -283,10 +282,9 @@ WeatherStation.overview = (function() {
 			
 			currentElement.find('[data-type=icon]').attr(
 					'src',
-					'http://openweathermap.org/img/w/'
-							+ json['list'][i]['weather'][0]['icon'] + '.png');
+					'http://openweathermap.org/img/w/' + json.list[i].weather[0].icon + '.png');
 			
-			currentElement.find('[data-type=temperature]').html(json['list'][i]['temp']['day']);
+			currentElement.find('[data-type=temperature]').html(json.list[i].temp.day);
 			currentElement.find('[data-type=humidity]').html(json['list'][i]['humidity']);
 			currentElement.find('[data-type=pressure]').html(json['list'][i]['pressure']);
 			currentElement.find('[data-type=speed]').html(json['list'][i]['speed']);
@@ -296,8 +294,6 @@ WeatherStation.overview = (function() {
 			currentElement.find('[data-type=date]').html(date.getFullYear() + '-' + pad((date.getMonth()+1),2) + '-' + date.getDate());
 			
 		}
-		
-		console.log(json);
 		
 	};
 	
