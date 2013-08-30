@@ -168,10 +168,8 @@ WeatherStation.API = (function() {
 			var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
 			var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
 	
-			$
-					.ajax({
-						url : "http://openweathermap.org/data/2.1/history/city/?id=3083829&cnt=80&mode=json&start="
-								+ s,
+			$.ajax({
+						url : "http://api.openweathermap.org/data/2.5/history/city?id=3083829&type=hour&cnt=80&units=metric",
 						dataType : 'jsonp',
 						success : function(json) {
 	
