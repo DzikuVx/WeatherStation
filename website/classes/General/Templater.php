@@ -2,6 +2,8 @@
 
 namespace General;
 
+use Cache\CacheKey;
+
 use \Cache\Factory as Cache;
 use \Translate\Controller as Translate;
 
@@ -65,10 +67,9 @@ class Templater {
     private function load()
     {
 
-        $module = 'Templater::load';
-        $property = md5(realpath('') . '|' . $this->fileName);
-
-        if (!self::$useCache || !Cache::getInstance()->check($module, $property)) {
+    	$key = new CacheKey('Templater::load', md5(realpath('') . '|' . $this->fileName));
+    	
+        if (!self::$useCache || !Cache::getInstance()->check($key)) {
 
             try {
                 if (file_exists($this->fileName)) {
@@ -82,7 +83,7 @@ class Templater {
                     flock($tFile, LOCK_UN);
                     fclose($tFile);
 
-                    Cache::getInstance()->set($module, $property, $this->template, 86400);
+                    Cache::getInstance()->set($key, $this->template, 86400);
                 }
                 else {
                     throw new \Exception('Brak pliku w ścieżce: "' . $this->fileName . '"');
@@ -92,7 +93,7 @@ class Templater {
             }
         }
         else {
-            $this->template = Cache::getInstance()->get($module, $property);
+            $this->template = Cache::getInstance()->get($key);
         }
     }
 

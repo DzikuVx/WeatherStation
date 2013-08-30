@@ -9,6 +9,6 @@ namespace Interfaces;
  */
 interface Proxy {
 	
-	public function get($params = null);
+	public function get($aParams = null);
 
 }

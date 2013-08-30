@@ -2,7 +2,9 @@
 
 namespace Model;
 
- class Readout extends Base implements \Interfaces\Model
+ use Cache\CacheKey;
+
+	class Readout extends Base implements \Interfaces\Model
 {
 
 	protected $selectList = "readouts_external.*";
@@ -79,10 +81,9 @@ namespace Model;
 
 		$cache = \Cache\Factory::getInstance();
 		
-		$sModule = get_class($this).'::getHistory';
-		$sProperty = $skip.'|'.$limit;
+		$oKey = new CacheKey(get_class($this).'::getHistory', $skip.'|'.$limit);
 		
-		if (!$cache->check($sModule, $sProperty)) {
+		if (!$cache->check($oKey)) {
 		
 			$db = \Database\Factory::getInstance();
 			
@@ -92,10 +93,10 @@ namespace Model;
 				array_push($retVal, $tResult);
 			}
 		
-			$cache->set($sModule, $sProperty, $retVal, 300);
+			$cache->set($oKey, $retVal, 300);
 			
 		}else {
-			$retVal = $cache->get($sModule, $sProperty);
+			$retVal = $cache->get($oKey);
 		}
 			
 		return $retVal;
@@ -106,11 +107,10 @@ namespace Model;
 		$retVal = array();
 	
 		$cache = \Cache\Factory::getInstance();
-
-		$sModule = get_class($this).'::getDayAggregate';
-		$sProperty = $days.'|'.$orderBy;
+	
+		$oKey = new CacheKey(get_class($this).'::getDayAggregate', $days.'|'.$orderBy);
 		
-		if (!$cache->check($sModule, $sProperty)) {
+		if (!$cache->check($oKey)) {
 		
 			$db = \Database\Factory::getInstance();
 		
@@ -135,10 +135,10 @@ namespace Model;
 				array_push($retVal, $tResult);
 			}
 	
-			$cache->set($sModule, $sProperty, $retVal, 3600);
+			$cache->set($oKey, $retVal, 3600);
 			
 		}else {
-			$retVal = $cache->get($sModule, $sProperty);
+			$retVal = $cache->get($oKey);
 		}
 		
 		return $retVal;
@@ -150,10 +150,9 @@ namespace Model;
 	
 		$cache = \Cache\Factory::getInstance();
 		
-		$sModule = get_class($this).'::getHourAggregate';
-		$sProperty = $hours.'|'.$orderBy;
+		$oKey = new CacheKey(get_class($this).'::getHourAggregate', $hours.'|'.$orderBy);
 		
-		if (!$cache->check($sModule, $sProperty)) {
+		if (!$cache->check($oKey)) {
 		
 			$db = \Database\Factory::getInstance();
 	
@@ -179,10 +178,10 @@ namespace Model;
 				array_push($retVal, $tResult);
 			}
 	
-			$cache->set($sModule, $sProperty, $retVal, 3600);
+			$cache->set($oKey, $retVal, 3600);
 			
 		}else {
-			$retVal = $cache->get($sModule, $sProperty);
+			$retVal = $cache->get($oKey);
 		}
 		
 		return $retVal;

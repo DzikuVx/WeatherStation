@@ -4,13 +4,9 @@ namespace Proxy;
 
 use Interfaces\Proxy;
 
-class Current implements Proxy {
+class Current extends AbstractProxy implements Proxy {
 	
-	/**
-	 * @return string
-	 */
-	public function get($params = null) {
-		return '';
-	}
+// 	protected $sUrl = 'http://api.openweathermap.org/data/2.5/weather?id=3083829&mode=json&units=metric';
+	protected $sUrl = 'json_mockup/current.json';
 	
 }

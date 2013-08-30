@@ -241,6 +241,7 @@ class File{
 	 * @param string $module
 	 * @param string $property
 	 * @return boolean
+	 * //TODO allow CacheKey instance passing
 	 */
 	function check($module, $property) {
 
@@ -257,6 +258,7 @@ class File{
 	 * @param string $module
 	 * @param string $property
 	 * @return mixed
+	 * //TODO allow CacheKey instance passing
 	 */
 	function get($module, $property) {
 
@@ -273,6 +275,7 @@ class File{
 	 *
 	 * @param string $module
 	 * @param string $property
+	 * //TODO allow CacheKey instance passing
 	 */
 	function clear($module, $property) {
 
@@ -304,6 +307,7 @@ class File{
 	 * @param string $property
 	 * @param mixed $value
 	 * @param int $sessionLength
+	 * //TODO allow CacheKey instance passing
 	 */
 	function set($module, $property, $value, $sessionLength = null) {
 
