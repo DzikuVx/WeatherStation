@@ -4,4 +4,4 @@ $config = array();
 
 $config['cacheMethod'] = 'Apc';
 
-$config['useLocalDataMockup'] = true;
+$config['useLocalDataMockup'] = false;
