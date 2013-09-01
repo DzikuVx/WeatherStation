@@ -156,10 +156,9 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	
 		$cache = \Cache\Factory::getInstance();
 	
-		$sModule = get_class($this).'::getMonthlyAggregate';
-		$sProperty = $days.'|'.$orderBy;
+		$oKey = new \Cache\CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
 	
-		if (!$cache->check($sModule, $sProperty)) {
+		if (!$cache->check($oKey)) {
 	
 			$db = \Database\Factory::getInstance();
 	
@@ -185,10 +184,10 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 					array_push($retVal, $tResult);
 					}
 	
-				$cache->set($sModule, $sProperty, $retVal, 3600);
+				$cache->set($oKey, $retVal, 3600);
 	
 		}else {
-			$retVal = $cache->get($sModule, $sProperty);
+			$retVal = $cache->get($oKey);
 		}
 	
 		return $retVal;
