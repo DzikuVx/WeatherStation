@@ -69,6 +69,7 @@ class Memcached{
 	 * @param string $module
 	 * @param string $property
 	 * @return boolean
+	 * //TODO allow CacheKey instance passing
 	 */
 	function check($module, $property) {
 
@@ -88,6 +89,7 @@ class Memcached{
 	 * @param string $module
 	 * @param string $property
 	 * @return mixed
+	 * //TODO allow CacheKey instance passing
 	 */
 	function get($module, $property) {
 
@@ -114,6 +116,7 @@ class Memcached{
 	 * Wyczyszczenie konkretnego modułu cache
 	 *
 	 * @param string $module
+	 * //TODO allow CacheKey instance passing
 	 */
 	function clearModule($module = null) {
 
@@ -142,6 +145,7 @@ class Memcached{
 	 * Wyczyszczenie wpisów zależnych od podanej klasy
 	 *
 	 * @param string $className
+	 * //TODO allow CacheKey instance passing
 	 */
 	public function clearClassCache($className = null) {
 

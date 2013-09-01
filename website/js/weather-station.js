@@ -1,6 +1,6 @@
 function pad(a,b){
 	return(1e15+a+"").slice(-b);
-};
+}
 
 var WeatherStation = WeatherStation || {};
 
@@ -80,116 +80,34 @@ WeatherStation.API = (function() {
 
 	var self = {};
 
-	self.getCurrent = function(onSuccess, onFailure) {
-
-		var cache = myStorage.get('current-json');
-
-		if (cache === null) {
-
-			$
-					.ajax({
-						url : "http://api.openweathermap.org/data/2.5/weather?id=3083829&mode=json&units=metric",
-						dataType : 'jsonp',
-						success : function(json) {
-
-							myStorage.set('current-json', json, 1800);
-
-							if (onSuccess) {
-								onSuccess(json);
-							}
-
-						},
-						error : function() {
-							if (onFailure) {
-								onFailure();
-							} else {
-								$
-										.pnotify({
-											title : 'U la la...',
-											text : 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
-											type : 'error'
-										});
-							}
-						}
-					});
-
-		} else {
-			onSuccess(cache);
+	process = function (data, onSuccess, onFailure) {
+		
+		var json = null;
+		
+		try {
+			json = $.parseJSON(data);
+		}catch(ex) {
+			onFailure();
 		}
-
+		
+		if (!json) {
+			onFailure();
+		}
+		
+		onSuccess(json);
+		
+	};
+	
+	self.getCurrent = function(onSuccess, onFailure) {
+		process(weatherProxy.current, onSuccess, onFailure);
 	};
 
 	self.getForecast = function(onSuccess, onFailure) {
-
-		var cache = myStorage.get('forecast5-json');
-
-		if (cache === null) {
-
-			$
-					.ajax({
-						url : "http://api.openweathermap.org/data/2.5/forecast/daily?id=3083829&cnt=9&mode=json&units=metric",
-						dataType : 'jsonp',
-						success : function(json) {
-
-							myStorage.set('forecast5-json', json, 1800);
-
-							if (onSuccess) {
-								onSuccess(json);
-							}
-
-						},
-						error : function() {
-							if (onFailure) {
-								onFailure();
-							} else {
-								$
-										.pnotify({
-											title : 'U la la...',
-											text : 'Chyba nie udało mi się pobrać prognozy pogody...',
-											type : 'error'
-										});
-							}
-						}
-					});
-
-		} else {
-			onSuccess(cache);
-		}
-
+		process(weatherProxy.forecast, onSuccess, onFailure);
 	};
 
 	self.getHistory = function(onSuccess, onFailure) {
-		
-		var cache = myStorage.get('history-json');
-
-		if (cache === null) {
-		
-			var curd = new Date();
-			var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
-			var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
-	
-			$.ajax({
-						url : "http://api.openweathermap.org/data/2.5/history/city?id=3083829&type=hour&cnt=80&units=metric",
-						dataType : 'jsonp',
-						success : function(json) {
-	
-							myStorage.set('history-json', json, 1800);
-	
-							if (onSuccess) {
-								onSuccess(json);
-							}
-						},
-						error : function() {
-							$.pnotify({
-								title : 'U la la...',
-								text : 'Chyba nie udało mi się pobrać historii...',
-								type : 'error'
-							});
-						}
-					});
-		}else {
-			onSuccess(cache);
-		}
+		process(weatherProxy.history, onSuccess, onFailure);
 	};
 	
 	return self;
@@ -203,8 +121,7 @@ WeatherStation.overview = (function() {
 
 		$('#icon-current').attr(
 				'src',
-				'http://openweathermap.org/img/w/' + json['weather'][0]['icon']
-						+ '.png');
+				'http://openweathermap.org/img/w/' + json.weather[0].icon + '.png');
 		$('#icon-current').removeClass('hidden');
 
 	};
@@ -216,15 +133,14 @@ WeatherStation.overview = (function() {
 		 */
 		$('#icon-today').attr(
 				'src',
-				'http://openweathermap.org/img/w/'
-						+ json['list'][0]['weather'][0]['icon'] + '.png');
+				'http://openweathermap.org/img/w/' + json.list[0].weather[0].icon + '.png');
 		$('#icon-today').removeClass('hidden');
 
-		$('#today-temperature').html(json['list'][0]['temp']['day']);
-		$('#today-humidity').html(json['list'][0]['humidity']);
-		$('#today-pressure').html(parseInt(json['list'][0]['pressure']));
-		$('#today-speed').html(parseInt(json['list'][0]['speed']));
-		$('#today-direction').html(parseInt(json['list'][0]['deg']));
+		$('#today-temperature').html(json.list[0].temp.day);
+		$('#today-humidity').html(json.list[0].humidity);
+		$('#today-pressure').html(parseInt(json.list[0].pressure, 10));
+		$('#today-speed').html(parseInt(json.list[0].speed, 10));
+		$('#today-direction').html(parseInt(json.list[0].deg, 10));
 
 		/*
 		 * Tomorrow
@@ -232,15 +148,14 @@ WeatherStation.overview = (function() {
 
 		$('#icon-tomorrow').attr(
 				'src',
-				'http://openweathermap.org/img/w/'
-						+ json['list'][1]['weather'][0]['icon'] + '.png');
+				'http://openweathermap.org/img/w/' + json.list[1].weather[0].icon + '.png');
 		$('#icon-tomorrow').removeClass('hidden');
 
-		$('#tomorrow-temperature').html(json['list'][1]['temp']['day']);
-		$('#tomorrow-humidity').html(json['list'][1]['humidity']);
-		$('#tomorrow-pressure').html(parseInt(json['list'][1]['pressure'], 10));
-		$('#tomorrow-speed').html(parseInt(json['list'][1]['speed']));
-		$('#tomorrow-direction').html(parseInt(json['list'][1]['deg']));
+		$('#tomorrow-temperature').html(json.list[1].temp.day);
+		$('#tomorrow-humidity').html(json.list[1].humidity);
+		$('#tomorrow-pressure').html(parseInt(json.list[1].pressure, 10));
+		$('#tomorrow-speed').html(parseInt(json.list[1].speed, 10));
+		$('#tomorrow-direction').html(parseInt(json.list[1].deg, 10));
 	};
 
 	self.windRose = function(json) {
@@ -249,10 +164,13 @@ WeatherStation.overview = (function() {
 
 	self.renderForecast = function(json) {
 		
-		var template = $('#forecast-template').html();
-		var rowTemplate = $('#row-template').html();
-		var rowCount = Math.ceil(json['cnt'] / 3);
-		var rowNumber;
+		var template = $('#forecast-template').html(),
+			rowTemplate = $('#row-template').html(),
+			rowCount = Math.ceil(json.cnt / 3),
+			rowNumber,
+			i,
+			currentElement,
+			date;
 		
 		/*
 		 * Remove tampletes as unneeded anymore
@@ -260,18 +178,14 @@ WeatherStation.overview = (function() {
 		$('#forecast-template').remove();
 		$('#row-template').remove();
 		
-		var currentElement;
-		
-		for (var i = 0; i < rowCount; i++) {
+		for (i = 0; i < rowCount; i++) {
 			$('#container').append(rowTemplate);
 			
 			$('#container .overview-row').last().attr('id', 'row-' + (i+1));
 			
 		}
 		
-		var date;
-		
-		for (var i = 0; i < json['cnt']; i++) {
+		for (i = 0; i < json.cnt; i++) {
 			
 			rowNumber = Math.ceil((i+1) / 3);
 			
@@ -281,22 +195,27 @@ WeatherStation.overview = (function() {
 			
 			currentElement.find('[data-type=icon]').attr(
 					'src',
-					'http://openweathermap.org/img/w/'
-							+ json['list'][i]['weather'][0]['icon'] + '.png');
+					'http://openweathermap.org/img/w/' + json.list[i].weather[0].icon + '.png');
 			
-			currentElement.find('[data-type=temperature]').html(json['list'][i]['temp']['day']);
-			currentElement.find('[data-type=humidity]').html(json['list'][i]['humidity']);
-			currentElement.find('[data-type=pressure]').html(json['list'][i]['pressure']);
-			currentElement.find('[data-type=speed]').html(json['list'][i]['speed']);
-			currentElement.find('[data-type=direction]').html(json['list'][i]['deg']);
+			currentElement.find('[data-type=temperature]').html(json.list[i].temp.day);
+			currentElement.find('[data-type=humidity]').html(json.list[i].humidity);
+			currentElement.find('[data-type=pressure]').html(json.list[i].pressure);
+			currentElement.find('[data-type=speed]').html(json.list[i].speed);
+			currentElement.find('[data-type=direction]').html(json.list[i].deg);
 			
-			date = new Date(json['list'][i]['dt']*1000);
-			currentElement.find('[data-type=date]').html(date.getFullYear() + '-' + pad((date.getMonth()+1),2) + '-' + date.getDate());
+			date = new Date(json.list[i].dt * 1000);
+			currentElement.find('[data-type=date]').html(date.getFullYear() + '-' + pad((date.getMonth()+1),2) + '-' + pad(date.getDate(), 2));
 			
 		}
 		
-		console.log(json);
-		
+	};
+	
+	self.onError = function () {
+		$.pnotify({
+			title : 'U la la...',
+			text : 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
+			type : 'error'
+		});
 	};
 	
 	/**
@@ -312,9 +231,9 @@ WeatherStation.overview = (function() {
 		
 		if (process.attr('data-type') === 'overview') {
 		
-			WeatherStation.API.getCurrent(self.renderCurrent);
-			WeatherStation.API.getForecast(self.renderOverview);
-			WeatherStation.API.getHistory(self.windRose);
+			WeatherStation.API.getCurrent(self.renderCurrent, self.onError);
+			WeatherStation.API.getForecast(self.renderOverview, self.onError);
+			WeatherStation.API.getHistory(self.windRose, self.onError);
 		
 		}else if (process.attr('data-type') === 'forecast') {
 
@@ -333,4 +252,4 @@ WeatherStation.overview = (function() {
 
 })();
 
-WeatherStation.overview;
+var weather = WeatherStation.overview;

@@ -75,5 +75,4 @@ class Factory implements \Interfaces\Singleton {
 		return self::$cacheInstance;
 	}
 
-
 }
