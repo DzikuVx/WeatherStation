@@ -1,6 +1,10 @@
 <?php
 namespace Proxy;
 
+use General\Config;
+
+use General\Debug;
+
 use Interfaces\Proxy;
 
 abstract class AbstractProxy implements Proxy{
@@ -9,6 +13,24 @@ abstract class AbstractProxy implements Proxy{
 	* @var int
 	 */
 	protected $cacheTime = 3600;
+	
+	/**
+	* @var string
+	 */
+	protected $sUrl = '';
+	
+	/**
+	 * @var string
+	 */
+	protected $sLocalMockup = '';
+	
+	protected function getUrl() {
+		if (Config::getInstance()->get('useLocalDataMockup')) {
+			return $this->sLocalMockup;
+		}else {
+			return $this->sUrl;
+		}
+	}
 	
 	protected function loadData($sUrl) {
 		
@@ -26,7 +48,7 @@ abstract class AbstractProxy implements Proxy{
 	}
 	
 	protected function createCacheKey($aParams = null) {
-		$oRetVal = new \Cache\CacheKey($this, md5(serialize($aParams)));
+		$oRetVal = new \Cache\CacheKey($this, md5(serialize($aParams).$this->getUrl()));
 		return $oRetVal;
 	}
 	
@@ -41,7 +63,7 @@ abstract class AbstractProxy implements Proxy{
 		$cache = \Cache\Factory::getInstance();
 		
 		if (!$cache->check($oCacheKey)) {
-			$sFile = $this->loadData($this->sUrl);
+			$sFile = $this->loadData($this->getUrl());
 			$cache->set($oCacheKey, $sFile, $this->cacheTime);
 		}else {
 			$sFile = $cache->get($oCacheKey);

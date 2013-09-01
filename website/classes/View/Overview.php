@@ -84,6 +84,8 @@ class Overview extends Base {
 		$proxyFactory = new \Factory\Proxy();
 		
 		$oTemplate->add('proxy-current', $proxyFactory->create('Current')->get());
+		$oTemplate->add('proxy-forecast', $proxyFactory->create('Forecast')->get());
+		$oTemplate->add('proxy-history', $proxyFactory->create('History')->get());
 		
 		return (string) $oTemplate;
 		

@@ -23,6 +23,9 @@ class Forecast extends Base {
 	{
 		$oTemplate = new Templater('forecast.html');
 
+		$proxyFactory = new \Factory\Proxy();
+		
+		$oTemplate->add('proxy-forecast', $proxyFactory->create('Forecast')->get());
 		
 		return (string) $oTemplate;
 		
