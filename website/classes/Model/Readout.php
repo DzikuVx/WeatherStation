@@ -193,10 +193,9 @@ namespace Model;
 	
 		$cache = \Cache\Factory::getInstance();
 	
-		$sModule = get_class($this).'::getMonthlyAggregate';
-		$sProperty = $days.'|'.$orderBy;
+		$oKey = new CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
 	
-		if (!$cache->check($sModule, $sProperty)) {
+		if (!$cache->check($oKey)) {
 	
 			$db = \Database\Factory::getInstance();
 	
@@ -222,10 +221,10 @@ namespace Model;
 				array_push($retVal, $tResult);
 			}
 	
-			$cache->set($sModule, $sProperty, $retVal, 3600);
+			$cache->set($oKey, $retVal, 3600);
 				
 		}else {
-			$retVal = $cache->get($sModule, $sProperty);
+			$retVal = $cache->get($oKey);
 		}
 	
 		return $retVal;
