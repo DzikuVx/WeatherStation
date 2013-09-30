@@ -35,7 +35,7 @@ abstract class AbstractProxy implements Proxy{
 	protected function loadData($sUrl) {
 		
 		try {
-			$retVal = file_get_contents($sUrl);
+			$retVal = trim(file_get_contents($sUrl));
 		}catch(\Exception $e) {
 			throw new NetworkException($e->getMessage(), $e->getCode(), $e);
 		}
