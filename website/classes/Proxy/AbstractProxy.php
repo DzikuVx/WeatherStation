@@ -72,6 +72,14 @@ abstract class AbstractProxy implements Proxy{
 		return $sFile;
 	}
 	
+	/**
+	 * Force load new data from source
+	 * @param array $aParams
+	 */
+	public function forceReload($aParams = null) {
+		\Cache\Factory::getInstance()->set($this->createCacheKey($aParams), $this->loadData($this->getUrl()), $this->cacheTime);
+	}
+	
 }
 
 class NetworkException extends \Exception {

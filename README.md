@@ -2,14 +2,7 @@
 
 Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
-## Overview
 ![screenshot](/assets/img/screen1.png)
-## Forecast
-![screenshot](/assets/img/screen2.png)
-## Monthly history
-![screenshot](/assets/img/screen3.png)
-![raspberry with sensor](/assets/img/2.jpg)
-![raspberry with sensor](/assets/img/4.jpeg)
 
 #Electrical diagram
 
@@ -32,9 +25,36 @@ Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 * `cd WeatherStation`
 * build sensor driver `sh build_sensor.sh`
 * check if sensors are working `python get_data.py`
-* add following line to cron (with `crontab -e`), it will get save data do database every 10 minutes: `*/10 * * * * sudo python /home/pi/WeatherStation/get_data.py`
 * configure Raspberry Pi web server, example configuration for nginx, PHP5-FMP and domain http://weather.spychalski.info included below
 * that's all
+
+#Configuration
+
+To configure WeatherStation to work with OpenWeatherMap you need to set some data in a few places.
+
+For example, to get data for Szczecin, Poland you need to:
+* register at http://openweathermap.org/
+* get your API key
+* edit website/config.inc.php and set `$config['cityId'] = 3083829;`. Of course, 3083829 is city ID for Szczecin, Poland. For any other city you need to set other ID (but this is obvious). 
+* replace openweatherconfig.py template with
+```
+config = {
+    'user': 'DzikuVx',
+    'password': 'you_would_like_to_know',
+    'api': 'yes_you_do_want_to_have_own_api_key',
+    'location': 'Szczecin,PL',
+    'coords': 'lat=53.48&long=14.40&alt=100'
+}
+```
+
+#Crontab
+
+To serve its purpose, WeatherStation need to collect data on regular basis. That's why you need to configure some crontab jobs (`crontab -e`):
+
+* Collect data from sensor `*/20 * * * * sudo python /home/pi/WeatherStation/get_data.py`
+* Collect from OpenWeatherMap.org (current pressure and wind) `*/20 * * * * python /home/pi/WeatherStation/get_external_data.py`
+* Upload data to OpenWeatherMap.org (because we like to share, don't we?) `*/30 * * * * python /home/pi/WeatherStation/upload_data.py`
+* For best webpage performance, prefetch forecast and history `*/30 * * * * wget http://weather.spychalski.info/cron.php`
 
 # BCM2835 C Library installation
 
@@ -51,7 +71,7 @@ Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 server {
   listen 0.0.0.0:80;
 
-  server_name temperature.spychalski.info;
+  server_name weather.spychalski.info;
 
   access_log off;
 
@@ -76,3 +96,13 @@ server {
 # Legal stuff
 
 sensor_driver.c readout is based on https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/tree/master/Adafruit_DHT_Driver by Adafruite
+
+#Screenhoths
+## Forecast
+![screenshot](/assets/img/screen2.png)
+## Monthly history
+![screenshot](/assets/img/screen3.png)
+##Sensor
+![raspberry with sensor](/assets/img/2.jpg)
+##Sensor
+![raspberry with sensor](/assets/img/4.jpeg)
