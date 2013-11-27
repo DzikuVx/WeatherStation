@@ -2,7 +2,6 @@
 namespace Proxy;
 
 use General\Config;
-
 use General\Debug;
 
 use Interfaces\Proxy;
@@ -62,11 +61,17 @@ abstract class AbstractProxy implements Proxy{
 		
 		$cache = \Cache\Factory::getInstance();
 		
-		if (!$cache->check($oCacheKey)) {
-			$sFile = $this->loadData($this->getUrl());
-			$cache->set($oCacheKey, $sFile, $this->cacheTime);
-		}else {
-			$sFile = $cache->get($oCacheKey);
+		try {
+		
+			if (!$cache->check($oCacheKey)) {
+				$sFile = $this->loadData($this->getUrl());
+				$cache->set($oCacheKey, $sFile, $this->cacheTime);
+			}else {
+				$sFile = $cache->get($oCacheKey);
+			}
+		
+		} catch (\Exception $e) {
+			Debug::cThrow(null, $e, array());
 		}
 		
 		return $sFile;
