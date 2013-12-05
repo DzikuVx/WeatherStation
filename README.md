@@ -23,6 +23,9 @@ Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 * check if you have BCM2835 C Library installed. If not, setup instruction is in the next paragraph 
 * clone this repository `git clone git@github.com:DzikuVx/WeatherStation.git`
 * `cd WeatherStation`
+* get all submodules while inside repository root folder:
+** `git submodule init`
+** `git submodule update`
 * build sensor driver `sh build_sensor.sh`
 * check if sensors are working `python get_data.py`
 * configure Raspberry Pi web server, example configuration for nginx, PHP5-FMP and domain http://weather.spychalski.info included below
