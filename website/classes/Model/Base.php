@@ -53,13 +53,7 @@ abstract class Base implements \Interfaces\Model {
         if (empty($iId)) {
             return false;
         }
-
-        /**
-         * @var \Cache\Memcached
-         */
-        $oCache = \Cache\Factory::getInstance();
-
-        $oCache->clear(get_class($this) . '::loadDataObject', $iId);
+        \phpCache\Factory::getInstance()->create()->clear(get_class($this) . '::loadDataObject', $iId);
     }
 
     /**
@@ -96,7 +90,7 @@ abstract class Base implements \Interfaces\Model {
     protected function loadDataObject()
     {
 
-        $oCache = \Cache\Factory::getInstance();
+        $oCache = \phpCache\Factory::getInstance()->create( );
 
         if (empty($this->aParams['id'])) {
             throw new \Exception('{T:Nie podano identyfikatora obiektu}');

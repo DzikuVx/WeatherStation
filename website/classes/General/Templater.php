@@ -2,10 +2,9 @@
 
 namespace General;
 
-use Cache\CacheKey;
-
-use \Cache\Factory as Cache;
-use \Translate\Controller as Translate;
+use phpCache\CacheKey;
+use phpCache\Factory;
+use Translate\Controller as TranslateController;
 
 class Templater {
 
@@ -22,12 +21,9 @@ class Templater {
      * @var string
      */
     private $template;
-    private $cacheModule = null;
-    private $cacheProperty = null;
 
     /**
-     * Translation class
-     * @var translation
+     * @var \Translate\Translate
      */
     private $translation = null;
 
@@ -38,12 +34,8 @@ class Templater {
     static $useCache = false;
 
     /**
-     * Construct function
-     *
-     * @param string $fileName
-     * @param string $cacheModule
-     * @param string $cacheProperty
-     * @return boolean
+     * @param String $fileName
+     * @param \Translate\Translate $translation
      */
     public function __construct($fileName, $translation = null)
     {
@@ -54,7 +46,7 @@ class Templater {
         $this->translation = $translation;
 
         if (empty($this->translation)) {
-            $this->translation = Translate::getDefault();
+            $this->translation = TranslateController::getDefault();
         }
 
         return true;
@@ -68,32 +60,27 @@ class Templater {
     {
 
     	$key = new CacheKey('Templater::load', md5(realpath('') . '|' . $this->fileName));
-    	
-        if (!self::$useCache || !Cache::getInstance()->check($key)) {
+        $cache = Factory::getInstance()->create();
 
-            try {
-                if (file_exists($this->fileName)) {
+        if (!self::$useCache || !$cache->check($key)) {
 
-                    $tFile = fopen($this->fileName, 'r');
+            if (file_exists($this->fileName)) {
 
-                    flock($tFile, LOCK_SH);
+                $tFile = fopen($this->fileName, 'r');
 
-                    $this->template = fread($tFile, filesize($this->fileName));
+                flock($tFile, LOCK_SH);
 
-                    flock($tFile, LOCK_UN);
-                    fclose($tFile);
+                $this->template = fread($tFile, filesize($this->fileName));
 
-                    Cache::getInstance()->set($key, $this->template, 86400);
-                }
-                else {
-                    throw new \Exception('Brak pliku w ścieżce: "' . $this->fileName . '"');
-                }
-            } catch (Exception $e) {
-                throw new \Exception('Błąd otwarcia szablonu');
+                flock($tFile, LOCK_UN);
+                fclose($tFile);
+
+                $cache->set($key, $this->template, 86400);
+            } else {
+                throw new \Exception('No file in path: "' . $this->fileName . '"');
             }
-        }
-        else {
-            $this->template = Cache::getInstance()->get($key);
+        } else {
+            $this->template = $cache->get($key);
         }
     }
 
@@ -132,7 +119,7 @@ class Templater {
                     $this->add($tKey, $tValue);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -174,13 +161,7 @@ class Templater {
      */
     private function translationReplacer($matches)
     {
-
-        $retval = $matches [1];
-        $retval = mb_substr($retval, 3, - 1);
-
-        $retval = $this->translation->get($retval);
-
-        return $retval;
+        return $this->translation->get(mb_substr($matches [1], 3, - 1));
     }
 
     /**

@@ -47,19 +47,18 @@ abstract class AbstractProxy implements Proxy{
 	}
 	
 	protected function createCacheKey($aParams = null) {
-		$oRetVal = new \Cache\CacheKey($this, md5(serialize($aParams).$this->getUrl()));
-		return $oRetVal;
+        return new \phpCache\CacheKey($this, md5(serialize($aParams).$this->getUrl()));
 	}
-	
-	/**
-	 * @param array $params
-	 * @return string
-	 */
-	public function get($aParams = null) {
+
+    /**
+     * @param array $aParams
+     * @return mixed|string
+     */
+    public function get($aParams = null) {
 
 		$oCacheKey = $this->createCacheKey($aParams);
 		
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 		
 		try {
 		
@@ -82,7 +81,7 @@ abstract class AbstractProxy implements Proxy{
 	 * @param array $aParams
 	 */
 	public function forceReload($aParams = null) {
-		\Cache\Factory::getInstance()->set($this->createCacheKey($aParams), $this->loadData($this->getUrl()), $this->cacheTime);
+		\phpCache\Factory::getInstance()->create()->set($this->createCacheKey($aParams), $this->loadData($this->getUrl()), $this->cacheTime);
 	}
 	
 }

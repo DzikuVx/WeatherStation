@@ -2,9 +2,9 @@
 
 namespace Model;
 
- use Cache\CacheKey;
+use phpCache\CacheKey;
 
-	class Readout extends Base implements \Interfaces\Model
+class Readout extends Base implements \Interfaces\Model
 {
 
 	protected $selectList = "readouts_external.*";
@@ -79,7 +79,7 @@ namespace Model;
 	public function getHistory($skip = 0, $limit = 25) {
 		$retVal = array();
 
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 		
 		$oKey = new CacheKey(get_class($this).'::getHistory', $skip.'|'.$limit);
 		
@@ -106,7 +106,7 @@ namespace Model;
 	public function getDayAggregate($days = 7, $orderBy = "DESC") {
 		$retVal = array();
 	
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 	
 		$oKey = new CacheKey(get_class($this).'::getDayAggregate', $days.'|'.$orderBy);
 		
@@ -147,11 +147,11 @@ namespace Model;
 	
 	public function getHourAggregate($hours = 24, $orderBy = "DESC") {
 		$retVal = array();
-	
-		$cache = \Cache\Factory::getInstance();
-		
+
+		$cache = \phpCache\Factory::getInstance()->create();
+
 		$oKey = new CacheKey(get_class($this).'::getHourAggregate', $hours.'|'.$orderBy);
-		
+
 		if (!$cache->check($oKey)) {
 		
 			$db = \Database\Factory::getInstance();
@@ -191,7 +191,7 @@ namespace Model;
 	public function getMonthlyAggregate($days = 24, $orderBy = "DESC") {
 		$retVal = array();
 	
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 	
 		$oKey = new CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
 	

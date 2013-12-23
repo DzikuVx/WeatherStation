@@ -5,7 +5,7 @@ require_once 'classes/General/Autoloader.php';
 
 \General\Session::start();
 
-\General\Enviroment::set();
+\General\Environment::set();
 
 \General\Debug::$displayErrors 			= true;
 \General\Debug::$displayTrace 			= true;

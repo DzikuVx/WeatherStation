@@ -7,7 +7,7 @@ namespace Model;
  * @author pawel
  *
  */
-use Cache\CacheKey;
+use phpCache\CacheKey;
 
 class OpenWeatherMap extends Base implements \Interfaces\Model {
 
@@ -69,7 +69,7 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	public function getHourAggregate($hours = 24, $orderBy = "DESC") {
 		$retVal = array();
 
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 
 		$oKey = new CacheKey(get_class($this).'::getHourAggregate', $hours.'|'.$orderBy);
 		
@@ -112,7 +112,7 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	public function getDayAggregate($days = 7, $orderBy = "DESC") {
 		$retVal = array();
 
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 
 		$oKey = new CacheKey(get_class($this).'::getDayAggregate', $days.'|'.$orderBy);
 		
@@ -154,9 +154,9 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	public function getMonthlyAggregate($days = 24, $orderBy = "DESC") {
 		$retVal = array();
 	
-		$cache = \Cache\Factory::getInstance();
+		$cache = \phpCache\Factory::getInstance()->create();
 	
-		$oKey = new \Cache\CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
+		$oKey = new CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
 	
 		if (!$cache->check($oKey)) {
 	
@@ -186,7 +186,7 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	
 				$cache->set($oKey, $retVal, 3600);
 	
-		}else {
+		} else {
 			$retVal = $cache->get($oKey);
 		}
 	
