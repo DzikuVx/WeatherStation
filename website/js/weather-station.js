@@ -80,22 +80,16 @@ WeatherStation.API = (function() {
 
 	var self = {};
 
-	process = function (data, onSuccess, onFailure) {
-		
-		var json = null;
-		
-		try {
-			json = $.parseJSON(data);
-		}catch(ex) {
-			onFailure();
-		}
-		
-		if (!json) {
-			onFailure();
-		}
-		
-		onSuccess(json);
-		
+	var process = function (data, onSuccess, onFailure) {
+		if (!data) {
+            if (onFailure) {
+			    onFailure();
+            }
+		} else {
+            if (onSuccess) {
+                onSuccess(data);
+            }
+        }
 	};
 	
 	self.getCurrent = function(onSuccess, onFailure) {
@@ -118,24 +112,14 @@ WeatherStation.overview = (function() {
 	var self = {};
 
 	self.renderCurrent = function(json) {
-
-		$('#icon-current').attr(
-				'src',
-				'http://openweathermap.org/img/w/' + json.weather[0].icon + '.png');
-		$('#icon-current').removeClass('hidden');
-
+		$('#icon-current').attr('src','http://openweathermap.org/img/w/' + json.weather[0].icon + '.png').removeClass('hidden');
 	};
 
 	self.renderOverview = function(json) {
-
 		/*
 		 * Today
 		 */
-		$('#icon-today').attr(
-				'src',
-				'http://openweathermap.org/img/w/' + json.list[0].weather[0].icon + '.png');
-		$('#icon-today').removeClass('hidden');
-
+        $('#icon-today').attr('src', 'http://openweathermap.org/img/w/' + json.list[0].weather[0].icon + '.png').removeClass('hidden');
 		$('#today-temperature').html(json.list[0].temp.day);
 		$('#today-humidity').html(json.list[0].humidity);
 		$('#today-pressure').html(parseInt(json.list[0].pressure, 10));
@@ -145,12 +129,7 @@ WeatherStation.overview = (function() {
 		/*
 		 * Tomorrow
 		 */
-
-		$('#icon-tomorrow').attr(
-				'src',
-				'http://openweathermap.org/img/w/' + json.list[1].weather[0].icon + '.png');
-		$('#icon-tomorrow').removeClass('hidden');
-
+		$('#icon-tomorrow').attr('src', 'http://openweathermap.org/img/w/' + json.list[1].weather[0].icon + '.png').removeClass('hidden');
 		$('#tomorrow-temperature').html(json.list[1].temp.day);
 		$('#tomorrow-humidity').html(json.list[1].humidity);
 		$('#tomorrow-pressure').html(parseInt(json.list[1].pressure, 10));
@@ -163,29 +142,30 @@ WeatherStation.overview = (function() {
 	};
 
 	self.renderForecast = function(json) {
-		
-		var template = $('#forecast-template').html(),
-			rowTemplate = $('#row-template').html(),
+		var $template = $('#forecast-template'),
+            template = $template.html(),
+            $rowTemplate = $('#row-template'),
+            rowTemplate = $rowTemplate.html(),
 			rowCount = Math.ceil(json.cnt / 3),
+            $container = $('#container'),
 			rowNumber,
 			i,
 			currentElement,
 			date;
 		
 		/*
-		 * Remove tampletes as unneeded anymore
+		 * Remove templates as unneeded anymore
 		 */
-		$('#forecast-template').remove();
-		$('#row-template').remove();
-		
+        $template.remove();
+        $rowTemplate.remove();
+
 		for (i = 0; i < rowCount; i++) {
-			$('#container').append(rowTemplate);
-			
-			$('#container .overview-row').last().attr('id', 'row-' + (i+1));
-			
+            $container.append(rowTemplate);
+            $container.find('.overview-row').last().attr('id', 'row-' + (i+1));
 		}
-		
-		for (i = 0; i < json.cnt; i++) {
+
+        /** @namespace json.cnt */
+        for (i = 0; i < json.cnt; i++) {
 			
 			rowNumber = Math.ceil((i+1) / 3);
 			
@@ -221,7 +201,7 @@ WeatherStation.overview = (function() {
 	/**
 	 * Constructor
 	 */
-	init = function() {
+	this.init = function() {
 		
 		var process = $('process');
 		
@@ -230,23 +210,18 @@ WeatherStation.overview = (function() {
 		}
 		
 		if (process.attr('data-type') === 'overview') {
-		
 			WeatherStation.API.getCurrent(self.renderCurrent, self.onError);
 			WeatherStation.API.getForecast(self.renderOverview, self.onError);
 			WeatherStation.API.getHistory(self.windRose, self.onError);
-		
 		}else if (process.attr('data-type') === 'forecast') {
-
 			WeatherStation.API.getForecast(self.renderForecast);
-			
 		}
-		
-		
+
 		return true;
 		
 	};
 
-	init();
+	this.init();
 
 	return self;
 
