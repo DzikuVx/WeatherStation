@@ -3,10 +3,7 @@
 namespace View;
 
 use General\Formater;
-
 use General\Templater;
-
-use Database\Factory;
 
 class Overview extends Base {
 
@@ -117,7 +114,7 @@ class Overview extends Base {
 		 */
 		$aHistory = $this->model->getDayAggregate(30);
 		$sTable = '';
-		foreach ($aHistory as $iIndex => $oReadout) {
+		foreach ($aHistory as $oReadout) {
 			
 			$sTable .= '<tr>';
 			$sTable .= '<td>'.Formater::formatDate($oReadout['Date']).'</td>';
@@ -165,7 +162,7 @@ class Overview extends Base {
 		$oChartHourPressure->add('Hour', array());
 		$oChartHourPressure->add('Min', array());
 		
-		foreach ($aHistory as $iIndex => $oReadout) {
+		foreach ($aHistory as $oReadout) {
 			
 			$oChartHourPressure->push('Hour', Formater::formatTime($oReadout['Date']));
 			$oChartHourPressure->push('Min', number_format($oReadout['MinPressure'],2,'.',''));
@@ -190,7 +187,7 @@ class Overview extends Base {
 		$oChartHourHumidity->add('Hour', array());
 		$oChartHourHumidity->add('Avg', array());
 
-		foreach ($aHistory as $iIndex => $oReadout) {
+		foreach ($aHistory as $oReadout) {
 			
 			$oChartHourTemperature->push('Hour', Formater::formatTime($oReadout['Date']));
 			$oChartHourTemperature->push('Avg', number_format($oReadout['Temperature'],2));

@@ -2,11 +2,7 @@
 
 namespace View;
 
-use General\Formater;
-
 use General\Templater;
-
-use Database\Factory;
 
 class Forecast extends Base {
 

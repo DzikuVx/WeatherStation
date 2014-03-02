@@ -46,7 +46,8 @@ WeatherStation.overview = (function() {
 	var self = {};
 
 	self.renderCurrent = function(json) {
-		$('#icon-current').attr('src','http://openweathermap.org/img/w/' + json.weather[0].icon + '.png').removeClass('hidden');
+        /** @namespace json.weather */
+        $('#icon-current').attr('src','http://openweathermap.org/img/w/' + json.weather[0].icon + '.png').removeClass('hidden');
 	};
 
 	self.renderOverview = function(json) {

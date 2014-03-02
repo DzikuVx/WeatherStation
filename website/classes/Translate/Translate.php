@@ -1,8 +1,8 @@
 <?php
 
 namespace Translate;
-
-use \Cache\Factory as Cache;
+use phpCache\CacheKey;
+use phpCache\Factory;
 
 /**
  *
@@ -25,20 +25,24 @@ class Translate implements \ArrayAccess {
 	 * @param string $file
 	 */
 	public function __construct($language, $file = 'translations.php') {
-
 		$this->language = $language;
 
-		if (!self::$useCache || ! Cache::getInstance()->check ( 'translationList', $this->language )) {
-			require dirname ( __FILE__ ).'/../../translations/'.$file;
-			
-			$this->table = $translationTable [$this->language];
+        $oCache = Factory::getInstance()->create();
+        $oCacheKey = new CacheKey('translationList', $this->language);
+
+		if (!self::$useCache || !$oCache->check($oCacheKey)) {
+            /** @noinspection PhpIncludeInspection */
+            require dirname ( __FILE__ ).'/../../translations/'.$file;
+
+            /** @noinspection PhpUndefinedVariableInspection */
+            $this->table = $translationTable[$this->language];
 			unset ( $translationTable );
 
 			if (self::$useCache) {
-				Cache::getInstance()->set ( 'translationList', $this->language, $this->table, 86400 );
+                $oCache->set($oCacheKey, $this->table, 86400 );
 			}
 		} else {
-			$this->table = Cache::getInstance()->get ( 'translationList', $this->language );
+			$this->table = $oCache->get($oCacheKey);
 		}
 
 	}

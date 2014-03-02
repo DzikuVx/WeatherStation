@@ -1,6 +1,7 @@
 <?php
 
 namespace General;
+use Exception;
 
 /**
  * Debugging and error handling support class
@@ -170,15 +171,16 @@ class Debug  {
 		return $retVal;
 	
 	}
-	
-	/**
-	 * Error handler
-	 *
-	 * @param string $errno
-	 * @param string $errstr
-	 * @param string $errfile
-	 * @param string $errline
-	 */
+
+    /**
+     * Error handler
+     *
+     * @param string $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param string $errline
+     * @throws DebugException
+     */
 	static public function errorHandler($errno, $errstr, $errfile, $errline) {
 		
 		/*
@@ -270,12 +272,13 @@ class Debug  {
 		
 		return $errorFullText;
 	}
-	
-	/**
-	 * Exception handler
-	 *
-	 * @param exception $ex
-	 */
+
+    /**
+     * Exception handler
+     *
+     * @param \Exception $exception
+     * @internal param \Exception $ex
+     */
 	static public function exceptionHandler(\Exception $exception) {
 		
 		$errorFullText = self::formatExceptionMessage ( $exception );
@@ -463,7 +466,7 @@ class Debug  {
 	 */
 	public static function print_r($value) {
 		
-		echo "<div style=\" color: #000000; border: solid; border-width: 1px; width: 600px; position: absolute; background-color: #FFFED8; z-index: 100; padding: 6px;\"><pre>";
+		echo "<div style=\" color: #000000; border: 1px solid; width: 600px; position: absolute; background-color: #FFFED8; z-index: 100; padding: 6px;\"><pre>";
 		print_r ( $value );
 		echo "</pre></div>";
 	}

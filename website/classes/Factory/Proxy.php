@@ -3,11 +3,8 @@
 namespace Factory;
 
 use Proxy\Forecast;
-
 use Proxy\History;
-
 use Interfaces\Factory;
-
 use Proxy\AbstractProxy;
 use Proxy\Current;
 
@@ -35,7 +32,8 @@ class Proxy implements Factory {
 				break;
 			
 		}
-		
+
+        return null;
 	}
 	
 }

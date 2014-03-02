@@ -3,11 +3,14 @@
 namespace General;
 
 class Formater extends StaticUtils {
-    
+
     /**
      * Skracanie stringa o podana ilość znaków
      * z dodaniem trzech kropek opcjonalnie 3 parametr link dla "more"
-     * @return string  
+     * @param $text
+     * @param $len
+     * @param null $link
+     * @return string
      */
     
     static public function shortnDot($text, $len, $link=null)
@@ -29,8 +32,8 @@ class Formater extends StaticUtils {
     /**
      * Obliczenie procentów wartości max.
      *
-     * @param numeric $value
-     * @param numeric $max
+     * @param int|float $value
+     * @param int|float $max
      * @return int
      */
     static public function getPercentage($value, $max)
@@ -46,7 +49,7 @@ class Formater extends StaticUtils {
     /**
      * Funkcja formatująca datę do postaci YYYY-MM-DD
      * @param $date
-     * @return sformatowana data
+     * @return string sformatowana data
      */
     static public function formatDate($date)
     {
@@ -68,7 +71,7 @@ class Formater extends StaticUtils {
     /**
      * Funkcja formatująca datę do postaci YYYY-MM-DD HH:ii
      * @param $date
-     * @return sformatowana data
+     * @return string
      */
     static public function formatDateTime($date)
     {
@@ -87,7 +90,7 @@ class Formater extends StaticUtils {
     /**
      * Funkcja formatująca datę do postaci HH-ii
      * @param $date
-     * @return sformatowana data
+     * @return string
      */
     static public function formatTime($date)
     {
@@ -99,7 +102,7 @@ class Formater extends StaticUtils {
     /**
      * Funkcja zwaracająca datę w postaci YYYY-MM-DD z UNIX Timestam
      * @param $date
-     * @return sformatowana data
+     * @return string
      */
     function getDate($date)
     {
@@ -110,9 +113,9 @@ class Formater extends StaticUtils {
 
     /**
      * Funkcja formatująca wartość do postaci xxx xxx,xx
-     * @param $value
-     * @param $unit jednostka wartości
-     * @return sformatowana wartość
+     * @param int|float $value
+     * @param string $unit jednostka wartości
+     * @return string
      */
     static public function formatValue($value, $unit = "")
     {
@@ -164,18 +167,15 @@ class Formater extends StaticUtils {
      */
     static public function superTrim($str)
     {
-
         $char = "\n";
         while (true) {
             if (substr($str, - (strlen($char))) == $char) {
                 $str = substr($str, 0, - (strlen($char)));
-            }
-            else {
+            } else {
                 break;
             }
-
-            return trim($str);
         }
+        return trim($str);
     }
 
     /**

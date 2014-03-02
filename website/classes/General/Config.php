@@ -61,7 +61,8 @@ class Config implements \ArrayAccess{
 
 		require (dirname ( __FILE__ ) . "/../../config.inc.php");
 
-		$this->config = $config;
+        /** @noinspection PhpUndefinedVariableInspection */
+        $this->config = $config;
 
 	}
 

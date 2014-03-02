@@ -1,6 +1,7 @@
 <?php
 
 namespace Database;
+use General\Debug;
 
 /**
  * SQLite data base interface class
@@ -114,7 +115,7 @@ class SQLiteWrapper {
 	 * Wykonanie zapytania bazy danych
 	 *
 	 * @param string $query
-	 * @return resource
+	 * @return \SQLite3Result
 	 * @throws Exception
 	 */
 	public function execute($query) {
@@ -187,16 +188,16 @@ class SQLiteWrapper {
 			$this->dbConfig ['handle'] = $this->dbHandle;
 
 		} catch ( Exception $e ) {
-			\psDebug::halt ( 'Brak połączenia z bazą danych', $e, array ('display' => false ) );
+			Debug::halt ( 'Brak połączenia z bazą danych', $e, array ('display' => false ) );
 		}
 	}
 
-	/**
-	 * Konstruktor bazy danych
-	 *
-	 * @param Config
-	 * @return boolean
-	 */
+    /**
+     * Konstruktor bazy danych
+     *
+     * @param \Database\Config $dbConfig
+     * @return \Database\SQLiteWrapper
+     */
 	public function __construct(Config $dbConfig) {
 
 		$this->dbConfig = $dbConfig;

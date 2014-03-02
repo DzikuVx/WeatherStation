@@ -26,7 +26,8 @@ class Config extends \General\Config implements \ArrayAccess{
 
 		require (dirname ( __FILE__ ) . "/../../db.inc.php");
 
-		$this->config = $config;
+        /** @noinspection PhpUndefinedVariableInspection */
+        $this->config = $config;
 
 	}
 

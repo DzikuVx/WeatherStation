@@ -2,10 +2,8 @@
 
 namespace View;
 
-use General\Debug;
 use General\Formater;
 use General\Templater;
-use Database\Factory;
 use Model\Readout;
 use Model\OpenWeatherMap;
 
@@ -53,7 +51,10 @@ class History extends Base {
 		return (string) $oTemplate;
 	}
 
-	private function titleHelper($oTemplate) {
+    /**
+     * @param Templater $oTemplate
+     */
+    private function titleHelper(Templater $oTemplate) {
 		switch ($this->aParams['range']) {
 				
 			case 'year':
@@ -78,7 +79,7 @@ class History extends Base {
 		 * Get daily aggregate
 		*/
 		$sTable = '';
-		foreach ($this->internalData as $iIndex => $oReadout) {
+		foreach ($this->internalData as $oReadout) {
 				
 			$sTable .= '<tr>';
 			$sTable .= '<td>'.Formater::formatDate($oReadout['Date']).'</td>';
@@ -115,11 +116,6 @@ class History extends Base {
 
 		$oTemplate = new Templater('history-chartHead.html');
 
-		/**
-		 * Data from OpenWeatherMap.orh
-		 */
-		$oOpenWeatherMap = new \Model\OpenWeatherMap();
-
 		$oChartDailyPressure = new \General\GoogleChart();
 		$oChartDailyPressure->setTitle($t->get('Pressure'));
 		$oChartDailyPressure->setDomID('chartDailyPressure');
@@ -128,7 +124,7 @@ class History extends Base {
 		$oChartDailyPressure->add('Max', array());
 		$oChartDailyPressure->add('Min', array());
 
-		foreach ($this->externalData as $iIndex => $oReadout) {
+		foreach ($this->externalData as $oReadout) {
 				
 			$oChartDailyPressure->push('Hour', Formater::formatDate($oReadout['Date']));
 			$oChartDailyPressure->push('Avg', number_format($oReadout['Pressure'],2,'.',''));
@@ -158,7 +154,7 @@ class History extends Base {
 		$oChartDailyHumidity->add('Max', array());
 		$oChartDailyHumidity->add('Min', array());
 
-		foreach ($this->internalData as $iIndex => $oReadout) {
+		foreach ($this->internalData as $oReadout) {
 
 			$oChartDailyTemperature->push('Day', Formater::formatDate($oReadout['Date']));
 			$oChartDailyTemperature->push('Avg', number_format($oReadout['Temperature'],2));

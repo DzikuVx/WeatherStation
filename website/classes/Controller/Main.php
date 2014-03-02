@@ -1,13 +1,13 @@
 <?php
 namespace Controller;
 
-use General\Config;
-
+use Exception;
 use \General\CustomException as CustomException;
 
 /**
  *
  * Główny kontroler aplikacji
+ * @property mixed mainContentProcessed
  * @author Paweł
  * @brief Główny kontroler aplikacji uruchamiający kontrolery właściwe w zależności żądań użytkownika
  *
@@ -48,6 +48,12 @@ class Main extends Base implements \Interfaces\Singleton {
 	 * @return string
 	 */
 	public function get() {
+
+        /**
+         * @var \General\Templater
+         */
+        $template = new \General\Templater('index.html');
+
 		try {
 
 			/**
@@ -55,12 +61,6 @@ class Main extends Base implements \Interfaces\Singleton {
 			 * @var array
 			 */
 			\Database\Factory::getInstance()->quoteAll($this->aParams);
-
-			/**
-			 * Inicjacja szablonu
-			 * @var \General\Templater
-			 */
-			$template = new \General\Templater('index.html');
 
 			/*
 			 * Rejestracja listenerów
@@ -75,13 +75,6 @@ class Main extends Base implements \Interfaces\Singleton {
 				$this->aParams ['method'] = 'render';
 			}
 
-			if (! isset ( $HTTP_RAW_POST_DATA )) {
-				$HTTP_RAW_POST_DATA = file_get_contents ( "php://input" );
-			}
-
-			$retVal = '';
-
-			$className = '';
 			switch ($this->aParams ['class']) {
 
 				default:
@@ -89,8 +82,6 @@ class Main extends Base implements \Interfaces\Singleton {
 					break;
 			}
 
-
-			$methodName = '';
 			switch ($this->aParams ['method']) {
 
 				default :
@@ -99,10 +90,10 @@ class Main extends Base implements \Interfaces\Singleton {
 
 			}
 
-
 			if (class_exists($className)) {
 
-				$tObject = $className::getInstance();
+                /** @noinspection PhpUndefinedMethodInspection */
+                $tObject = $className::getInstance();
 
 				if (method_exists($tObject, $methodName)) {
 					$tObject->{$methodName}($this->aParams, $template);

@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use Exception;
+
 class History extends Base implements \Interfaces\Singleton {
 
 	protected $aExcluded = array();

@@ -50,7 +50,7 @@ class Base implements \Interfaces\Singleton {
 	}
 
 
-	static public function formatLink(array $aParams, $sAmp = true, $bOnClick = false)
+	static public function formatLink(array $aParams)
 	{
 		$sRetVal = '';
 
@@ -69,13 +69,15 @@ class Base implements \Interfaces\Singleton {
 			$className = '\\Module\\'.$aParams['module'];
 	
 			if (class_exists($className)) {
-					
-				$tObject = $className::getInstance();
+
+                /** @noinspection PhpUndefinedMethodInspection */
+                $tObject = $className::getInstance();
 					
 				if (method_exists($tObject, 'execute')) {
 					$tObject->execute($aParams, $template);
-	
-					Main::$mainContentProcessed = true;
+
+                    /** @noinspection PhpUndefinedFieldInspection */
+                    Main::$mainContentProcessed = true;
 	
 				}
 			}

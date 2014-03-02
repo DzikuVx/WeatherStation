@@ -3,6 +3,8 @@
 namespace Model;
 
 use \Database\Factory as Database;
+use phpCache\CacheKey;
+use stdClass;
 
 /**
  * @brief Klasa bazowa modeli wykorzystywanych w rozwiązaniu
@@ -40,8 +42,8 @@ abstract class Base implements \Interfaces\Model {
     protected $getAllSorting = null;
 
     /**
-     * Metoda czyści cache powiązany z modelem
      * @param int $iId
+     * @return bool
      */
     public function dropCache($iId = null)
     {
@@ -54,6 +56,7 @@ abstract class Base implements \Interfaces\Model {
             return false;
         }
         \phpCache\Factory::getInstance()->create()->clear(get_class($this) . '::loadDataObject', $iId);
+        return true;
     }
 
     /**
@@ -90,16 +93,15 @@ abstract class Base implements \Interfaces\Model {
     protected function loadDataObject()
     {
 
-        $oCache = \phpCache\Factory::getInstance()->create( );
+        $oCache = \phpCache\Factory::getInstance()->create();
 
         if (empty($this->aParams['id'])) {
             throw new \Exception('{T:Nie podano identyfikatora obiektu}');
         }
 
-        $sModule = get_class($this) . '::loadDataObject';
-        $sProperty = $this->aParams['id'];
+        $oKey = new CacheKey(get_class($this) . '::loadDataObject', $this->aParams['id']);
 
-        if (!$this->bUseCache || !$oCache->check($sModule, $sProperty)) {
+        if (!$this->bUseCache || !$oCache->check($oKey)) {
 
             $sQuery = "SELECT
 			{$this->selectList}
@@ -112,10 +114,10 @@ abstract class Base implements \Interfaces\Model {
             $rQuery = Database::getInstance()->execute($sQuery);
             $this->dataObject = Database::getInstance()->fetch($rQuery);
 
-            $oCache->set($sModule, $sProperty, $this->dataObject);
+            $oCache->set($oKey, $this->dataObject);
         }
         else {
-            $this->dataObject = $oCache->get($sModule, $sProperty);
+            $this->dataObject = $oCache->get($oKey);
         }
     }
 
@@ -209,7 +211,6 @@ abstract class Base implements \Interfaces\Model {
                 $this->registryWhere .= " AND ";
             }
             $this->registryWhere .= $this->tableDateField . " >= '" . $sStartDate . "' AND " . $this->tableDateField . " <= '" . $sEndDate . "'";
-            $set = true;
         }
         
     }
@@ -246,11 +247,11 @@ abstract class Base implements \Interfaces\Model {
      */
     public function getRegistryCount()
     {
-
         $tQuery = Database::getInstance()->execute("SELECT COUNT($this->selectCountField) AS ile FROM {$this->tableList} WHERE {$this->fixEmptyWhere()}");
         while ($tResult = Database::getInstance()->fetch($tQuery)) {
             return $tResult->ile;
         }
+        return null;
     }
 
     /**
@@ -324,19 +325,22 @@ abstract class Base implements \Interfaces\Model {
     
     protected function prepareGetAllWhereQuery($aTerms,$aTermsOR)
     {
-        
+
+        $sOr = [];
+        $sWhere = [];
+
         $sRetVal = 'SELECT ' . $this->selectList . ' FROM ' . $this->tableList.' WHERE ' ;
         
         if($aTerms!=null){
             foreach ($aTerms as $key => $val){
-            $sWhere[]= $key ."=". $val;
-        }
+                $sWhere[]= $key ."=". $val;
+            }
         }
         
         if($aTermsOR!=null){
             foreach ($aTermsOR as $column => $values){
                
-                   foreach($values as $key=>$val){
+                   foreach($values as $val){
                        
                        $sOr[]=$column."=".$val;
                    }
@@ -360,17 +364,14 @@ abstract class Base implements \Interfaces\Model {
        
         return $sRetVal;
     }
-    
-     /**
+
+    /**
      * Funkcja zwracająca tablię wszystkich elementów z uwzględnieniem warunków WHERE
      *
-     * @param   array $aTerms tablica warunków klucz=>wartosc
-     * @return  array Tablica elementów
-     * @throws
-     * @since 2012-10-01
-     * @version 1.0
+     * @param array $aTerms tablica warunków klucz=>wartosc
+     * @param null $aTermsOR
+     * @return array
      */
-    
     public function getAllWhere($aTerms=null,$aTermsOR=null)
     { 
         $res = Database::getInstance()->execute($this->prepareGetAllWhereQuery($aTerms,$aTermsOR));
@@ -388,8 +389,8 @@ abstract class Base implements \Interfaces\Model {
      *
      * @param string $key Klucz
      * @param string $value Wartość
+     * @param bool $addEmpty
      * @return  array Tablica elementów
-     * @throws
      * @since 2012-06-18
      * @version 1.0
      */
@@ -413,15 +414,12 @@ abstract class Base implements \Interfaces\Model {
      * Funkcja usuwająca element o podanym id
      *
      * @param  int $id id elementu do usunięcia
-     * @return
-     * @throws
-     * @since 2012-06-15
+     * @return void
      * @version 1.0
      */
     public function deleteById($id)
     {
-        $a = Database::getInstance()->execute('DELETE FROM ' . $this->tableName . ' WHERE ' . $this->registryIdField . ' = ' . $id);
-
+        Database::getInstance()->execute('DELETE FROM ' . $this->tableName . ' WHERE ' . $this->registryIdField . ' = ' . $id);
         /*
          * Zrzuć cache
          */
@@ -432,24 +430,17 @@ abstract class Base implements \Interfaces\Model {
      * Funkcja usuwająca element o podanych warunkach
      *
      * @param  array $params tablica parametrów
-     * @return
-     * @throws
-     * @since 2012-09-5
+     * @return void
      * @version 1.0
      */
     public function delete($params)
     {
-
         $aWhere = array();
         foreach ($params as $key => $value) {
             $aWhere[] = '`' . $key . '`' . ' = ' . $value;
         }
         $sWhere = implode(' AND ', $aWhere);
-        $a = Database::getInstance()->execute('DELETE FROM ' . $this->tableName . ' WHERE ' . $sWhere);
-
-        /*
-         * Zrzuć cache
-         */
+        Database::getInstance()->execute('DELETE FROM ' . $this->tableName . ' WHERE ' . $sWhere);
         $this->dropCache($this->aParams['id']);
     }
 
@@ -556,10 +547,10 @@ abstract class Base implements \Interfaces\Model {
     /**
      * Metoda edytuje dane w tabeli.
      *
-     * @param   array   $aParams    Tablica z danymi do edycji bazy
-     * @param   int     $$iId       Identyfikator rekordu
+     * @param   array $aParams Tablica z danymi do edycji bazy
+     * @param $iId
+     * @internal param $int $$iId       Identyfikator rekordu
      * @return  int     Identyfikator ostatnio zedytowanego rekordu
-     * @throws
      * @since   2012-06-19
      * @version 1.0
      */

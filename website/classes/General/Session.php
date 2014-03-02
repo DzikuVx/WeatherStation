@@ -50,13 +50,11 @@ class Session extends StaticUtils implements \ArrayAccess{
 	}
 
 	public function offsetGet($offset) {
-
-		if (isset($this->table[$offset])) {
+		if (isset($_SESSION[self::$prefix.$offset])) {
 			return $_SESSION[self::$prefix.$offset];
 		}else {
 			return false;
 		}
-
 	}
 
 }
