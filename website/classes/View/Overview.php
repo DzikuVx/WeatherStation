@@ -85,8 +85,7 @@ class Overview extends Base {
 		
 		$oTemplate->add('proxyCurrent', $proxyFactory->create('Current')->get());
 		$oTemplate->add('proxyForecast', $proxyFactory->create('Forecast')->get());
-		$oTemplate->add('proxyHistory', $proxyFactory->create('History')->get());
-		
+
 		return (string) $oTemplate;
 		
 	}

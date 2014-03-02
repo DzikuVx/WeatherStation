@@ -4,68 +4,6 @@ function pad(a,b){
 
 var WeatherStation = WeatherStation || {};
 
-/**
- * localStorage with expire wrapper
- */
-var myStorage = (function() {
-	var self = {};
-
-	/**
-	 * Method unsets value in localStorage
-	 */
-	self.unset = function(key) {
-		localStorage.removeItem(key);
-	};
-
-	/**
-	 * Method gets value from localStorage
-	 * @param key 
-	 */
-	self.get = function(key) {
-
-		if (!localStorage[key]) {
-			return null;
-		}
-
-		var object = JSON.parse(localStorage[key]);
-
-		if (object.timestamp === null || new Date().getTime() < object.timestamp) {
-			return object.value;
-		} else {
-			return null;
-		}
-
-	};
-
-	/**
-	 * Method sets value in local storage
-	 * 
-	 * @param key
-	 * @param value
-	 * @param expire in seconds
-	 */
-	self.set = function(key, value, expire) {
-
-		var object;
-
-		if (!expire) {
-			object = {
-				value : value,
-				timestamp : null
-			};
-		} else {
-			object = {
-				value : value,
-				timestamp : new Date().getTime() + (expire * 1000)
-			};
-		}
-
-		localStorage[key] = JSON.stringify(object);
-	};
-
-	return self;
-})();
-
 WeatherStation.general = (function() {
 	var self = {};
 
@@ -100,10 +38,6 @@ WeatherStation.API = (function() {
 		process(weatherProxy.forecast, onSuccess, onFailure);
 	};
 
-	self.getHistory = function(onSuccess, onFailure) {
-		process(weatherProxy.history, onSuccess, onFailure);
-	};
-	
 	return self;
 })();
 
@@ -135,10 +69,6 @@ WeatherStation.overview = (function() {
 		$('#tomorrow-pressure').html(parseInt(json.list[1].pressure, 10));
 		$('#tomorrow-speed').html(parseInt(json.list[1].speed, 10));
 		$('#tomorrow-direction').html(parseInt(json.list[1].deg, 10));
-	};
-
-	self.windRose = function(json) {
-		showPolarSpeed('chart-wind', json.list);
 	};
 
 	self.renderForecast = function(json) {
@@ -212,7 +142,6 @@ WeatherStation.overview = (function() {
 		if (process.attr('data-type') === 'overview') {
 			WeatherStation.API.getCurrent(self.renderCurrent, self.onError);
 			WeatherStation.API.getForecast(self.renderOverview, self.onError);
-			WeatherStation.API.getHistory(self.windRose, self.onError);
 		}else if (process.attr('data-type') === 'forecast') {
 			WeatherStation.API.getForecast(self.renderForecast);
 		}

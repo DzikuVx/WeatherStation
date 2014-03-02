@@ -86,134 +86,132 @@
 	</div>
 
 	<div class="row">
-		<div class="span3">
-			<div id="chart-wind" style="height: 300px; margin: 0 auto" ></div>
-			<div class="">
-				<h3>{T:Temperature}</h3>
-				<table class="table table-striped statistics-box">
-					<tr>
-						<th>{T:24h average}</th>
-						<td>{1dTempAvg}&deg;C</td>
-					</tr>
-					<tr>
-						<th>{T:24h min}</th>
-						<td>{1dTempMin}&deg;C</td>
-					</tr>
-					<tr>
-						<th>{T:24h max}</th>
-						<td>{1dTempMax}&deg;C</td>
-					</tr>
-					<tr>
-						<th>{T:7d average}</th>
-						<td>{7dTempAvg}&deg;C</td>
-					</tr>
-					<tr>
-						<th>{T:7d min}</th>
-						<td>{7dTempMin}&deg;C</td>
-					</tr>
-					<tr>
-						<th>{T:7d max}</th>
-						<td>{7dTempMax}&deg;C</td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<h3>{T:Humidity}</h3>
-				<table class="table table-striped statistics-box">
-					<tr>
-						<th>{T:24h average}</th>
-						<td>{1dHumidityAvg}%</td>
-					</tr>
-					<tr>
-						<th>{T:24h min}</th>
-						<td>{1dHumidityMin}%</td>
-					</tr>
-					<tr>
-						<th>{T:24h max}</th>
-						<td>{1dHumidityMax}%</td>
-					</tr>
-					<tr>
-						<th>{T:7d average}</th>
-						<td>{7dHumidityAvg}%</td>
-					</tr>
-					<tr>
-						<th>{T:7d min}</th>
-						<td>{7dHumidityMin}%</td>
-					</tr>
-					<tr>
-						<th>{T:7d max}</th>
-						<td>{7dHumidityMax}%</td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<h3>{T:Pressure}</h3>
-				<table class="table table-striped statistics-box">
-					<tr>
-						<th>{T:24h average}</th>
-						<td>{1dPressureAvg}hPa</td>
-					</tr>
-					<tr>
-						<th>{T:24h min}</th>
-						<td>{1dPressureMin}hPa</td>
-					</tr>
-					<tr>
-						<th>{T:24h max}</th>
-						<td>{1dPressureMax}hPa</td>
-					</tr>
-					<tr>
-						<th>{T:7d average}</th>
-						<td>{7dPressureAvg}hPa</td>
-					</tr>
-					<tr>
-						<th>{T:7d min}</th>
-						<td>{7dPressureMin}hPa</td>
-					</tr>
-					<tr>
-						<th>{T:7d max}</th>
-						<td>{7dPressureMax}hPa</td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<h3>{T:Wind speed}</h3>
-				<table class="table table-striped statistics-box">
-					<tr>
-						<th>{T:24h average}</th>
-						<td>{1dWindAvg}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:24h min}</th>
-						<td>{1dWindMin}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:24h max}</th>
-						<td>{1dWindMax}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:7d average}</th>
-						<td>{7dWindAvg}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:7d min}</th>
-						<td>{7dWindMin}m/s</td>
-					</tr>
-					<tr>
-						<th>{T:7d max}</th>
-						<td>{7dWindMax}m/s</td>
-					</tr>
-				</table>
-			</div>
-		</div>
 		<div class="span9">
 			{pageContent}
 		</div>
+        <div class="span3">
+            <div class="">
+                <h3>{T:Temperature}</h3>
+                <table class="table table-striped statistics-box">
+                    <tr>
+                        <th>{T:24h average}</th>
+                        <td>{1dTempAvg}&deg;C</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h min}</th>
+                        <td>{1dTempMin}&deg;C</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h max}</th>
+                        <td>{1dTempMax}&deg;C</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d average}</th>
+                        <td>{7dTempAvg}&deg;C</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d min}</th>
+                        <td>{7dTempMin}&deg;C</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d max}</th>
+                        <td>{7dTempMax}&deg;C</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <h3>{T:Humidity}</h3>
+                <table class="table table-striped statistics-box">
+                    <tr>
+                        <th>{T:24h average}</th>
+                        <td>{1dHumidityAvg}%</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h min}</th>
+                        <td>{1dHumidityMin}%</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h max}</th>
+                        <td>{1dHumidityMax}%</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d average}</th>
+                        <td>{7dHumidityAvg}%</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d min}</th>
+                        <td>{7dHumidityMin}%</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d max}</th>
+                        <td>{7dHumidityMax}%</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <h3>{T:Pressure}</h3>
+                <table class="table table-striped statistics-box">
+                    <tr>
+                        <th>{T:24h average}</th>
+                        <td>{1dPressureAvg}hPa</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h min}</th>
+                        <td>{1dPressureMin}hPa</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h max}</th>
+                        <td>{1dPressureMax}hPa</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d average}</th>
+                        <td>{7dPressureAvg}hPa</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d min}</th>
+                        <td>{7dPressureMin}hPa</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d max}</th>
+                        <td>{7dPressureMax}hPa</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <h3>{T:Wind speed}</h3>
+                <table class="table table-striped statistics-box">
+                    <tr>
+                        <th>{T:24h average}</th>
+                        <td>{1dWindAvg}m/s</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h min}</th>
+                        <td>{1dWindMin}m/s</td>
+                    </tr>
+                    <tr>
+                        <th>{T:24h max}</th>
+                        <td>{1dWindMax}m/s</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d average}</th>
+                        <td>{7dWindAvg}m/s</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d min}</th>
+                        <td>{7dWindMin}m/s</td>
+                    </tr>
+                    <tr>
+                        <th>{T:7d max}</th>
+                        <td>{7dWindMax}m/s</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 	</div>
 </div>
 <process data-type="overview"></process>
 <script type="text/javascript">
 	var weatherProxy = {};
 	weatherProxy.current = {proxyCurrent};
-	weatherProxy.history = {proxyHistory};
 	weatherProxy.forecast = {proxyForecast};
 </script>

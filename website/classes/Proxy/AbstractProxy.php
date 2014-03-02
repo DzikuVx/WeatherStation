@@ -56,8 +56,9 @@ abstract class AbstractProxy implements Proxy{
      */
     public function get($aParams = null) {
 
+        $sFile = '';
+
 		$oCacheKey = $this->createCacheKey($aParams);
-		
 		$cache = \phpCache\Factory::getInstance()->create();
 		
 		try {
@@ -68,11 +69,11 @@ abstract class AbstractProxy implements Proxy{
 			}else {
 				$sFile = $cache->get($oCacheKey);
 			}
-		
+
 		} catch (\Exception $e) {
 			Debug::cThrow(null, $e, array());
 		}
-		
+
 		return $sFile;
 	}
 	

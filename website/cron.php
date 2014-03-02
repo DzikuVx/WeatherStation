@@ -3,7 +3,7 @@ use General\Debug;
 
 require_once 'common.php';
 
-$aProxies = array('Forecast', 'Current', 'History');
+$aProxies = array('Forecast', 'Current');
 
 $proxyFactory = new \Factory\Proxy();
 
