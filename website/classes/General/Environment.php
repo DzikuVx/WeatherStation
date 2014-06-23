@@ -12,13 +12,19 @@ use \phpCache\Apc as Apc;
  *
  */
 class Environment extends StaticUtils {
-	
+
+    static public function setContentHtml() {
+        header ( 'Content-Type: text/html; charset=utf-8' );
+    }
+
+    static public function setContentJson() {
+        header ( 'Content-Type: application/json; charset=utf-8' );
+    }
+
 	/**
 	 * Set environmental variables
 	 */
 	static public function set() {
-	
-		header ( 'Content-Type: text/html; charset=utf-8' );
 	
 		ini_set ( 'date.timezone', 'Europe/Warsaw' );
 		ini_set ( 'date.default_latitude', '31.7667' );

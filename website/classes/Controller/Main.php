@@ -4,19 +4,14 @@ namespace Controller;
 use Exception;
 use \General\CustomException as CustomException;
 
-/**
- *
- * Główny kontroler aplikacji
- * @property mixed mainContentProcessed
- * @author Paweł
- * @brief Główny kontroler aplikacji uruchamiający kontrolery właściwe w zależności żądań użytkownika
- *
- */
 class Main extends Base implements \Interfaces\Singleton {
 
 	private static $instance;
 
-	private $aParams = array();
+    /**
+     * @var array
+     */
+    private $aParams = array();
 	
 	/**
 	 * Konstruktor prywatny
@@ -26,8 +21,6 @@ class Main extends Base implements \Interfaces\Singleton {
 	}
 
 	/**
-	 *
-	 * Pobranie instancji
 	 * @throws \Exception
 	 */
 	static public function getInstance() {
@@ -44,10 +37,13 @@ class Main extends Base implements \Interfaces\Singleton {
 	}
 
 	/**
-	 * Główny kontroler
 	 * @return string
 	 */
 	public function get() {
+
+        \General\Environment::setContentHtml();
+        \General\Session::start();
+        \General\Environment::set();
 
         /**
          * @var \General\Templater
@@ -56,10 +52,6 @@ class Main extends Base implements \Interfaces\Singleton {
 
 		try {
 
-			/**
-			 * Quotowana tablica request
-			 * @var array
-			 */
 			\Database\Factory::getInstance()->quoteAll($this->aParams);
 
 			/*

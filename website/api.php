@@ -1,7 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pawel
- * Date: 6/22/14
- * Time: 10:39 PM
- */ 
+
+require_once 'common.php';
+
+echo \Controller\Api::getInstance()->get();
