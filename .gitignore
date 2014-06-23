@@ -4,4 +4,6 @@ data.db
 diagram.ps
 
 website/.idea/*
+website/logs/error.log
+
 
