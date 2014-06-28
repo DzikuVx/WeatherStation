@@ -87,51 +87,6 @@ class Overview extends Base {
 		
 	}
 	
-	public function tables()
-	{
-		$oTemplate = new Templater('tables.html');
-
-		/*
-		 * Get readout history
-		 */
-		$aHistory = $this->model->getHistory();
-
-		$sTable = '';
-		foreach ($aHistory as $iIndex => $oReadout) {
-			
-			$sTable .= '<tr>';
-			$sTable .= '<td>'.($iIndex+1).'</td>';
-			$sTable .= '<td>'.Formater::formatDateTime($oReadout['Date']).'</td>';
-			$sTable .= '<td>'.$oReadout['Temperature'].'&deg;C</td>';
-			$sTable .= '<td>'.$oReadout['Humidity'].'%</td>';
-			$sTable .= '</tr>';
-			
-		}
-		$oTemplate->add('Table', $sTable);
-		
-		/*
-		 * Get daily aggregate
-		 */
-		$aHistory = $this->model->getDayAggregate(30);
-		$sTable = '';
-		foreach ($aHistory as $oReadout) {
-			
-			$sTable .= '<tr>';
-			$sTable .= '<td>'.Formater::formatDate($oReadout['Date']).'</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['MinTemperature'],2).'&deg;C</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['Temperature'],2).'&deg;C</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['MaxTemperature'],2).'&deg;C</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['MinHumidity'],2).'%</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['Humidity'],2).'%</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['MaxHumidity'],2).'%</td>';
-			$sTable .= '</tr>';
-			
-		}
-		$oTemplate->add('DailyTable', $sTable);
-		
-		return (string) $oTemplate;
-	}
-	
 	public function charts()
 	{
 		$oTemplate = new Templater('charts.html');
