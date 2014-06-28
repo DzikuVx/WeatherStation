@@ -3,10 +3,7 @@
 $translationTable = array();
 
 $translationTable['en'] = array();
-
 $translationTable['en']['Product Name'] = 'Pogoda w Dobrej';
-$translationTable['en']['Product Short Name'] = 'Pogoda w Dobrej';
-
 
 $translationTable['pl'] = array();
 
@@ -30,3 +27,4 @@ $translationTable['pl']['Last year'] 			= 'Ostatni rok';
 $translationTable['pl']['Show as'] 				= 'Pokazuj jako';
 $translationTable['pl']['Charts'] 				= 'Wykresy';
 $translationTable['pl']['Tables'] 				= 'Tabele';
+$translationTable['pl']['Last readout'] 		= 'Ostatni odczyt';

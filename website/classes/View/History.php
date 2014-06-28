@@ -88,7 +88,6 @@ class History extends Base {
 			$sTable .= '<td>'.Formater::formatFloat($oReadout['MaxTemperature'],2).'&deg;C</td>';
 			$sTable .= '<td>'.Formater::formatFloat($oReadout['MinHumidity'],2).'%</td>';
 			$sTable .= '<td>'.Formater::formatFloat($oReadout['Humidity'],2).'%</td>';
-			$sTable .= '<td>'.Formater::formatFloat($oReadout['MaxHumidity'],2).'%</td>';
 			$sTable .= '</tr>';
 				
 		}
@@ -151,7 +150,6 @@ class History extends Base {
 		$oChartDailyHumidity->setDomID('chartDailyHumidity');
 		$oChartDailyHumidity->add('Day', array());
 		$oChartDailyHumidity->add('Avg', array());
-		$oChartDailyHumidity->add('Max', array());
 		$oChartDailyHumidity->add('Min', array());
 
 		foreach ($this->internalData as $oReadout) {
@@ -163,7 +161,6 @@ class History extends Base {
 
 			$oChartDailyHumidity->push('Day', Formater::formatDate($oReadout['Date']));
 			$oChartDailyHumidity->push('Avg', number_format($oReadout['Humidity'],2));
-			$oChartDailyHumidity->push('Max', number_format($oReadout['MaxHumidity'],2));
 			$oChartDailyHumidity->push('Min', number_format($oReadout['MinHumidity'],2));
 
 		}

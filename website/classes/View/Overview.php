@@ -23,6 +23,8 @@ class Overview extends Base {
 		$oCurrent = $this->model->getCurrent();
 		$oTemplate->add($oCurrent);
 
+        $oTemplate->add('LastReadout', $oCurrent->Date);
+
 		$oData = $this->model->getAverage(1);
 		$oTemplate->add('1dTempAvg', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($oData->Humidity, 2));
@@ -86,7 +88,7 @@ class Overview extends Base {
 		return (string) $oTemplate;
 		
 	}
-	
+
 	public function charts()
 	{
 		$oTemplate = new Templater('charts.html');
