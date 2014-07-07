@@ -100,6 +100,75 @@ class Api extends Base implements \Interfaces\Singleton {
             $aRetVal = array_merge($aRetVal, $aData);
         }
 
+        /*
+         * Get additional data
+         */
+        $proxyFactory = new \Factory\Proxy();
+
+        $oCurrent = $proxyFactory->create('Current')->get();
+        $jCurrent = json_decode($oCurrent);
+
+        $aRetVal['WeatherIcon'] = $jCurrent->weather[0]->icon;
+        $aRetVal['WeatherCode'] = $jCurrent->weather[0]->id;
+        $aRetVal['TempMax'] = $jCurrent->main->temp_max;
+        $aRetVal['TempMin'] = $jCurrent->main->temp_min;
+
+        if ($jCurrent->clouds) {
+            $aRetVal['Clouds'] = $jCurrent->clouds->all;
+        } else {
+            $aRetVal['Clouds'] = 0;
+        }
+
+        if (isset($jCurrent->rain)) {
+            $aRetVal['Rain'] = $jCurrent->rain->{'3h'};
+        } else {
+            $aRetVal['Rain'] = 0;
+        }
+
+        if (isset($jCurrent->snow)) {
+            $aRetVal['Snow'] = $jCurrent->snow->{'3h'};
+        } else {
+            $aRetVal['Snow'] = 0;
+        }
+
+        $oForecast = $proxyFactory->create('Forecast')->get();
+        $jForecast = json_decode($oForecast);
+
+        $aData = array();
+
+        foreach ($jForecast->list as $iKey => $oDay) {
+
+            $aData[$iKey]['Date'] = date('Y-m-d', $oDay->dt);
+            $aData[$iKey]['WeekDay'] = date('w', $oDay->dt);
+
+            $aData[$iKey]['WeatherIcon'] = $oDay->weather[0]->icon;
+            $aData[$iKey]['WeatherCode'] = $oDay->weather[0]->id;
+
+            $aData[$iKey]['TempMax'] = $oDay->temp->max;
+            $aData[$iKey]['TempMin'] = $oDay->temp->min;
+
+            $aData[$iKey]['Clouds'] = $oDay->clouds;
+            $aData[$iKey]['Humidity'] = $oDay->humidity;
+            $aData[$iKey]['Pressure'] = $oDay->pressure;
+            $aData[$iKey]['WindSpeed'] = $oDay->speed;
+            $aData[$iKey]['WindDirection'] = $oDay->deg;
+
+            if (isset($oDay->rain)) {
+                $aData[$iKey]['Rain'] = $oDay->rain;
+            } else {
+                $aData[$iKey]['Rain'] = 0;
+            }
+
+            if (isset($oDay->snow)) {
+                $aData[$iKey]['Snow'] = $oDay->snow;
+            } else {
+                $aData[$iKey]['Snow'] = 0;
+            }
+
+        }
+
+        $aRetVal['Forecast'] = $aData;
+
     }
 
 }
