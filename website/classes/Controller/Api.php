@@ -146,6 +146,8 @@ class Api extends Base implements \Interfaces\Singleton {
 
             $aData[$iKey]['TempMax'] = $oDay->temp->max;
             $aData[$iKey]['TempMin'] = $oDay->temp->min;
+            $aData[$iKey]['TempDay'] = $oDay->temp->day;
+            $aData[$iKey]['TempNight'] = $oDay->temp->night;
 
             $aData[$iKey]['Clouds'] = $oDay->clouds;
             $aData[$iKey]['Humidity'] = $oDay->humidity;
