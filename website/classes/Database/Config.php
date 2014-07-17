@@ -10,7 +10,6 @@ class Config extends \General\Config implements \ArrayAccess{
 	private static $instance = null;
 
 	/**
-	 * Konstruktor statyczny -> Singleton
 	 * @return Config
 	 */
 	public static function getInstance() {

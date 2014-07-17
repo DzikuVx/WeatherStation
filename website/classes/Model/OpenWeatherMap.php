@@ -22,62 +22,50 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 
 	public function getCurrent() {
 
-		$db = \Database\Factory::getInstance();
+		$rResult = $this->db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT 1");
 
-		$rResult = $db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT 1");
-
-		return $db->fetch($rResult);
+		return $this->db->fetch($rResult);
 
 	}
 
 	public function getAverage($days = 1) {
 
-		$db = \Database\Factory::getInstance();
-
 		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
 
-		$rResult = $db->execute("SELECT AVG(Pressure) Pressure, AVG(WindSpeed) WindSpeed FROM {$this->tableName} WHERE Date>='{$stamp}'");
+		$rResult = $this->db->execute("SELECT AVG(Pressure) Pressure, AVG(WindSpeed) WindSpeed FROM {$this->tableName} WHERE Date>='{$stamp}'");
 
-		return $db->fetch($rResult);
+		return $this->db->fetch($rResult);
 
 	}
 
 	public function getMin($days = 1) {
 
-		$db = \Database\Factory::getInstance();
-
 		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
 
-		$rResult = $db->execute("SELECT MIN(Pressure) Pressure, MIN(WindSpeed) WindSpeed FROM {$this->tableName} WHERE Date>='{$stamp}'");
+		$rResult = $this->db->execute("SELECT MIN(Pressure) Pressure, MIN(WindSpeed) WindSpeed FROM {$this->tableName} WHERE Date>='{$stamp}'");
 
-		return $db->fetch($rResult);
+		return $this->db->fetch($rResult);
 
 	}
 
 	public function getMax($days = 1) {
 
-		$db = \Database\Factory::getInstance();
-
 		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
 
-		$rResult = $db->execute("SELECT MAX(Pressure) Pressure, MAX(WindSpeed) WindSpeed FROM {$this->tableName} WHERE Date>='{$stamp}'");
+		$rResult = $this->db->execute("SELECT MAX(Pressure) Pressure, MAX(WindSpeed) WindSpeed FROM {$this->tableName} WHERE Date>='{$stamp}'");
 
-		return $db->fetch($rResult);
+		return $this->db->fetch($rResult);
 
 	}
 
 	public function getHourAggregate($hours = 24, $orderBy = "DESC") {
 		$retVal = array();
 
-		$cache = \phpCache\Factory::getInstance()->create();
-
 		$oKey = new CacheKey(get_class($this).'::getHourAggregate', $hours.'|'.$orderBy);
-		
-		if (!$cache->check($oKey)) {
 
-			$db = \Database\Factory::getInstance();
+		if (!$this->cache->check($oKey)) {
 
-			$rResult = $db->execute("select
+			$rResult = $this->db->execute("select
 					strftime('%Y-%m-%d %H:00:00', `Date`) Date
 					, AVG(Pressure) Pressure
 					, AVG(WindSpeed) WindSpeed
@@ -95,14 +83,14 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 					datetime(`Date`) {$orderBy}
 					");
 
-					while ($tResult = $db->fetchAssoc($rResult)) {
-						array_push($retVal, $tResult);
-					}
+            while ($tResult = $this->db->fetchAssoc($rResult)) {
+                array_push($retVal, $tResult);
+            }
 
-					$cache->set($oKey, $retVal, 3600);
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR);
 
 		}else {
-			$retVal = $cache->get($oKey);
+			$retVal = $this->cache->get($oKey);
 		}
 
 		return $retVal;
@@ -112,15 +100,11 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	public function getDayAggregate($days = 7, $orderBy = "DESC") {
 		$retVal = array();
 
-		$cache = \phpCache\Factory::getInstance()->create();
-
 		$oKey = new CacheKey(get_class($this).'::getDayAggregate', $days.'|'.$orderBy);
 		
-		if (!$cache->check($oKey)) {
+		if (!$this->cache->check($oKey)) {
 
-			$db = \Database\Factory::getInstance();
-
-			$rResult = $db->execute("select
+			$rResult = $this->db->execute("select
 					date(`Date`) Date, AVG(Pressure) Pressure
 					, AVG(WindSpeed) WindSpeed
 					, MIN(Pressure) MinPressure
@@ -137,14 +121,14 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 					date(`Date`) {$orderBy}
 					");
 
-				while ($tResult = $db->fetchAssoc($rResult)) {
+				while ($tResult = $this->db->fetchAssoc($rResult)) {
 					array_push($retVal, $tResult);
 				}
 
-				$cache->set($oKey, $retVal, 3600);
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR * 8);
 
 		}else {
-			$retVal = $cache->get($oKey);
+			$retVal = $this->cache->get($oKey);
 		}
 
 		return $retVal;
@@ -154,15 +138,11 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 	public function getMonthlyAggregate($days = 24, $orderBy = "DESC") {
 		$retVal = array();
 	
-		$cache = \phpCache\Factory::getInstance()->create();
-	
 		$oKey = new CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
 	
-		if (!$cache->check($oKey)) {
+		if (!$this->cache->check($oKey)) {
 	
-			$db = \Database\Factory::getInstance();
-	
-			$rResult = $db->execute("select
+			$rResult = $this->db->execute("select
 					strftime('%Y-%m', `Date`) Date
 					, AVG(Pressure) Pressure
 					, AVG(WindSpeed) WindSpeed
@@ -180,14 +160,14 @@ class OpenWeatherMap extends Base implements \Interfaces\Model {
 					datetime(`Date`) {$orderBy}
 					");
 	
-					while ($tResult = $db->fetchAssoc($rResult)) {
-					array_push($retVal, $tResult);
-					}
-	
-				$cache->set($oKey, $retVal, 3600);
+            while ($tResult = $this->db->fetchAssoc($rResult)) {
+                array_push($retVal, $tResult);
+            }
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_DAY);
 	
 		} else {
-			$retVal = $cache->get($oKey);
+			$retVal = $this->cache->get($oKey);
 		}
 	
 		return $retVal;

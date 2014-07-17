@@ -31,72 +31,81 @@ class Readout extends Base implements \Interfaces\Model
 	);
 
 	public function getAverage($days = 1) {
-		
-		$db = \Database\Factory::getInstance();
-		
-		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
-		
-		$rResult = $db->execute("SELECT AVG(Temperature) Temperature, AVG(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'");
-		
-		return $db->fetch($rResult);
-		
+
+        $oKey = new CacheKey(get_class($this).'::getAverage', $days);
+
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
+            $rResult = $this->db->fetch($this->db->execute("SELECT AVG(Temperature) Temperature, AVG(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'"));
+
+            $this->cache->set($oKey, $rResult, self::CACHE_INTERVAL_HOUR * $days);
+        }
+
+        return $rResult;
 	}
 	
 	public function getMin($days = 1) {
-		
-		$db = \Database\Factory::getInstance();
-		
-		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
-		
-		$rResult = $db->execute("SELECT MIN(Temperature) Temperature, MIN(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'");
-		
-		return $db->fetch($rResult);
-		
+
+        $oKey = new CacheKey(get_class($this).'::getMin', $days);
+
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
+            $rResult = $this->db->fetch($this->db->execute("SELECT MIN(Temperature) Temperature, MIN(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'"));
+            $this->cache->set($oKey, $rResult, self::CACHE_INTERVAL_HOUR * $days);
+        }
+
+        return $rResult;
 	}
 	
 	public function getMax($days = 1) {
-		
-		$db = \Database\Factory::getInstance();
-		
-		$stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
-		
-		$rResult = $db->execute("SELECT MAX(Temperature) Temperature, MAX(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'");
-		
-		return $db->fetch($rResult);
-		
+
+        $oKey = new CacheKey(get_class($this).'::getMax', $days);
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
+            $rResult = $this->db->fetch($this->db->execute("SELECT MAX(Temperature) Temperature, MAX(Humidity) Humidity FROM {$this->tableName} WHERE Date>='{$stamp}'"));
+            $this->cache->set($oKey, $rResult, self::CACHE_INTERVAL_HOUR * $days);
+        }
+
+        return $rResult;
 	}
 	
 	public function getCurrent() {
-		
-		$db = \Database\Factory::getInstance();
-		
-		$rResult = $db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT 1");
-		
-		return $db->fetch($rResult);
+
+        $oKey = new CacheKey(get_class($this).'::getCurrent', 0);
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+		    $rResult = $this->db->fetch($this->db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT 1"));
+            $this->cache->set($oKey, $rResult, self::CACHE_INTERVAL_5_MINUTES);
+        }
+
+		return $rResult;
 		
 	}
 	
 	public function getHistory($skip = 0, $limit = 25) {
 		$retVal = array();
 
-		$cache = \phpCache\Factory::getInstance()->create();
-		
 		$oKey = new CacheKey(get_class($this).'::getHistory', $skip.'|'.$limit);
 		
-		if (!$cache->check($oKey)) {
+		if (!$this->cache->check($oKey)) {
 		
-			$db = \Database\Factory::getInstance();
-			
-			$rResult = $db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT {$limit} OFFSET {$skip}");
+			$rResult = $this->db->execute("SELECT * FROM {$this->tableName} ORDER BY `Date` DESC LIMIT {$limit} OFFSET {$skip}");
 	
-			while ($tResult = $db->fetchAssoc($rResult)) {
+			while ($tResult = $this->db->fetchAssoc($rResult)) {
 				array_push($retVal, $tResult);
 			}
-		
-			$cache->set($oKey, $retVal, 300);
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR);
 			
 		}else {
-			$retVal = $cache->get($oKey);
+			$retVal = $this->cache->get($oKey);
 		}
 			
 		return $retVal;
@@ -106,15 +115,11 @@ class Readout extends Base implements \Interfaces\Model
 	public function getDayAggregate($days = 7, $orderBy = "DESC") {
 		$retVal = array();
 	
-		$cache = \phpCache\Factory::getInstance()->create();
-	
 		$oKey = new CacheKey(get_class($this).'::getDayAggregate', $days.'|'.$orderBy);
 		
-		if (!$cache->check($oKey)) {
+		if (!$this->cache->check($oKey)) {
 		
-			$db = \Database\Factory::getInstance();
-		
-			$rResult = $db->execute("select 
+			$rResult = $this->db->execute("select
 						date(`Date`) Date, AVG(Temperature) Temperature 
 						, AVG(Humidity) Humidity
 						, MIN(Temperature) MinTemperature
@@ -131,14 +136,14 @@ class Readout extends Base implements \Interfaces\Model
 						date(`Date`) {$orderBy}
 	    			");
 		
-			while ($tResult = $db->fetchAssoc($rResult)) {
+			while ($tResult = $this->db->fetchAssoc($rResult)) {
 				array_push($retVal, $tResult);
 			}
-	
-			$cache->set($oKey, $retVal, 3600);
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR * 8);
 			
 		}else {
-			$retVal = $cache->get($oKey);
+			$retVal = $this->cache->get($oKey);
 		}
 		
 		return $retVal;
@@ -148,15 +153,11 @@ class Readout extends Base implements \Interfaces\Model
 	public function getHourAggregate($hours = 24, $orderBy = "DESC") {
 		$retVal = array();
 
-		$cache = \phpCache\Factory::getInstance()->create();
-
 		$oKey = new CacheKey(get_class($this).'::getHourAggregate', $hours.'|'.$orderBy);
 
-		if (!$cache->check($oKey)) {
+		if (!$this->cache->check($oKey)) {
 		
-			$db = \Database\Factory::getInstance();
-	
-			$rResult = $db->execute("select
+			$rResult = $this->db->execute("select
 					strftime('%Y-%m-%d %H:00:00', `Date`) Date
 					, AVG(Temperature) Temperature
 					, AVG(Humidity) Humidity
@@ -174,14 +175,14 @@ class Readout extends Base implements \Interfaces\Model
 						datetime(`Date`) {$orderBy}
 					");
 		
-			while ($tResult = $db->fetchAssoc($rResult)) {
+			while ($tResult = $this->db->fetchAssoc($rResult)) {
 				array_push($retVal, $tResult);
 			}
-	
-			$cache->set($oKey, $retVal, 3600);
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR);
 			
 		}else {
-			$retVal = $cache->get($oKey);
+			$retVal = $this->cache->get($oKey);
 		}
 		
 		return $retVal;
@@ -191,15 +192,11 @@ class Readout extends Base implements \Interfaces\Model
 	public function getMonthlyAggregate($days = 24, $orderBy = "DESC") {
 		$retVal = array();
 	
-		$cache = \phpCache\Factory::getInstance()->create();
-	
 		$oKey = new CacheKey(get_class($this).'::getMonthlyAggregate', $days.'|'.$orderBy);
 	
-		if (!$cache->check($oKey)) {
+		if (!$this->cache->check($oKey)) {
 	
-			$db = \Database\Factory::getInstance();
-	
-			$rResult = $db->execute("select
+			$rResult = $this->db->execute("select
 					strftime('%Y-%m', `Date`) Date
 					, AVG(Temperature) Temperature
 					, AVG(Humidity) Humidity
@@ -217,18 +214,17 @@ class Readout extends Base implements \Interfaces\Model
 					datetime(`Date`) {$orderBy}
 					");
 	
-			while ($tResult = $db->fetchAssoc($rResult)) {
+			while ($tResult = $this->db->fetchAssoc($rResult)) {
 				array_push($retVal, $tResult);
 			}
-	
-			$cache->set($oKey, $retVal, 3600);
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_DAY);
 				
-		}else {
-			$retVal = $cache->get($oKey);
+		} else {
+			$retVal = $this->cache->get($oKey);
 		}
 	
 		return $retVal;
-	
 	}
 	
 }
