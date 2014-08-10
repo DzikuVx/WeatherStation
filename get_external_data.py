@@ -9,6 +9,7 @@ Data acquisited:
 
 '''
 import urllib2, json, sqlite3, os
+import Adafruit_BMP.BMP085 as BMP085
 
 from openweatherconfig import config
 
@@ -20,7 +21,10 @@ def fetchJSON(url):
 def processData(json):
 
 	out = {}
-	out['pressure'] = json["main"]["pressure"]
+
+	sensor = BMP085.BMP085()
+
+	out['pressure'] = int(sensor.read_sealevel_pressure(35) / 100)
 	out['wind-direction'] = json["wind"]["deg"]
 	out['wind-speed'] = json["wind"]["speed"]
 

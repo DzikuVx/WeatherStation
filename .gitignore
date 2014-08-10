@@ -2,6 +2,7 @@ data.db
 /.settings/
 /*.pyc
 diagram.ps
+aggregate.log
 
 website/.idea/*
 website/logs/error.log

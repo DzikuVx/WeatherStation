@@ -14,9 +14,17 @@ def main():
 	if data == None:
 		exit()
 
+	cur = conn.cursor()
+	cur.execute('SELECT Pressure FROM external_data ORDER BY `Date` DESC LIMIT 1')
+
+	dataExt = cur.fetchone()
+
+	if dataExt == None:
+		exit()
+
 	conn.close()
 
-	callScript = "curl -d 'humidity="+str(data[1])+"&temp="+str(data[0])+"&"+config['coords']+"' --user '"+config['user']+":"+config['password']+"' http://openweathermap.org/data/post"
+	callScript = "curl -d 'pressure="+str(dataExt[0])+"&humidity="+str(data[1])+"&temp="+str(data[0])+"&"+config['coords']+"' --user '"+config['user']+":"+config['password']+"' http://openweathermap.org/data/post"
 
 	#print callScript
 
