@@ -24,7 +24,7 @@ def processData(json):
 
 	sensor = BMP085.BMP085()
 
-	out['pressure'] = int(sensor.read_sealevel_pressure(35) / 100)
+	out['pressure'] = round(sensor.read_sealevel_pressure(35) / 100, 1)
 	out['wind-direction'] = json["wind"]["deg"]
 	out['wind-speed'] = json["wind"]["speed"]
 
