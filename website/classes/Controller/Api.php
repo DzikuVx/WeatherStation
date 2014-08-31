@@ -119,17 +119,31 @@ class Api extends Base implements \Interfaces\Singleton {
             $aRetVal['Clouds'] = 0;
         }
 
-        if (isset($jCurrent->rain)) {
+        if (isset($jCurrent->rain) && isset($jCurrent->rain->{'3h'})) {
             $aRetVal['Rain'] = $jCurrent->rain->{'3h'};
         } else {
             $aRetVal['Rain'] = 0;
         }
 
-        if (isset($jCurrent->snow)) {
+	if (isset($jCurrent->rain) && isset($jCurrent->rain->{'1h'})) {
+            $aRetVal['Rain'] = $jCurrent->rain->{'1h'};
+        } else {
+            $aRetVal['Rain'] = 0;
+        }
+
+
+        if (isset($jCurrent->snow) && isset($jCurrent->snow->{'3h'})) {
             $aRetVal['Snow'] = $jCurrent->snow->{'3h'};
         } else {
             $aRetVal['Snow'] = 0;
         }
+
+	if (isset($jCurrent->snow) && isset($jCurrent->snow->{'1h'})) {
+            $aRetVal['Snow'] = $jCurrent->snow->{'1h'};
+        } else {
+            $aRetVal['Snow'] = 0;
+        }
+
 
         $oForecast = $proxyFactory->create('Forecast')->get();
         $jForecast = json_decode($oForecast);
