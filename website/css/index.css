@@ -1,7 +1,8 @@
 @CHARSET "UTF-8";
 
 body {
-
+    padding-top: 70px;
+    padding-bottom: 30px;
 }
 
 .center {
@@ -31,20 +32,12 @@ img.no-resize {
 	font-size: 0.9em;
 }
 
-footer {
-	font-size: 0.8em;
-}
-
 .chart {
 	height: 250px;
 	margin-bottom: 1em;
 	border-radius: 1em;
 	padding: 1em;
 	background-color: #fff;
-}
-
-.overview-row {
-	margin-top: 1em;
 }
 
 .statistics-box {
