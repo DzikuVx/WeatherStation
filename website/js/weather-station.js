@@ -51,25 +51,30 @@ WeatherStation.overview = (function() {
 	};
 
 	self.renderOverview = function(json) {
+
+        /** @namespace json.list */
+        var list0 = json.list[0],
+            list1 = json.list[1];
+
 		/*
 		 * Today
 		 */
-        $('#icon-today').attr('src', 'http://openweathermap.org/img/w/' + json.list[0].weather[0].icon + '.png').removeClass('hidden');
-		$('#today-temperature').html(json.list[0].temp.day);
-		$('#today-humidity').html(json.list[0].humidity);
-		$('#today-pressure').html(parseInt(json.list[0].pressure, 10));
-		$('#today-speed').html(parseInt(json.list[0].speed, 10));
-		$('#today-direction').html(parseInt(json.list[0].deg, 10));
+        $('#icon-today').attr('src', 'http://openweathermap.org/img/w/' + list0.weather[0].icon + '.png').removeClass('hidden');
+		$('#today-temperature').html(list0.temp.day);
+		$('#today-humidity').html(list0.humidity);
+		$('#today-pressure').html(parseInt(list0.pressure, 10));
+		$('#today-speed').html(parseInt(list0.speed, 10));
+		$('#today-direction').html(parseInt(list0.deg, 10));
 
 		/*
 		 * Tomorrow
 		 */
-		$('#icon-tomorrow').attr('src', 'http://openweathermap.org/img/w/' + json.list[1].weather[0].icon + '.png').removeClass('hidden');
-		$('#tomorrow-temperature').html(json.list[1].temp.day);
-		$('#tomorrow-humidity').html(json.list[1].humidity);
-		$('#tomorrow-pressure').html(parseInt(json.list[1].pressure, 10));
-		$('#tomorrow-speed').html(parseInt(json.list[1].speed, 10));
-		$('#tomorrow-direction').html(parseInt(json.list[1].deg, 10));
+		$('#icon-tomorrow').attr('src', 'http://openweathermap.org/img/w/' + list1.weather[0].icon + '.png').removeClass('hidden');
+		$('#tomorrow-temperature').html(list1.temp.day);
+		$('#tomorrow-humidity').html(list1.humidity);
+		$('#tomorrow-pressure').html(parseInt(list1.pressure, 10));
+		$('#tomorrow-speed').html(parseInt(list1.speed, 10));
+		$('#tomorrow-direction').html(parseInt(list1.deg, 10));
 	};
 
 	self.renderForecast = function(json) {
@@ -122,11 +127,11 @@ WeatherStation.overview = (function() {
 	};
 	
 	self.onError = function () {
-		$.pnotify({
-			title : 'U la la...',
-			text : 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
-			type : 'error'
-		});
+        new PNotify({
+            title: 'U la la...',
+            text: 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
+            type: 'error'
+        });
 	};
 	
 	/**
