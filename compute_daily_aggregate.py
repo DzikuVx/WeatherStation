@@ -41,7 +41,9 @@ def computeSensor(sensor, dayMinus):
 
 def main(args):
 	
-	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/aggregate.log',level=logging.ERROR)
+	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/aggregate.log',level=logging.DEBUG)
+
+	#logging.basicConfig(filename='aggregate.log',level=logging.DEBUG)
 
 	dayMinus = 1;
 
@@ -60,6 +62,8 @@ def main(args):
 
 	computeSensor('internal', dayMinus)
 	computeSensor('external', dayMinus)
+
+	logging.info('Finished at ' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'));
 
 if __name__ == "__main__":
     main(sys.argv[1:])
