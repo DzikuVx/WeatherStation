@@ -23,7 +23,8 @@ Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 * Do electrical stuff like showed on diagram. It's really simple
 * Enable I2C in your Raspberry Pi. You can use example from [instructables](http://www.instructables.com/id/Raspberry-Pi-I2C-Python/)
 * Install [Adafruit BMP Python library](https://learn.adafruit.com/using-the-bmp085-with-raspberry-pi/using-the-adafruit-bmp-python-library)
-```sudo apt-get update
+```
+sudo apt-get update
 sudo apt-get install git build-essential python-dev python-smbus
 git clone https://github.com/adafruit/Adafruit_Python_BMP.git
 cd Adafruit_Python_BMP
