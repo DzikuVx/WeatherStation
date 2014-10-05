@@ -6,19 +6,28 @@ Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
 #Electrical diagram
 
-![diagram](diagram.png)
+![diagram](/assets/img/WeatherStation_schem.png)
 
 ## Requirements
 
 * BCM2835 C Library
+* BMP180 (or BMP085) I2C pressure sensor
 * python
 * php5 with SQLite3 enabled
 * SQLite3
+* I2C enabled Raspberry Pi Raspbian distribution
 * any web server: nginx recomended
 
 # Installation
 
 * Do electrical stuff like showed on diagram. It's really simple
+* Enable I2C in your Raspberry Pi. You can use example from [instructables](http://www.instructables.com/id/Raspberry-Pi-I2C-Python/)
+* Install [Adafruit BMP Python library](https://learn.adafruit.com/using-the-bmp085-with-raspberry-pi/using-the-adafruit-bmp-python-library)
+```sudo apt-get update
+sudo apt-get install git build-essential python-dev python-smbus
+git clone https://github.com/adafruit/Adafruit_Python_BMP.git
+cd Adafruit_Python_BMP
+sudo python setup.py install```
 * check if you have SQLite3 PHP library. If not, or not sure, install it `sudo apt-get install php5-sqlite3`
 * check if you have BCM2835 C Library installed. If not, setup instruction is in the next paragraph 
 * clone this repository `git clone git@github.com:DzikuVx/WeatherStation.git`
