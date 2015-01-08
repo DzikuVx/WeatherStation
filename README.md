@@ -10,7 +10,9 @@ Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
 ## Requirements
 
-* BCM2835 C Library
+* Raspberry Pi
+* pigpio library installed
+* DHT22 temperature and humidity sensor
 * BMP180 (or BMP085) I2C pressure sensor
 * python
 * php5 with SQLite3 enabled
@@ -30,8 +32,16 @@ git clone https://github.com/adafruit/Adafruit_Python_BMP.git
 cd Adafruit_Python_BMP
 sudo python setup.py install
 ```
+* install [pigpio library](http://abyz.co.uk/rpi/pigpio/)
+```
+wget abyz.co.uk/rpi/pigpio/pigpio.zip
+unzip pigpio.zip
+cd PIGPIO
+make
+make install
+```
+* pigpio has to be running as a service, so add `sudo /home/pi/PIGPIO/pigpiod` to `/etc/rc.local`
 * check if you have SQLite3 PHP library. If not, or not sure, install it `sudo apt-get install php5-sqlite3`
-* check if you have BCM2835 C Library installed. If not, setup instruction is in the next paragraph 
 * clone this repository `git clone git@github.com:DzikuVx/WeatherStation.git`
 * `cd WeatherStation`
 * get all submodules while inside repository root folder:
@@ -70,15 +80,6 @@ To serve its purpose, WeatherStation need to collect data on regular basis. That
 * Upload data to OpenWeatherMap.org (because we like to share, don't we?) `*/30 * * * * python /home/pi/WeatherStation/upload_data.py`
 * For best webpage performance, prefetch forecast and history `*/30 * * * * wget http://weather.spychalski.info/cron.php`
 
-# BCM2835 C Library installation
-
-* `wget http://www.open.com.au/mikem/bcm2835/bcm2835-1.8.tar.gz`
-* `tar -zxvf bcm2835-1.8.tar.gz`
-* `cd bcm2835-1.8`
-* `./configure`
-* `make`
-* `sudo make install`
-
 # Example nginx configuration
 
 ```
@@ -106,10 +107,6 @@ server {
 }
 
 ```
-
-# Legal stuff
-
-sensor_driver.c readout is based on https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code/tree/master/Adafruit_DHT_Driver by Adafruite
 
 #Screenhoths
 ## Forecast
