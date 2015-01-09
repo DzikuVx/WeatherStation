@@ -47,7 +47,6 @@ make install
 * get all submodules while inside repository root folder:
 ** `git submodule init`
 ** `git submodule update`
-* build sensor driver `sh build_sensor.sh`
 * check if sensors are working `python get_data.py`
 * configure Raspberry Pi web server, example configuration for nginx, PHP5-FMP and domain http://weather.spychalski.info included below
 * that's all
