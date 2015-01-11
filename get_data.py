@@ -27,7 +27,10 @@ def saveSQLite(data):
 	
 def main():
 
-	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/dht22.log',level=logging.DEBUG)
+	FORMAT = '%(asctime)-15s %(message)s'
+	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/dht22.log',level=logging.DEBUG, format=FORMAT)
+	logger = logging.getLogger('dht22')
+
 	print "DHT22 Sensor:"
 
 	readout = None
@@ -37,10 +40,14 @@ def main():
 	try:
 		pi = pigpio.pi()
 	except ValueError:
-		print "Failed to connect to PIGPIO"
-		logging.error('Failed to connect to PIGPIO');
+		print "Failed to connect to PIGPIO (%s)"
+		logger.error('Failed to connect to PIGPIO (%s)', ValueError);
 
+	try:
 		sensor = DHT22.sensor(pi, 17)
+	except ValueError:
+		print "Failed to connect to DHT22"
+		logger.error('Failed to connect to DHT22 (%s)', ValueError);
 
 	while (readout == None and counter < 5):
 
