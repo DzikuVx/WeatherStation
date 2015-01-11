@@ -41,7 +41,7 @@ def computeSensor(sensor, dayMinus):
 
 def main(args):
 	
-	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/aggregate.log',level=logging.DEBUG)
+	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/aggregate.log',level=logging.ERROR)
 
 	#logging.basicConfig(filename='aggregate.log',level=logging.DEBUG)
 

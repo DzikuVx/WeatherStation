@@ -11,6 +11,8 @@ import time, os
 import sqlite3
 import pigpio
 import DHT22
+import logging
+import datetime
 
 def saveSQLite(data):
 	
@@ -25,14 +27,20 @@ def saveSQLite(data):
 	
 def main():
 
-	print "External Sensor:"
+	logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/dht22.log',level=logging.DEBUG)
+	print "DHT22 Sensor:"
 
 	readout = None
 
 	counter = 0
 
-	pi = pigpio.pi()
-	sensor = DHT22.sensor(pi, 17)
+	try:
+		pi = pigpio.pi()
+	except ValueError:
+		print "Failed to connect to PIGPIO"
+		logging.error('Failed to connect to PIGPIO');
+
+		sensor = DHT22.sensor(pi, 17)
 
 	while (readout == None and counter < 5):
 
