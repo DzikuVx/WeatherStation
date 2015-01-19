@@ -60,21 +60,21 @@ WeatherStation.overview = (function() {
 		 * Today
 		 */
         $('#icon-today').attr('src', 'http://openweathermap.org/img/w/' + list0.weather[0].icon + '.png').removeClass('hidden');
-		$('#today-temperature').html(list0.temp.day);
-		$('#today-humidity').html(list0.humidity);
-		$('#today-pressure').html(parseInt(list0.pressure, 10));
-		$('#today-speed').html(parseInt(list0.speed, 10));
-		$('#today-direction').html(parseInt(list0.deg, 10));
+		$('#today-temperature').html(Math.round(parseFloat(list0.temp.day, 10)));
+		$('#today-humidity').html(Math.round(parseFloat(list0.humidity, 10)));
+		$('#today-pressure').html(Math.round(parseFloat(list0.pressure, 10)));
+		$('#today-speed').html(Math.round(parseFloat(list0.speed, 10)));
+		$('#today-direction').html(Math.round(parseFloat(list0.deg, 10) / 10) * 10);
 
 		/*
 		 * Tomorrow
 		 */
 		$('#icon-tomorrow').attr('src', 'http://openweathermap.org/img/w/' + list1.weather[0].icon + '.png').removeClass('hidden');
-		$('#tomorrow-temperature').html(list1.temp.day);
-		$('#tomorrow-humidity').html(list1.humidity);
-		$('#tomorrow-pressure').html(parseInt(list1.pressure, 10));
-		$('#tomorrow-speed').html(parseInt(list1.speed, 10));
-		$('#tomorrow-direction').html(parseInt(list1.deg, 10));
+		$('#tomorrow-temperature').html(Math.round(parseFloat(list1.temp.day, 10)));
+		$('#tomorrow-humidity').html(Math.round(parseFloat(list1.humidity, 10)));
+		$('#tomorrow-pressure').html(Math.round(parseFloat(list1.pressure, 10)));
+		$('#tomorrow-speed').html(Math.round(parseFloat(list1.speed, 10)));
+		$('#tomorrow-direction').html(Math.round(parseFloat(list1.deg, 10) / 10) * 10);
 	};
 
 	self.renderForecast = function(json) {
@@ -113,11 +113,11 @@ WeatherStation.overview = (function() {
 					'src',
 					'http://openweathermap.org/img/w/' + json.list[i].weather[0].icon + '.png');
 			
-			currentElement.find('[data-type=temperature]').html(json.list[i].temp.day);
-			currentElement.find('[data-type=humidity]').html(json.list[i].humidity);
-			currentElement.find('[data-type=pressure]').html(json.list[i].pressure);
-			currentElement.find('[data-type=speed]').html(json.list[i].speed);
-			currentElement.find('[data-type=direction]').html(json.list[i].deg);
+			currentElement.find('[data-type=temperature]').html(Math.round(parseFloat(json.list[i].temp.day, 10)));
+			currentElement.find('[data-type=humidity]').html(Math.round(parseFloat(json.list[i].humidity, 10)));
+			currentElement.find('[data-type=pressure]').html(Math.round(parseFloat(json.list[i].pressure, 10)));
+			currentElement.find('[data-type=speed]').html(Math.round(parseFloat(json.list[i].speed, 10)));
+			currentElement.find('[data-type=direction]').html(Math.round(parseFloat(json.list[i].deg, 10) / 10) * 10);
 			
 			date = new Date(json.list[i].dt * 1000);
 			currentElement.find('[data-type=date]').html(date.getFullYear() + '-' + pad((date.getMonth()+1),2) + '-' + pad(date.getDate(), 2));

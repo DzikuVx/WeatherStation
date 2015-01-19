@@ -21,7 +21,10 @@ class Overview extends Base {
 		$oTemplate = new Templater('overview.html');
 
 		$oCurrent = $this->model->getCurrent();
-		$oTemplate->add($oCurrent);
+        $oCurrent->Temperature = Formater::formatFloat($oCurrent->Temperature, 0);
+        $oCurrent->Humidity = Formater::formatFloat($oCurrent->Humidity, 0);
+
+        $oTemplate->add($oCurrent);
 
         $oTemplate->add('LastReadout', $oCurrent->Date);
 
@@ -49,11 +52,16 @@ class Overview extends Base {
 		$oTemplate->add('7dTempMax', Formater::formatFloat($oData->Temperature, 2));
 		$oTemplate->add('7dHumidityMax', Formater::formatFloat($oData->Humidity, 2));
 
-		/*
-		 * External data from Open Weather Map
-		 */
+        /*
+         * External data from Open Weather Map
+         */
 		$oOpenWeatherMap = new \Model\OpenWeatherMap();
 		$oCurrent = $oOpenWeatherMap->getCurrent();
+
+        $oCurrent->Pressure = Formater::formatFloat($oCurrent->Pressure, 0);
+        $oCurrent->WindSpeed = Formater::formatFloat($oCurrent->WindSpeed, 0);
+        $oCurrent->WindDirection = Formater::formatFloat(round($oCurrent->WindDirection / 10) * 10, 0);
+
 		$oTemplate->add($oCurrent);
 		
 		$oData = $oOpenWeatherMap->getAverage(1);
@@ -86,7 +94,6 @@ class Overview extends Base {
 		$oTemplate->add('proxyForecast', $proxyFactory->create('Forecast')->get());
 
 		return (string) $oTemplate;
-		
 	}
 
 	public function charts()

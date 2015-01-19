@@ -142,6 +142,7 @@ class Formater extends StaticUtils {
     }
 
     static public function formatFloat($value, $decimal) {
+        $value = round($value, $decimal);
     	$retVal = number_format($value, $decimal, ",", " ");
     	return $retVal;
     }
