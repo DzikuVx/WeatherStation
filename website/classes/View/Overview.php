@@ -114,14 +114,14 @@ class Overview extends Base {
 		$oTemplate = new Templater('chartHead.html');
 		
 		/**
-		 * Data from OpenWeatherMap.orh
+		 * Data from OpenWeatherMap.org
 		 */
 		$oOpenWeatherMap = new \Model\OpenWeatherMap();
 		
-		$aHistory = $oOpenWeatherMap->getHourAggregate(120,"ASC");
+		$aHistory = $oOpenWeatherMap->getHourAggregate(168,"ASC");
 
 		$oChartHourPressure = new \General\GoogleChart();
-		$oChartHourPressure->setTitle($t->get('Pressure'));
+		$oChartHourPressure->setTitle($t->get('Pressure') . " [hPa]");
 		$oChartHourPressure->setDomID('chartHourPressure');
 		$oChartHourPressure->add('Hour', array());
 		$oChartHourPressure->add('Min', array());
@@ -134,19 +134,33 @@ class Overview extends Base {
 		}
 		$oTemplate->add('chartHourPressure',$oChartHourPressure->getHead());
 
+        $oChartHourWindSpeed = new \General\GoogleChart();
+        $oChartHourWindSpeed->setTitle($t->get('Wind speed') . " [m/s]");
+        $oChartHourWindSpeed->setDomID('chartHourWindSpeed');
+        $oChartHourWindSpeed->add('Hour', array());
+        $oChartHourWindSpeed->add('Min', array());
+
+        foreach ($aHistory as $oReadout) {
+
+            $oChartHourWindSpeed->push('Hour', Formater::formatTime($oReadout['Date']));
+            $oChartHourWindSpeed->push('Min', number_format($oReadout['WindSpeed'],2,'.',''));
+
+        }
+        $oTemplate->add('chartHourWindSpeed',$oChartHourWindSpeed->getHead());
+
 		/*
 		 * Hour Aggregate charts
 		 */
-		$aHistory = $this->model->getHourAggregate(120,"ASC");
+		$aHistory = $this->model->getHourAggregate(168,"ASC");
 		
 		$oChartHourTemperature = new \General\GoogleChart();
-		$oChartHourTemperature->setTitle($t->get('Temperature'));
+		$oChartHourTemperature->setTitle($t->get('Temperature') . " [C]");
 		$oChartHourTemperature->setDomID('chartHourTemperature');
 		$oChartHourTemperature->add('Hour', array());
 		$oChartHourTemperature->add('Avg', array());
 		
 		$oChartHourHumidity = new \General\GoogleChart();
-		$oChartHourHumidity->setTitle($t->get('Humidity'));
+		$oChartHourHumidity->setTitle($t->get('Humidity') . " [%]");
 		$oChartHourHumidity->setDomID('chartHourHumidity');
 		$oChartHourHumidity->add('Hour', array());
 		$oChartHourHumidity->add('Avg', array());
