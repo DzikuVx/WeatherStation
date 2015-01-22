@@ -2,6 +2,10 @@
 
 Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
+Live example located in Szczecin, Poland can be found here: http://weather.spychalski.info/
+
+Blog: http://shtr.eu/
+
 ![screenshot](/assets/img/screen1.png)
 
 #Electrical diagram
