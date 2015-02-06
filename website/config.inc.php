@@ -2,7 +2,7 @@
 
 $config = array();
 
-$config['cacheMethod'] = 'Mem';
+$config['cacheMethod'] = 'Memcached';
 
 $config['useLocalDataMockup'] = false;
 
