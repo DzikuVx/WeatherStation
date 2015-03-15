@@ -34,7 +34,16 @@ abstract class AbstractProxy implements Proxy{
 	protected function loadData($sUrl) {
 		
 		try {
-			$retVal = trim(file_get_contents($sUrl));
+            /*
+             * 10 seconds timeout, just to be safe
+             */
+            $ctx = stream_context_create(array('http'=>
+                array(
+                    'timeout' => 5
+                )
+            ));
+
+			$retVal = trim(file_get_contents($sUrl, false, $ctx));
 		}catch(\Exception $e) {
 			throw new NetworkException($e->getMessage(), $e->getCode(), $e);
 		}
