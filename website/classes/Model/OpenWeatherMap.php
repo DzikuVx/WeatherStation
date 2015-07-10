@@ -7,8 +7,6 @@ namespace Model;
  * @author pawel
  *
  */
-use phpCache\CacheKey;
-
 class OpenWeatherMap extends Base implements \Interfaces\Model {
 
 	protected $tableName = 'external_data';

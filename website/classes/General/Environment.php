@@ -2,8 +2,8 @@
 
 namespace General;
 
-use \phpCache\Memcached as Memcached;
-use \phpCache\Apc as Apc;
+use PhpCache\Memcached as Memcached;
+use PhpCache\PhpCache;
 
 /**
  * 
@@ -38,10 +38,9 @@ class Environment extends StaticUtils {
         /*
          * Set caching configuration
          */
-        \phpCache\Factory::$sDefaultMechanism = \General\Config::getInstance()->get('cacheMethod');
+        PhpCache::$sDefaultMechanism = Config::getInstance()->get('cacheMethod');
         Memcached::$host = Config::getInstance()->get('memcachedIP');
         Memcached::$port = Config::getInstance()->get('memcachedPort');
-        Apc::sSetPrefix('weather');
 
         \Translate\Controller::setDefaultLanguage('pl');
 		

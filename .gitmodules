@@ -1,6 +1,1 @@
-[submodule "website/assets/pnotify"]
-	path = website/assets/pnotify
-	url = git@github.com:sciactive/pnotify.git
-[submodule "website/classes/phpCache"]
-	path = website/classes/phpCache
-	url = git@github.com:DzikuVx/phpCache.git
+
