@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="675c4433-71ba-4f03-8b0b-8793f0d2921e" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/website/classes/General/Debug.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/pspychalski/debug/src/Debug.php" afterPath="$PROJECT_DIR$/vendor/pspychalski/debug/src/Debug.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/classes/General/Environment.php" afterPath="$PROJECT_DIR$/website/classes/General/Environment.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/classes/Controller/Main.php" afterPath="$PROJECT_DIR$/website/classes/Controller/Main.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/classes/Model/OpenWeatherMap.php" afterPath="$PROJECT_DIR$/website/classes/Model/OpenWeatherMap.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/common.php" afterPath="$PROJECT_DIR$/website/common.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/config.inc.php" afterPath="$PROJECT_DIR$/website/config.inc.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/vendor/composer/installed.json" afterPath="$PROJECT_DIR$/vendor/composer/installed.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="675c4433-71ba-4f03-8b0b-8793f0d2921e" name="Default" comment="" />
     <ignored path="WeatherStation.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -124,8 +112,8 @@
       <file leaf-file-name="OpenWeatherMap.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/website/classes/Model/OpenWeatherMap.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.4284078">
-              <caret line="64" column="26" selection-start-line="64" selection-start-column="26" selection-end-line="64" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.1626575">
+              <caret line="137" column="21" selection-start-line="137" selection-start-column="21" selection-end-line="137" selection-end-column="21" />
               <folding>
                 <marker date="1436530856000" expanded="true" signature="418:479" placeholder="SELECT * FRO..." />
                 <marker date="1436530856000" expanded="true" signature="671:773" placeholder="SELECT AVG(P..." />
@@ -239,38 +227,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="website" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeatherStation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeatherStation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="website" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeatherStation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WeatherStation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -541,8 +497,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/classes/Model/OpenWeatherMap.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.4284078">
-          <caret line="64" column="26" selection-start-line="64" selection-start-column="26" selection-end-line="64" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.1626575">
+          <caret line="137" column="21" selection-start-line="137" selection-start-column="21" selection-end-line="137" selection-end-column="21" />
           <folding>
             <marker date="1436530856000" expanded="true" signature="418:479" placeholder="SELECT * FRO..." />
             <marker date="1436530856000" expanded="true" signature="671:773" placeholder="SELECT AVG(P..." />
