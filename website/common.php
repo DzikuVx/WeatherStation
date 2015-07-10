@@ -3,6 +3,8 @@
 require_once 'classes/General/Autoloader.php';
 \General\Autoloader::register();
 
+require_once "../vendor/autoload.php";
+
 \General\Debug::$displayErrors = true;
 \General\Debug::$displayTrace = true;
 \General\Debug::$sendTrace  = false;
