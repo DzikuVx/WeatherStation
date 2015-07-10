@@ -4,6 +4,7 @@ namespace General;
 
 use PhpCache\Memcached as Memcached;
 use PhpCache\PhpCache;
+use Translate\Controller;
 
 /**
  * 
@@ -42,7 +43,7 @@ class Environment extends StaticUtils {
         Memcached::$host = Config::getInstance()->get('memcachedIP');
         Memcached::$port = Config::getInstance()->get('memcachedPort');
 
-        \Translate\Controller::setDefaultLanguage('pl');
+        Controller::setDefaultLanguage('pl');
 		
 	}
 }

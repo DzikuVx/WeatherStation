@@ -3,6 +3,7 @@ namespace Controller;
 
 use Exception;
 use \General\CustomException as CustomException;
+use psDebug\Debug;
 
 class Main extends Base implements \Interfaces\Singleton {
 
@@ -96,10 +97,10 @@ class Main extends Base implements \Interfaces\Singleton {
 			
 		}
 		catch ( CustomException $e ) {
-			$template->add('mainContent',\General\Debug::cThrow ( $e->getMessage (), $e, array ('send' => false, 'display' => false ) ));
+			$template->add('mainContent', Debug::cThrow ( $e->getMessage (), $e, array ('send' => false, 'display' => false ) ));
 		}
 		catch ( Exception $e ) {
-			$template->add('mainContent',\General\Debug::cThrow ( null, $e ));
+			$template->add('mainContent', Debug::cThrow ( null, $e ));
 		}
 
 		$template->add('chartHead', '');

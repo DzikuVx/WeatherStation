@@ -107,8 +107,8 @@ class Debug
             ini_set('display_errors', 0);
         }
 
-        set_error_handler(array('\DzikuVx\Debug', "errorHandler"), $flags);
-        set_exception_handler(array('\DzikuVx\Debug', "exceptionHandler"));
+        set_error_handler(array('\psDebug\Debug', "errorHandler"), $flags);
+        set_exception_handler(array('\psDebug\Debug', "exceptionHandler"));
 
     }
 

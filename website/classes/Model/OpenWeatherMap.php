@@ -1,6 +1,7 @@
 <?php
 
 namespace Model;
+use PhpCache\CacheKey;
 
 /**
  * Class gets data from OpenWeatherMap stored in external_data table

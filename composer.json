@@ -2,7 +2,7 @@
   "name": "Raspberry Pi WeatherStation",
   "require": {
     "php": ">=5.4",
-    "pspychalski/debug": "1.0.0",
+    "pspychalski/debug": "1.0.1",
     "pspychalski/phpcache": "1.1.1"
   }
 }

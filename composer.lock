@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1afa81c6549fced9bed577b187bad5a4",
+    "hash": "26f0e6749278ed32b310d7c54688bd70",
     "packages": [
         {
             "name": "predis/predis",
@@ -58,16 +58,16 @@
         },
         {
             "name": "pspychalski/debug",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DzikuVx/Debug.git",
-                "reference": "974a423850a6c7beca6fe45d167c8d3b82a51a3c"
+                "reference": "5335fac5a6b15e785874173987c5877831e7cfd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DzikuVx/Debug/zipball/974a423850a6c7beca6fe45d167c8d3b82a51a3c",
-                "reference": "974a423850a6c7beca6fe45d167c8d3b82a51a3c",
+                "url": "https://api.github.com/repos/DzikuVx/Debug/zipball/5335fac5a6b15e785874173987c5877831e7cfd8",
+                "reference": "5335fac5a6b15e785874173987c5877831e7cfd8",
                 "shasum": ""
             },
             "require": {
@@ -92,7 +92,7 @@
                 }
             ],
             "description": "Unify PHP way of handling errors and exceptions. Just convert everything into exception.",
-            "time": "2015-05-07 11:15:27"
+            "time": "2015-07-10 12:05:29"
         },
         {
             "name": "pspychalski/phpcache",
