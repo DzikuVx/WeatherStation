@@ -1,0 +1,25 @@
+{
+  "name": "pspychalski/phpcache",
+  "license": "MIT",
+  "description": "phpCache is object PHP >=5 cache wrapper that offers similar way of handling various caching mechanisms",
+  "require": {
+    "php": ">=5.3.0",
+    "predis/predis": "1.0.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "authors": [
+        {
+            "name": "Paweł Spychalski",
+            "email": "pspychalski@gmail.com",
+            "homepage": "http://shtr.eu",
+            "role": "Developer"
+        }
+    ],
+  "autoload": {
+    "psr-4": {
+      "PhpCache\\": "src"
+    }
+  }
+}

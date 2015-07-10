@@ -1,14 +1,13 @@
 <?php
 
 namespace Model;
+use PhpCache\CacheKey;
 
 /**
  * Class gets data from OpenWeatherMap stored in external_data table
  * @author pawel
  *
  */
-use phpCache\CacheKey;
-
 class OpenWeatherMap extends Base implements \Interfaces\Model {
 
 	protected $tableName = 'external_data';
