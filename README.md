@@ -1,5 +1,20 @@
 # WeatherStation
 
+##
+
+If you have an error `Fatal error: Class 'phpCache\Factory' not found`
+try the following
+
+```
+cd website/classes/phpCache
+git fetch
+git checkout legacy
+```
+
+Real fix is on its way
+
+## Back to normal
+
 Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
 Live example located in Szczecin, Poland can be found here: http://weather.spychalski.info/
