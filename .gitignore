@@ -5,5 +5,7 @@ diagram.ps
 aggregate.log
 dht22.log
 
+twitter/.idea/
+
 website/.idea/*
 website/logs/error.log
