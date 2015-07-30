@@ -1,3 +1,6 @@
+/* global weatherProxy */
+/* global PNotify */
+/* global $ */
 function pad(a,b){
 	return(1e15+a+"").slice(-b);
 }

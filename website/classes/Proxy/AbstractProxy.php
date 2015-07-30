@@ -5,6 +5,8 @@ use General\Config;
 use General\Debug;
 
 use Interfaces\Proxy;
+use PhpCache\CacheKey;
+use PhpCache\PhpCache;
 
 abstract class AbstractProxy implements Proxy{
 	
@@ -56,7 +58,7 @@ abstract class AbstractProxy implements Proxy{
 	}
 	
 	protected function createCacheKey($aParams = null) {
-        return new \phpCache\CacheKey($this, md5(serialize($aParams).$this->getUrl()));
+        return new CacheKey($this, md5(serialize($aParams).$this->getUrl()));
 	}
 
     /**
@@ -68,7 +70,7 @@ abstract class AbstractProxy implements Proxy{
         $sFile = '';
 
 		$oCacheKey = $this->createCacheKey($aParams);
-		$cache = \phpCache\Factory::getInstance()->create();
+		$cache = PhpCache::getInstance()->create();
 		
 		try {
 		
@@ -91,7 +93,7 @@ abstract class AbstractProxy implements Proxy{
 	 * @param array $aParams
 	 */
 	public function forceReload($aParams = null) {
-		\phpCache\Factory::getInstance()->create()->set($this->createCacheKey($aParams), $this->loadData($this->getUrl()), $this->cacheTime);
+		PhpCache::getInstance()->create()->set($this->createCacheKey($aParams), $this->loadData($this->getUrl()), $this->cacheTime);
 	}
 	
 }

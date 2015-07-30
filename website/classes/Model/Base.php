@@ -2,11 +2,10 @@
 
 namespace Model;
 
-use \Database\Factory as Database;
+use Database\Factory;
 use Database\SQLiteWrapper;
-use phpCache\Apc;
-use phpCache\CacheKey;
-use stdClass;
+use PhpCache\AbstractCache;
+use PhpCache\PhpCache;
 
 /**
  * @author Paweł
@@ -39,7 +38,7 @@ abstract class Base implements \Interfaces\Model {
     /** @var  SQLiteWrapper */
     protected $db;
 
-    /** @var  Apc */
+    /** @var  AbstractCache */
     protected $cache;
 
     /**
@@ -48,8 +47,8 @@ abstract class Base implements \Interfaces\Model {
     public function __construct(array $aParams = null)
     {
         $this->aParams = $aParams;
-        $this->db = \Database\Factory::getInstance();
-        $this->cache = \phpCache\Factory::getInstance()->create();
+        $this->db = Factory::getInstance();
+        $this->cache = PhpCache::getInstance()->create();
     }
 
 }

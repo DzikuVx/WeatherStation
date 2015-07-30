@@ -2,8 +2,8 @@
 
 namespace General;
 
-use phpCache\CacheKey;
-use phpCache\Factory;
+use PhpCache\CacheKey;
+use PhpCache\PhpCache;
 use Translate\Controller as TranslateController;
 
 class Templater {
@@ -60,7 +60,7 @@ class Templater {
     {
 
     	$key = new CacheKey('Templater::load', md5(realpath('') . '|' . $this->fileName));
-        $cache = Factory::getInstance()->create();
+        $cache = PhpCache::getInstance()->create();
 
         if (!self::$useCache || !$cache->check($key)) {
 

@@ -2,7 +2,7 @@
 
 namespace Model;
 
-use phpCache\CacheKey;
+use PhpCache\CacheKey;
 
 class Readout extends Base implements \Interfaces\Model
 {
