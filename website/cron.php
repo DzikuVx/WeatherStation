@@ -1,5 +1,5 @@
 <?php
-use General\Debug;
+use psDebug\Debug;
 
 require_once 'common.php';
 

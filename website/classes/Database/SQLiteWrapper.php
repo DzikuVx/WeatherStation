@@ -1,7 +1,7 @@
 <?php
 
 namespace Database;
-use General\Debug;
+use psDebug\Debug;
 
 /**
  * SQLite data base interface class

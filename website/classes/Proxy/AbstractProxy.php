@@ -2,7 +2,7 @@
 namespace Proxy;
 
 use General\Config;
-use General\Debug;
+use psDebug\Debug;
 
 use Interfaces\Proxy;
 use PhpCache\CacheKey;
