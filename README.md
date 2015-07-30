@@ -60,7 +60,8 @@ make
 make install
 ```
 * pigpio has to be running as a service, so add `sudo /home/pi/PIGPIO/pigpiod` to `/etc/rc.local`
-* check if you have SQLite3 PHP library. If not, or not sure, install it `sudo apt-get install php5-sqlite3`
+* check if you have SQLite3 PHP library. If not, or not sure, install it `sudo apt-get install php5-sqlite`
+* check if you have nginx+php. If not, or not sure, install it `sudo apt-get install nginx php5-fpm php-apc`
 * clone this repository `git clone git@github.com:DzikuVx/WeatherStation.git`
 * `cd WeatherStation`
 * get all submodules while inside repository root folder:
