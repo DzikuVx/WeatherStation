@@ -7,6 +7,7 @@ dht22.log
 
 twitter/.idea/
 .idea/workspace.xml
+.idea/*
 
 website/.idea/*
 website/logs/error.log
