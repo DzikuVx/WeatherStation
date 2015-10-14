@@ -61,6 +61,13 @@ class Config implements \ArrayAccess{
 
 		require (dirname ( __FILE__ ) . "/../../config.inc.php");
 
+		$envFileName = dirname ( __FILE__ ) . "/../../config.env.php";
+
+		if (file_exists($envFileName)) {
+			/** @noinspection PhpIncludeInspection */
+			require $envFileName;
+		}
+
         /** @noinspection PhpUndefinedVariableInspection */
         $this->config = $config;
 

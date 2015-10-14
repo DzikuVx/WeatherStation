@@ -29,7 +29,7 @@ abstract class AbstractProxy implements Proxy{
 		if (Config::getInstance()->get('useLocalDataMockup')) {
 			return $this->sLocalMockup;
 		}else {
-			return $this->sUrl;
+			return $this->sUrl . '&APPID=' . Config::getInstance()->get('apiKey');
 		}
 	}
 	

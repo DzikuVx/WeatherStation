@@ -12,3 +12,5 @@ twitter/.idea/
 website/.idea/*
 website/logs/error.log
 twitter/.idea
+
+website/config.env.php

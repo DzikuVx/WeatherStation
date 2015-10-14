@@ -20,3 +20,4 @@ $config['useLocalDataMockup'] = false;
  */
 $config['cityId'] = 3083829;
 $config['cityName'] = 'Szczecin,PL';
+$config['apiKey'] = '1111';
