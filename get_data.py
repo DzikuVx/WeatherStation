@@ -28,6 +28,7 @@ def saveSQLite(data):
     conn.close()
 
 
+# FIXME create a module from it!
 def save_value(sensor, value):
 
     global db_connection
