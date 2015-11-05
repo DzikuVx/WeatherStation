@@ -14,7 +14,7 @@ import DHT22
 import logging
 import datetime
 
-db_connection = NULL
+db_connection = None
 
 def saveSQLite(data):
     conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
@@ -32,7 +32,7 @@ def save_value(sensor, value):
 
     global db_connection
 
-    if db_connection == NULL:
+    if db_connection is None:
         db_connection = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data-new.db')
 
     c = db_connection.cursor()
