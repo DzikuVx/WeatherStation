@@ -3,8 +3,10 @@
 namespace Controller;
 
 use Exception;
+use General\Templater;
+use Interfaces\Singleton;
 
-class Overview extends Base implements \Interfaces\Singleton {
+class Overview extends Base implements Singleton {
 
 	protected $aExcluded = array();
 
@@ -29,7 +31,7 @@ class Overview extends Base implements \Interfaces\Singleton {
 		return self::$instance;
 	}
 
-	public function render(array $aParams, \General\Templater $template) {
+	public function render(array $aParams, Templater $template) {
 
 		if (empty($aParams['type'])) {
 			$aParams['type'] = 'chart';
@@ -40,20 +42,7 @@ class Overview extends Base implements \Interfaces\Singleton {
 
 		$template->add('mainContent', $oView->mainpage());
 
-		switch ($aParams['type']) {
-				
-			case 'table':
-				$template->add('pageContent', $oView->tables());
-				$template->add('submenu-active-table','active');
-				break;
-
-			case 'chart':
-			default:
-				$template->add('chartHead', $oView->chartHead());
-				$template->add('pageContent', $oView->charts());
-				$template->add('submenu-active-chart','active');
-				break;
-
-		}
+        $template->add('chartHead', $oView->chartHead());
+        $template->add('pageContent', $oView->charts());
 	}
 }

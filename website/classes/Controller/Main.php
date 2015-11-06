@@ -2,7 +2,7 @@
 namespace Controller;
 
 use Exception;
-use \General\CustomException as CustomException;
+use psDebug\CustomException;
 use psDebug\Debug;
 
 class Main extends Base implements \Interfaces\Singleton {

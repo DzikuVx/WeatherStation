@@ -18,7 +18,6 @@ class Factory {
 	private static $instance = null;
 
     /**
-     * Pobranie obiektu bazy danych gameplay
      * @throws \Exception
      * @return \Database\SQLiteWrapper
      */

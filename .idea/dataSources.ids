@@ -5,34 +5,46 @@
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
     <table name="daily_aggregate" schema="" catalog="" type="TABLE">
-      <column name="Sensor" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="Date" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="AvgTemperature" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="AvgHumidity" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="MinTempetaure" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="MinHumidity" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="MaxTemperature" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="MaxHumidity" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="Sensor" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="Date" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="AvgTemperature" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="AvgHumidity" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="MinTempetaure" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="MinHumidity" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="MaxTemperature" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="MaxHumidity" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
       <index name="myindex3" unique="true" columns="Sensor,Date"/>
     </table>
     <table name="external_data" schema="" catalog="" type="TABLE">
-      <column name="Date" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="Pressure" sqlType="INT" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
-      <column name="WindSpeed" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="WindDirection" sqlType="INT" precision="2000000000" scale="10" nullable="true" jdbcType="4"/>
+      <column name="Date" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="Pressure" sqlType="INT" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="WindSpeed" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="WindDirection" sqlType="INT" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <index name="myindex4" unique="true" columns="Date"/>
     </table>
     <table name="readouts" schema="" catalog="" type="TABLE">
-      <column name="Date" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="Temperature" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="Humidity" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="Date" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="Temperature" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="Humidity" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
       <index name="myindex1" unique="true" columns="Date"/>
     </table>
     <table name="readouts_external" schema="" catalog="" type="TABLE">
-      <column name="Date" sqlType="TEXT" precision="2000000000" scale="10" nullable="true" jdbcType="12"/>
-      <column name="Temperature" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
-      <column name="Humidity" sqlType="REAL" precision="2000000000" scale="10" nullable="true" jdbcType="6"/>
+      <column name="Date" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="Temperature" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <column name="Humidity" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
       <index name="myindex2" unique="true" columns="Date"/>
+    </table>
+  </data-source>
+  <data-source name="Sqlite (Xerial) - data-new.db" uuid="102bc27f-6139-44f6-a86d-53795a002024">
+    <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
+    <schema name="" catalog=""/>
+    <table name="sensor_values" schema="" catalog="" type="TABLE">
+      <column name="Date" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="Sensor" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="Value" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
+      <index name="SENSOR_B" unique="true" columns="Sensor"/>
+      <index name="SENSOR_A" unique="true" columns="Date,Sensor"/>
     </table>
   </data-source>
 </component>

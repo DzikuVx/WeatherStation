@@ -1,0 +1,157 @@
+<?php
+
+namespace Model;
+
+
+use Database\Factory;
+use Database\SQLiteWrapper;
+use PhpCache\CacheKey;
+use PhpCache\PhpCache;
+use PhpCache\Redis;
+
+class Sensor
+{
+
+    const CACHE_INTERVAL_DAY = 86400;
+    const CACHE_INTERVAL_HOUR = 3600;
+    const CACHE_INTERVAL_HALF_HOUR = 1800;
+    const CACHE_INTERVAL_5_MINUTES = 300;
+    const CACHE_INTERVAL_WEEK = 604800;
+
+    const SENSOR_TEMPERATURE_EXTERNAL = 0;
+    const SENSOR_HUMIDITY_EXTERNAL = 1;
+    const SENSOR_PRESSURE_EXTERNAL = 2;
+    const SENSOR_PRESSURE_API = 3;
+    const SENSOR_WIND_SPEED_API = 4;
+    const SENSOR_WIND_DIRECTION_API = 5;
+
+    /**
+     * @var array
+     */
+    protected $aParams = array();
+
+    /** @var  SQLiteWrapper */
+    protected $db;
+
+    /** @var  Redis */
+    protected $cache;
+
+    /**
+     * @param array $aParams
+     */
+    public function __construct(array $aParams = null)
+    {
+        $this->aParams = $aParams;
+        $this->db = Factory::getInstance();
+        $this->cache = PhpCache::getInstance()->create();
+    }
+
+    public function getLastReadoutDate() {
+        $oKey = new CacheKey(get_class($this).'::getLastReadoutDate', 0);
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $rResult = $this->db->fetch($this->db->execute("SELECT `Date` FROM `sensor_values` ORDER BY `Date` DESC LIMIT 1"));
+            $this->cache->set($oKey, $rResult->Date, self::CACHE_INTERVAL_5_MINUTES);
+        }
+
+        return $rResult->Date;
+    }
+
+    public function getCurrent($sensor) {
+
+        $oKey = new CacheKey(get_class($this).'::getCurrent', $sensor);
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $rResult = $this->db->fetch($this->db->execute("SELECT `Value` FROM `sensor_values` WHERE `Sensor`={$sensor} ORDER BY `Date` DESC LIMIT 1"));
+            $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_5_MINUTES);
+        }
+
+        return $rResult->Value;
+
+    }
+
+    public function getAverage($sensor, $days = 1) {
+
+        $oKey = new CacheKey(get_class($this).'::getAverage', $sensor .'|' . $days);
+
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
+            $rResult = $this->db->fetch($this->db->execute("SELECT AVG(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
+
+            $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
+        }
+
+        return $rResult->Value;
+    }
+
+    public function getMin($sensor, $days = 1) {
+
+        $oKey = new CacheKey(get_class($this).'::getMin', $sensor .'|' . $days);
+
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
+            $rResult = $this->db->fetch($this->db->execute("SELECT MIN(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
+            $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
+        }
+
+        return $rResult->Value;
+    }
+
+    public function getMax($sensor, $days = 1) {
+
+        $oKey = new CacheKey(get_class($this).'::getMax', $sensor .'|' . $days);
+
+        $rResult = $this->cache->get($oKey);
+
+        if ($rResult === false) {
+            $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
+            $rResult = $this->db->fetch($this->db->execute("SELECT MAX(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
+            $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
+        }
+
+        return $rResult->Value;
+    }
+
+    public function getHourAggregate($sensor, $hours = 24, $orderBy = "DESC") {
+        $retVal = array();
+
+        $oKey = new CacheKey(get_class($this).'::getHourAggregate', $sensor . '|' . $hours.'|'.$orderBy);
+
+        if (!$this->cache->check($oKey)) {
+
+            $rResult = $this->db->execute("select
+					strftime('%Y-%m-%d %H:00:00', `Date`) Date
+					, AVG(Value) Avg
+					, MIN(Value) Min
+					, MAX(Value) Max
+					FROM
+						`sensor_values`
+					where
+						datetime(`Date`)>(SELECT DATETIME('now', '-{$hours} hour')) AND Sensor=$sensor
+					group by
+						strftime('%Y-%m-%d %H:00:00', `Date`)
+					ORDER BY
+						datetime(`Date`) {$orderBy}
+					");
+
+            while ($tResult = $this->db->fetchAssoc($rResult)) {
+                array_push($retVal, $tResult);
+            }
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR);
+
+        }else {
+            $retVal = $this->cache->get($oKey);
+        }
+
+        return $retVal;
+
+    }
+
+}
