@@ -55,7 +55,7 @@ class Sensor
         $rResult = $this->cache->get($oKey);
 
         if ($rResult === false) {
-            $rResult = $this->db->fetch($this->db->execute("SELECT `Date` FROM `sensor_values` ORDER BY `Date` DESC LIMIT 1"));
+            $rResult = $this->db->fetch($this->db->execute("SELECT `Date` FROM `sensor_values` INDEXED BY SENSOR_A ORDER BY `Date` DESC LIMIT 1"));
             $this->cache->set($oKey, $rResult->Date, self::CACHE_INTERVAL_5_MINUTES);
             return $rResult->Date;
         } else {
@@ -74,7 +74,7 @@ class Sensor
         $rResult = $this->cache->get($oKey);
 
         if ($rResult === false) {
-            $rResult = $this->db->fetch($this->db->execute("SELECT `Value` FROM `sensor_values` WHERE `Sensor`={$sensor} ORDER BY `Date` DESC LIMIT 1"));
+            $rResult = $this->db->fetch($this->db->execute("SELECT `Value` FROM `sensor_values` INDEXED BY SENSOR_A WHERE `Sensor`={$sensor} ORDER BY `Date` DESC LIMIT 1"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_5_MINUTES);
             return $rResult->Value;
         } else {
@@ -91,7 +91,7 @@ class Sensor
 
         if ($rResult === false) {
             $stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
-            $rResult = $this->db->fetch($this->db->execute("SELECT AVG(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
+            $rResult = $this->db->fetch($this->db->execute("SELECT AVG(Value) Value FROM `sensor_values` INDEXED BY SENSOR_A WHERE Date>='{$stamp}' AND Sensor=$sensor"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
 
             return $rResult->Value;
@@ -108,7 +108,7 @@ class Sensor
 
         if ($rResult === false) {
             $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
-            $rResult = $this->db->fetch($this->db->execute("SELECT MIN(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
+            $rResult = $this->db->fetch($this->db->execute("SELECT MIN(Value) Value FROM `sensor_values` INDEXED BY SENSOR_A WHERE Date>='{$stamp}' AND Sensor=$sensor"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
             return $rResult->Value;
         } else {
@@ -126,7 +126,7 @@ class Sensor
 
         if ($rResult === false) {
             $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
-            $rResult = $this->db->fetch($this->db->execute("SELECT MAX(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
+            $rResult = $this->db->fetch($this->db->execute("SELECT MAX(Value) Value FROM `sensor_values` INDEXED BY SENSOR_A WHERE Date>='{$stamp}' AND Sensor=$sensor"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
             return $rResult->Value;
         } else {
@@ -147,7 +147,7 @@ class Sensor
 					, MIN(Value) Min
 					, MAX(Value) Max
 					FROM
-						`sensor_values`
+						`sensor_values` INDEXED BY SENSOR_A
 					where
 						datetime(`Date`)>(SELECT DATETIME('now', '-{$hours} hour')) AND Sensor=$sensor
 					group by
@@ -183,7 +183,7 @@ class Sensor
 					, MIN(Value) Min
 					, MAX(Value) Max
 					FROM
-						`sensor_values`
+						`sensor_values` INDEXED BY SENSOR_A
 					where
 						`Date`>(SELECT DATETIME('now', '-{$days} day')) AND Sensor=$sensor
 					group by
@@ -219,7 +219,7 @@ class Sensor
 					, MIN(Value) Min
 					, MAX(Value) Max
 					FROM
-						`sensor_values`
+						`sensor_values` INDEXED BY SENSOR_A
 					where
 						`Date`>(SELECT DATETIME('now', '-{$days} day')) AND Sensor=$sensor
 					group by
