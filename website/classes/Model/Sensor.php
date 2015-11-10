@@ -46,6 +46,10 @@ class Sensor
         $this->cache = PhpCache::getInstance()->create();
     }
 
+    /**
+     * @return string
+     * @throws \Database\Exception
+     */
     public function getLastReadoutDate() {
         $oKey = new CacheKey(get_class($this).'::getLastReadoutDate', 0);
         $rResult = $this->cache->get($oKey);
@@ -53,11 +57,17 @@ class Sensor
         if ($rResult === false) {
             $rResult = $this->db->fetch($this->db->execute("SELECT `Date` FROM `sensor_values` ORDER BY `Date` DESC LIMIT 1"));
             $this->cache->set($oKey, $rResult->Date, self::CACHE_INTERVAL_5_MINUTES);
+            return $rResult->Date;
+        } else {
+            return $rResult;
         }
-
-        return $rResult->Date;
     }
 
+    /**
+     * @param $sensor
+     * @return float
+     * @throws \Database\Exception
+     */
     public function getCurrent($sensor) {
 
         $oKey = new CacheKey(get_class($this).'::getCurrent', $sensor);
@@ -66,9 +76,10 @@ class Sensor
         if ($rResult === false) {
             $rResult = $this->db->fetch($this->db->execute("SELECT `Value` FROM `sensor_values` WHERE `Sensor`={$sensor} ORDER BY `Date` DESC LIMIT 1"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_5_MINUTES);
+            return $rResult->Value;
+        } else {
+            return $rResult;
         }
-
-        return $rResult->Value;
 
     }
 
@@ -81,11 +92,12 @@ class Sensor
         if ($rResult === false) {
             $stamp = date('Y-m-d H:i',strtotime ( "-{$days} day" , time() ) );
             $rResult = $this->db->fetch($this->db->execute("SELECT AVG(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
-
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
-        }
 
-        return $rResult->Value;
+            return $rResult->Value;
+        } else {
+            return $rResult;
+        }
     }
 
     public function getMin($sensor, $days = 1) {
@@ -98,9 +110,12 @@ class Sensor
             $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
             $rResult = $this->db->fetch($this->db->execute("SELECT MIN(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
+            return $rResult->Value;
+        } else {
+            return $rResult;
         }
 
-        return $rResult->Value;
+
     }
 
     public function getMax($sensor, $days = 1) {
@@ -113,9 +128,10 @@ class Sensor
             $stamp = date('Y-m-d H:i', strtotime ( "-{$days} day" , time() ) );
             $rResult = $this->db->fetch($this->db->execute("SELECT MAX(Value) Value FROM `sensor_values` WHERE Date>='{$stamp}' AND Sensor=$sensor"));
             $this->cache->set($oKey, $rResult->Value, self::CACHE_INTERVAL_HOUR * $days);
+            return $rResult->Value;
+        } else {
+            return $rResult;
         }
-
-        return $rResult->Value;
     }
 
     public function getHourAggregate($sensor, $hours = 24, $orderBy = "DESC") {

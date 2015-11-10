@@ -3,6 +3,7 @@ namespace Controller;
 
 use Exception;
 use Model\OpenWeatherMap;
+use Model\Sensor;
 
 class Api extends Base implements \Interfaces\Singleton {
 
@@ -88,17 +89,16 @@ class Api extends Base implements \Interfaces\Singleton {
     public function current(/** @noinspection PhpUnusedParameterInspection */
         $aParams, &$aRetVal) {
 
-        $oModel = new \Model\Readout();
-        $aRetVal = (array) $oModel->getCurrent();
+        $model = new Sensor();
 
-        $oModel = new OpenWeatherMap();
-        $aData = (array) $oModel->getCurrent();
+        $aRetVal['Temperature'] = $model->getCurrent(Sensor::SENSOR_TEMPERATURE_EXTERNAL);
+        $aRetVal['Humidity'] = $model->getCurrent(Sensor::SENSOR_HUMIDITY_EXTERNAL);
+        $aRetVal['Pressure'] = $model->getCurrent(Sensor::SENSOR_PRESSURE_EXTERNAL);
+        $aRetVal['WindSpeed'] = $model->getCurrent(Sensor::SENSOR_WIND_SPEED_API);
+        $aRetVal['WindDirection'] = $model->getCurrent(Sensor::SENSOR_WIND_DIRECTION_API);
 
-        if ($aData) {
-            $aData['ExternalDate'] = $aData['Date'];
-            unset($aData['Date']);
-            $aRetVal = array_merge($aRetVal, $aData);
-        }
+        $aRetVal['Date'] = $model->getLastReadoutDate();
+        $aRetVal['ExternalDate'] = $model->getLastReadoutDate();
 
         /*
          * Get additional data
