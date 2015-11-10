@@ -149,7 +149,7 @@ class Sensor
 					FROM
 						`sensor_values` INDEXED BY SENSOR_A
 					where
-						datetime(`Date`)>(SELECT DATETIME('now', '-{$hours} hour')) AND Sensor=$sensor
+						`Date`>(SELECT DATETIME('now', '-{$hours} hour')) AND Sensor=$sensor
 					group by
 						strftime('%Y-%m-%d %H:00:00', `Date`)
 					ORDER BY
