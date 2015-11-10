@@ -2,6 +2,8 @@
 namespace Controller;
 
 use Exception;
+use General\Environment;
+use Listeners\LowLevelMessage;
 use psDebug\CustomException;
 use psDebug\Debug;
 
@@ -42,9 +44,9 @@ class Main extends Base implements \Interfaces\Singleton {
 	 */
 	public function get() {
 
-        \General\Environment::setContentHtml();
+        Environment::setContentHtml();
         \General\Session::start();
-        \General\Environment::set();
+        Environment::set();
 
         /**
          * @var \General\Templater
@@ -93,13 +95,15 @@ class Main extends Base implements \Interfaces\Singleton {
 				}
 			}
 
-			\Listeners\LowLevelMessage::getInstance()->register($this->aParams, $template);
+			LowLevelMessage::getInstance()->register($this->aParams, $template);
 			
 		}
 		catch ( CustomException $e ) {
+			error_log($e->getMessage());
 			$template->add('mainContent', Debug::cThrow ( $e->getMessage (), $e, array ('send' => false, 'display' => false ) ));
 		}
 		catch ( Exception $e ) {
+			error_log($e->getMessage());
 			$template->add('mainContent', Debug::cThrow ( null, $e ));
 		}
 

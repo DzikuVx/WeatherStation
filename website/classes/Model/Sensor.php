@@ -154,4 +154,76 @@ class Sensor
 
     }
 
+    public function getDayAggregate($sensor, $days = 7, $orderBy = "DESC") {
+        $retVal = array();
+
+        $oKey = new CacheKey(get_class($this).'::getDayAggregate', $sensor . '|' . $days.'|'.$orderBy);
+
+        if (!$this->cache->check($oKey)) {
+
+            $rResult = $this->db->execute("select
+					date(`Date`) Date
+					, AVG(Value) Avg
+					, MIN(Value) Min
+					, MAX(Value) Max
+					FROM
+						`sensor_values`
+					where
+						`Date`>(SELECT DATETIME('now', '-{$days} day')) AND Sensor=$sensor
+					group by
+						date(`Date`)
+					ORDER BY
+						date(`Date`) {$orderBy}
+					");
+
+            while ($tResult = $this->db->fetchAssoc($rResult)) {
+                array_push($retVal, $tResult);
+            }
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_HOUR * 8);
+
+        }else {
+            $retVal = $this->cache->get($oKey);
+        }
+
+        return $retVal;
+
+    }
+
+    public function getMonthlyAggregate($sensor, $days = 90, $orderBy = "DESC") {
+        $retVal = array();
+
+        $oKey = new CacheKey(get_class($this).'::getMonthlyAggregate', $sensor . '|' . $days.'|'.$orderBy);
+
+        if (!$this->cache->check($oKey)) {
+
+            $rResult = $this->db->execute("select
+					strftime('%Y-%m', `Date`) Date
+					, AVG(Value) Avg
+					, MIN(Value) Min
+					, MAX(Value) Max
+					FROM
+						`sensor_values`
+					where
+						`Date`>(SELECT DATETIME('now', '-{$days} day')) AND Sensor=$sensor
+					group by
+						strftime('%Y-%m', `Date`)
+					ORDER BY
+						date(`Date`) {$orderBy}
+					");
+
+            while ($tResult = $this->db->fetchAssoc($rResult)) {
+                array_push($retVal, $tResult);
+            }
+
+            $this->cache->set($oKey, $retVal, self::CACHE_INTERVAL_DAY);
+
+        }else {
+            $retVal = $this->cache->get($oKey);
+        }
+
+        return $retVal;
+
+    }
+
 }

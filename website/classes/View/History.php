@@ -3,45 +3,46 @@
 namespace View;
 
 use General\Formater;
+use General\GoogleChart;
 use General\Templater;
 use Model\Readout;
 use Model\OpenWeatherMap;
+use Model\Sensor;
+use Translate\Controller as TranslateController;
 
 class History extends Base {
 
 	/**
-	 * @var \Model\Readout
+	 * @var \Model\Sensor
 	 */
 	protected $model = null;
 	
-	/**
-	 * @var \Model\Readout
-	 */
-	protected $externalModel = null;
 
-	protected $internalData = array();
-	protected $externalData = array();
+//	protected $internalData = array();
+//	protected $externalData = array();
+
+    private $methodName = 'getDayAggregate';
+    private $period = 30;
 
 	public function __construct(array $aParams) {
 		parent::__construct($aParams);
 
-		$this->model = new Readout();
-		$this->externalModel = new OpenWeatherMap();
+		$this->model = new Sensor();
 
 		switch($aParams['range']) {
 			
 			case 'year':
-				$this->internalData = $this->model->getMonthlyAggregate(365,"ASC");
-				$this->externalData = $this->externalModel->getMonthlyAggregate(365,"ASC");
+                $this->methodName = 'getMonthlyAggregate';
+                $this->period = 365;
 				break;
 				
 			default:
-				$this->internalData = $this->model->getDayAggregate(30,"ASC");
-				$this->externalData = $this->externalModel->getDayAggregate(30,"ASC");
+                $this->methodName = 'getDayAggregate';
+                $this->period = 30;
 				break;
 				
 		}
-		
+
 	}
 
 	public function mainpage()
@@ -58,11 +59,11 @@ class History extends Base {
 		switch ($this->aParams['range']) {
 				
 			case 'year':
-				$oTemplate->add('title', \Translate\Controller::getDefault()->get('Last year'));
+				$oTemplate->add('title', TranslateController::getDefault()->get('Last year'));
 				break;
 					
 			default:
-				$oTemplate->add('title', \Translate\Controller::getDefault()->get('Last 30 days'));
+				$oTemplate->add('title', TranslateController::getDefault()->get('Last 30 days'));
 				break;
 					
 		}
@@ -105,67 +106,72 @@ class History extends Base {
 		return (string) $oTemplate;
 	}
 
+    /**
+     * @param GoogleChart $chart
+     * @param $data
+     * @param $title
+     * @param $domId
+     * @param bool $withMax
+     * @param bool $withMin
+     * @param int $decimals
+     * @return string
+     */
+    private function renderSensorChart($chart, $data, $title, $domId, $withMax = true, $withMin = true, $decimals = 2) {
+        $chart->setTitle($title);
+        $chart->setDomID($domId);
+        $chart->add('Hour', array());
+        $chart->add('Avg', array());
+        if ($withMax) {
+            $chart->add('Max', array());
+        }
+        if ($withMin) {
+            $chart->add('Min', array());
+        }
+
+        foreach ($data as $oReadout) {
+            $chart->push('Hour', Formater::formatDate($oReadout['Date']));
+            $chart->push('Avg', number_format($oReadout['Avg'],$decimals,'.',''));
+            if ($withMax) {
+                $chart->push('Max', number_format($oReadout['Max'], $decimals, '.', ''));
+            }
+            if ($withMin) {
+                $chart->push('Min', number_format($oReadout['Min'], $decimals, '.', ''));
+            }
+        }
+
+        return $chart->getHead();
+    }
+
 	/**
 	 * render average temperature chart head for google charts
 	 * @return string
 	 */
 	public function chartHead() {
 
-		$t = \Translate\Controller::getDefault();
+		$t = TranslateController::getDefault();
 
 		$oTemplate = new Templater('history-chartHead.html');
 
-		$oChartDailyPressure = new \General\GoogleChart();
-		$oChartDailyPressure->setTitle($t->get('Pressure'));
-		$oChartDailyPressure->setDomID('chartDailyPressure');
-		$oChartDailyPressure->add('Hour', array());
-		$oChartDailyPressure->add('Avg', array());
-		$oChartDailyPressure->add('Max', array());
-		$oChartDailyPressure->add('Min', array());
+		$oTemplate->add('chartDailyPressure',$this->renderSensorChart(
+            new GoogleChart(),
+            $this->model->{$this->methodName}(Sensor::SENSOR_PRESSURE_EXTERNAL, $this->period, 'ASC'),
+            $t->get('Pressure'),
+            'chartDailyPressure',
+            true));
 
-		foreach ($this->externalData as $oReadout) {
-				
-			$oChartDailyPressure->push('Hour', Formater::formatDate($oReadout['Date']));
-			$oChartDailyPressure->push('Avg', number_format($oReadout['Pressure'],2,'.',''));
-			$oChartDailyPressure->push('Max', number_format($oReadout['MaxPressure'],2,'.',''));
-			$oChartDailyPressure->push('Min', number_format($oReadout['MinPressure'],2,'.',''));
-				
-		}
+        $oTemplate->add('chartDailyTemperature',$this->renderSensorChart(
+            new GoogleChart(),
+            $this->model->{$this->methodName}(Sensor::SENSOR_TEMPERATURE_EXTERNAL, $this->period, 'ASC'),
+            $t->get('Temperature'),
+            'chartDailyTemperature',
+            true));
 
-		$oTemplate->add('chartDailyPressure',$oChartDailyPressure->getHead());
-
-		/*
-		 * Day aggregate charts
-		*/
-		$oChartDailyTemperature = new \General\GoogleChart();
-		$oChartDailyTemperature->setTitle($t->get('Temperature'));
-		$oChartDailyTemperature->setDomID('chartDailyTemperature');
-		$oChartDailyTemperature->add('Day', array());
-		$oChartDailyTemperature->add('Avg', array());
-		$oChartDailyTemperature->add('Max', array());
-		$oChartDailyTemperature->add('Min', array());
-
-		$oChartDailyHumidity = new \General\GoogleChart();
-		$oChartDailyHumidity->setTitle($t->get('Humidity'));
-		$oChartDailyHumidity->setDomID('chartDailyHumidity');
-		$oChartDailyHumidity->add('Day', array());
-		$oChartDailyHumidity->add('Avg', array());
-		$oChartDailyHumidity->add('Min', array());
-
-		foreach ($this->internalData as $oReadout) {
-
-			$oChartDailyTemperature->push('Day', Formater::formatDate($oReadout['Date']));
-			$oChartDailyTemperature->push('Avg', number_format($oReadout['Temperature'],2));
-			$oChartDailyTemperature->push('Max', number_format($oReadout['MaxTemperature'],2));
-			$oChartDailyTemperature->push('Min', number_format($oReadout['MinTemperature'],2));
-
-			$oChartDailyHumidity->push('Day', Formater::formatDate($oReadout['Date']));
-			$oChartDailyHumidity->push('Avg', number_format($oReadout['Humidity'],2));
-			$oChartDailyHumidity->push('Min', number_format($oReadout['MinHumidity'],2));
-
-		}
-		$oTemplate->add('chartDailyTemperature',$oChartDailyTemperature->getHead());
-		$oTemplate->add('chartDailyHumidity',$oChartDailyHumidity->getHead());
+        $oTemplate->add('chartDailyHumidity',$this->renderSensorChart(
+            new GoogleChart(),
+            $this->model->{$this->methodName}(Sensor::SENSOR_HUMIDITY_EXTERNAL, $this->period, 'ASC'),
+            $t->get('Humidity'),
+            'chartDailyHumidity',
+            false));
 
 		return (string) $oTemplate;
 
