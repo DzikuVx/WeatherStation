@@ -1,39 +1,30 @@
-import sqlite3, os, subprocess
-import urllib,urllib2
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
+import urllib
+import urllib2
 
 from thingspeakconfig import config
 
+import sensor
+
 def main():
 
-	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
+    sensor_handler = sensor.sensor();
 
-	cur = conn.cursor()
-	cur.execute('SELECT Temperature, Humidity FROM readouts_external ORDER BY `Date` DESC LIMIT 1')
-
-	data = cur.fetchone()
-
-	if data == None:
-		exit()
-
-	cur = conn.cursor()
-	cur.execute('SELECT Pressure FROM external_data ORDER BY `Date` DESC LIMIT 1')
-
-	dataExt = cur.fetchone()
-
-	if dataExt == None:
-		exit()
-
-	conn.close()
-
-	encodedAttributes = {
-		'key': config['api'],
-		'field1': data[0],
-		'field2': data[1],
-		'field3': dataExt[0]
-	}
-	req = urllib2.Request(config['url'] + "?" + urllib.urlencode(encodedAttributes))
-	response=urllib2.urlopen(req)
-	print "Posted!"
+    temperature = sensor_handler.get_last_value(0)
+    humidity = sensor_handler.get_last_value(1)
+    pressure = sensor_handler.get_last_value(2)
+     
+    encodedAttributes = {
+        'key': config['api'],
+        'field1': temperature,
+        'field2': humidity,
+        'field3': pressure
+    }
+    req = urllib2.Request(config['url'] + "?" + urllib.urlencode(encodedAttributes))
+    response=urllib2.urlopen(req)
+    print "Posted!"
 
 if __name__ == "__main__":
-	main()
+    main()
