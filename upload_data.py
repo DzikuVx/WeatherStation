@@ -1,37 +1,27 @@
-import sqlite3, os, subprocess
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
+import sensor
+import subprocess
 
 from openweatherconfig import config
 
 def main():
 
-	conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
+    sensor_handler = sensor.sensor();
 
-	cur = conn.cursor()
-	cur.execute('SELECT Temperature, Humidity FROM readouts_external ORDER BY `Date` DESC LIMIT 1')
+    temperature = sensor_handler.get_last_value(0)
+    humidity = sensor_handler.get_last_value(1)
+    pressure = sensor_handler.get_last_value(2)
 
-	data = cur.fetchone()
+    callScript = "curl -d 'pressure="+str(pressure)+"&humidity="+str(humidity)+"&temp="+str(temperature)+"&"+config['coords']+"' --user '"+config['user']+":"+config['password']+"' http://openweathermap.org/data/post"
 
-	if data == None:
-		exit()
+    #print callScript
 
-	cur = conn.cursor()
-	cur.execute('SELECT Pressure FROM external_data ORDER BY `Date` DESC LIMIT 1')
+    p = subprocess.Popen(callScript, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)	
 
-	dataExt = cur.fetchone()
-
-	if dataExt == None:
-		exit()
-
-	conn.close()
-
-	callScript = "curl -d 'pressure="+str(dataExt[0])+"&humidity="+str(data[1])+"&temp="+str(data[0])+"&"+config['coords']+"' --user '"+config['user']+":"+config['password']+"' http://openweathermap.org/data/post"
-
-	#print callScript
-
-	p = subprocess.Popen(callScript, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)	
-
-	#for line in p.stdout.readlines():
-	#	print line
+    # for line in p.stdout.readlines():
+        # print line
 		
 if __name__ == "__main__":
 	main()
