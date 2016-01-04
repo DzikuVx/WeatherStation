@@ -35,14 +35,5 @@ def main():
 	response=urllib2.urlopen(req)
 	print "Posted!"
 
-	# callScript = "curl -d 'pressure="+str(dataExt[0])+"&humidity="+str(data[1])+"&temp="+str(data[0])+"&"+config['coords']+"' --user '"+config['user']+":"+config['password']+"' http://openweathermap.org/data/post"
-
-	#print callScript
-
-	# p = subprocess.Popen(callScript, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-	#for line in p.stdout.readlines():
-	#	print line
-
 if __name__ == "__main__":
 	main()

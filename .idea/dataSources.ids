@@ -43,7 +43,6 @@
       <column name="Date" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="Sensor" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <column name="Value" sqlType="REAL" precision="0" scale="-1" nullable="true" jdbcType="6"/>
-      <index name="SENSOR_B" unique="true" columns="Sensor"/>
       <index name="SENSOR_A" unique="true" columns="Date,Sensor"/>
     </table>
   </data-source>

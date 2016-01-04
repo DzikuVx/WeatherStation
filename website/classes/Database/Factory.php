@@ -3,7 +3,6 @@
 namespace Database;
 
 /**
- * Fabryka
  * @author Paweł
  *
  */
@@ -35,9 +34,6 @@ class Factory {
 
 	}
 
-	/**
-	 * Połączenie z bazą danych gameplay
-	 */
 	private static function connect() {
 		self::$instance = new SQLiteWrapper ( Config::getInstance() );
 

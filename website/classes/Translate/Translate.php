@@ -14,13 +14,11 @@ class Translate implements \ArrayAccess {
 	private $table;
 
 	/**
-	 * Czy klasa ma prowadzić cache plików
 	 * @var boolean
 	 */
 	static public $useCache = false;
 
 	/**
-	 * Konstruktor
 	 * @param string $language
 	 * @param string $file
 	 */

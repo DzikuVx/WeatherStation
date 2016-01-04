@@ -50,8 +50,8 @@ def save_value(sensor, value):
     c = db_connection.cursor()
     c.execute('CREATE TABLE IF NOT EXISTS sensor_values(`Date` integer, `Sensor` integer, `Value` real)')
     c.execute('CREATE INDEX IF NOT EXISTS SENSOR_A ON sensor_values(`Date`, `Sensor`)')
-    c.execute('CREATE INDEX IF NOT EXISTS SENSOR_B ON sensor_values(`Sensor`)')
-    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(datetime('now','localtime'), " + str(
+
+    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(strftime('%s', 'now', 'localtime'), " + str(
         sensor) + "," + str(value) + ")")
 
     db_connection.commit()

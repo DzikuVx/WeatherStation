@@ -28,8 +28,6 @@ class SQLiteWrapper {
 	protected $queryCount = 0;
 
 	/**
-	 * Czy zapisywać każde zapytanie do logu
-	 *
 	 * @var boolean
 	 */
 	public $writeToFile = false;
@@ -77,7 +75,6 @@ class SQLiteWrapper {
 	}
 
 	/**
-	 * Zaquotowanie wszystkich pól
 	 * @param array/stdClass $data
 	 */
 	public function quoteAll(&$data) {
@@ -112,8 +109,6 @@ class SQLiteWrapper {
 	}
 
 	/**
-	 * Wykonanie zapytania bazy danych
-	 *
 	 * @param string $query
 	 * @return \SQLite3Result
 	 * @throws Exception
@@ -134,9 +129,6 @@ class SQLiteWrapper {
 			throw new Exception ( $this->dbHandle->lastErrorMsg(), $this->dbHandle->lastErrorCode() );
 		}
 
-		/**
-		 * logowanie zapytań do pliku
-		 */
 		if ($this->writeToFile) {
 			$this->writeLog ( $query );
 		}
@@ -193,8 +185,6 @@ class SQLiteWrapper {
 	}
 
     /**
-     * Konstruktor bazy danych
-     *
      * @param \Database\Config $dbConfig
      * @return \Database\SQLiteWrapper
      */
@@ -212,8 +202,6 @@ class SQLiteWrapper {
 	}
 
 	/**
-	 * Pobranie uchwytu do bazy danych
-	 *
 	 * @return resource
 	 */
 	public function getHandle() {
@@ -224,10 +212,6 @@ class SQLiteWrapper {
 		return $this->dbHandle;
 	}
 
-	/**
-	 * Zamknięcie połączenia z bazą danych
-	 *
-	 */
 	public function close() {
 		if (! empty ( $this->dbHandle )) {
 			$this->dbHandle->close();

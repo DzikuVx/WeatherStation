@@ -1,20 +1,15 @@
 <?php
 
 namespace Listeners;
+use General\Session;
 use General\Templater;
+use Interfaces\Listener;
+use Interfaces\Singleton;
 
-/**
- * 
- * Listener messageów
- * @author Paweł
- */
-class Message implements \Interfaces\Singleton, \Interfaces\Listener {
+class Message implements Singleton, Listener {
 	
 	private static $instance;
 	
-	/**
-	 * Konstruktor prywatny
-	 */
 	private function __construct() {
 	
 	}
@@ -33,31 +28,25 @@ class Message implements \Interfaces\Singleton, \Interfaces\Listener {
 	}
 	
 	/**
-	 * Zapisanie tablicy kolejki do sesji
      * @param array $aArray
 	 */
 	private function set($aArray) {
-		\General\Session::set('MessageQueue', $aArray);
+		Session::set('MessageQueue', $aArray);
 	}
 	
 	/**
 	 * 
-	 * Pobranie tablicy kolejki
 	 * @return array
 	 */
 	private function get() {
-		return \General\Session::get('MessageQueue');
+		return Session::get('MessageQueue');
 	}
 	
-	/**
-	 * Wyczyszczenie kolejki komunikatów
-	 */
 	private function clear() {
 		$this->set(null);
 	}
 	
 	/**
-	 * Wstawienie komunikatu do kolejki
 	 * @param string $sType success/info/warning/error
 	 * @param string $sMessage
 	 */
@@ -73,7 +62,6 @@ class Message implements \Interfaces\Singleton, \Interfaces\Listener {
 	}
 	
 	/**
-	* Rejestracja listenera
 	* @param array $aParams
 	* @param Templater $template
 	*/

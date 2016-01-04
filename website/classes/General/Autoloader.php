@@ -16,16 +16,14 @@ class Autoloader {
 		$sBaseDir = dirname ( __FILE__ ).'/..';
 
 		/*
-		 * Autolodaer with Namespaces feature
+		 * Autoloader with Namespaces feature
 		*/
 		if (file_exists($sBaseDir.'/' . $sNamespaced . '.php')) {
+			/** @noinspection PhpIncludeInspection */
 			require_once $sBaseDir.'/' . $sNamespaced . '.php';
 		}
 		elseif (file_exists ( $sBaseDir.'/' . $sClassName . '.php' )) {
-			/**
-			 * Klasy common
-			 */
-
+			/** @noinspection PhpIncludeInspection */
 			require_once $sBaseDir.'/' . $sClassName . '.php';
 		}
 

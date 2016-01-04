@@ -3,11 +3,12 @@ namespace Controller;
 
 use Exception;
 use General\Environment;
+use Interfaces\Singleton;
 use Listeners\LowLevelMessage;
 use psDebug\CustomException;
 use psDebug\Debug;
 
-class Main extends Base implements \Interfaces\Singleton {
+class Main extends Base implements Singleton {
 
 	private static $instance;
 
@@ -16,9 +17,6 @@ class Main extends Base implements \Interfaces\Singleton {
      */
     private $aParams = array();
 	
-	/**
-	 * Konstruktor prywatny
-	 */
 	private function __construct() {
 		$this->aParams = $_REQUEST;
 	}

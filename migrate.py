@@ -12,7 +12,7 @@ def save_value(date, sensor, value):
 
     c = db_connection.cursor()
 
-    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(datetime('" + str(date) + "','localtime'), " + str(
+    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(strftime('%s', '" + str(date) + "','localtime'), " + str(
         sensor) + "," + str(value) + ")")
 
 
@@ -32,8 +32,8 @@ def main():
     result = cursor_source.execute('SELECT * FROM readouts_external')
 
     for row in result:
-        save_value(row[0], 0, row[1])
-        save_value(row[0], 1, row[2])
+        save_value(row[0], 0, row[1]) # Temperature
+        save_value(row[0], 1, row[2]) # Humidity
         # print row
 
     result = cursor_source.execute('SELECT * FROM external_data')
@@ -45,7 +45,6 @@ def main():
         # print row
 
     c.execute('CREATE INDEX IF NOT EXISTS SENSOR_A ON sensor_values(`Date`, `Sensor`)')
-    c.execute('CREATE INDEX IF NOT EXISTS SENSOR_B ON sensor_values(`Sensor`)')
 
     db_connection.commit()
 

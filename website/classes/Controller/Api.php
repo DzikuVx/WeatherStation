@@ -2,10 +2,11 @@
 namespace Controller;
 
 use Exception;
-use Model\OpenWeatherMap;
+use General\Environment;
+use Interfaces\Singleton;
 use Model\Sensor;
 
-class Api extends Base implements \Interfaces\Singleton {
+class Api extends Base implements Singleton {
 
     /**
      * @var Api
@@ -39,8 +40,8 @@ class Api extends Base implements \Interfaces\Singleton {
 	 */
 	public function get() {
 
-        \General\Environment::setContentJson();
-        \General\Environment::set();
+        Environment::setContentJson();
+        Environment::set();
 
         \Database\Factory::getInstance()->quoteAll($this->aParams);
 

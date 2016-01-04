@@ -2,10 +2,7 @@
 namespace Interfaces;
 
 /**
- * 
- * Interface typu Singleton
  * @author Paweł
- *
  */
 interface Factory {
 	

@@ -16,3 +16,4 @@ twitter/.idea
 website/config.env.php
 
 data-new.db
+data.db
