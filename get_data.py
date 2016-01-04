@@ -13,6 +13,7 @@ import pigpio
 import DHT22
 import logging
 import datetime
+import sensor
 
 db_connection = None
 
@@ -27,26 +28,10 @@ def saveSQLite(data):
     conn.commit()
     conn.close()
 
-
-# FIXME create a module from it!
-def save_value(sensor, value):
-
-    global db_connection
-
-    if db_connection is None:
-        db_connection = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data-new.db')
-
-    c = db_connection.cursor()
-    c.execute('CREATE TABLE IF NOT EXISTS sensor_values(`Date` integer, `Sensor` integer, `Value` real)')
-    c.execute('CREATE INDEX IF NOT EXISTS SENSOR_A ON sensor_values(`Date`, `Sensor`)')
-
-    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(strftime('%s', 'now', 'localtime'), " + str(
-        sensor) + "," + str(value) + ")")
-
-    db_connection.commit()
-
-
 def main():
+
+    sensor_handler = sensor.sensor();
+
     FORMAT = '%(asctime)-15s %(message)s'
     logging.basicConfig(filename=os.path.dirname(os.path.realpath(__file__)) + '/dht22.log', level=logging.DEBUG,
                         format=FORMAT)
@@ -65,7 +50,7 @@ def main():
         logger.error('Failed to connect to PIGPIO (%s)', ValueError);
 
     try:
-        sensor = DHT22.sensor(pi, 17)
+        sensor_data = DHT22.sensor(pi, 17)
     except ValueError:
         print "Failed to connect to DHT22"
         logger.error('Failed to connect to DHT22 (%s)', ValueError);
@@ -75,11 +60,11 @@ def main():
         counter += 1
 
         # Get data from sensor
-        sensor.trigger()
+        sensor_data.trigger()
         time.sleep(0.2)
 
-        humidity = sensor.humidity()
-        temperature = sensor.temperature()
+        humidity = sensor_data.humidity()
+        temperature = sensor_data.temperature()
 
         if humidity != None and temperature != None and humidity >= 0 and humidity <= 100:
 
@@ -87,8 +72,8 @@ def main():
 
             saveSQLite(readout)
 
-            save_value(0, temperature)
-            save_value(1, humidity)
+            sensor_handler.save_value(0, temperature)
+            sensor_handler.save_value(1, humidity)
 
             print "Humidity: " + str(humidity)
             print "Temperature: " + str(temperature)

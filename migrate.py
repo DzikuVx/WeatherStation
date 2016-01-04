@@ -1,26 +1,18 @@
 import os
 import sqlite3
+import sensor
 
 __author__ = 'pspychalski'
 
 db_connection = None
 
-
-def save_value(date, sensor, value):
-
-    global db_connection
-
-    c = db_connection.cursor()
-
-    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(strftime('%s', '" + str(date) + "','localtime'), " + str(
-        sensor) + "," + str(value) + ")")
-
-
 def main():
 
+    sensor_handler = sensor.sensor()
+
     global db_connection
 
-    db_connection = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data-new.db')
+    db_connection = sensor_handler.get_db_connection()
 
     c = db_connection.cursor()
     c.execute('DROP TABLE IF EXISTS sensor_values')
@@ -32,16 +24,16 @@ def main():
     result = cursor_source.execute('SELECT * FROM readouts_external')
 
     for row in result:
-        save_value(row[0], 0, row[1]) # Temperature
-        save_value(row[0], 1, row[2]) # Humidity
+        sensor_handler.insert_no_commit(row[0], 0, row[1]) # Temperature
+        sensor_handler.insert_no_commit(row[0], 1, row[2]) # Humidity
         # print row
 
     result = cursor_source.execute('SELECT * FROM external_data')
 
     for row in result:
-        save_value(row[0], 2, row[1])  # Real Pressure
-        save_value(row[0], 4, row[2])  # Wind Speed
-        save_value(row[0], 5, row[3])  # Wind direction
+        sensor_handler.insert_no_commit(row[0], 2, row[1])  # Real Pressure
+        sensor_handler.insert_no_commit(row[0], 4, row[2])  # Wind Speed
+        sensor_handler.insert_no_commit(row[0], 5, row[3])  # Wind direction
         # print row
 
     c.execute('CREATE INDEX IF NOT EXISTS SENSOR_A ON sensor_values(`Date`, `Sensor`)')

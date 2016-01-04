@@ -10,6 +10,7 @@ Data acquisited:
 '''
 import urllib2, json, sqlite3, os
 import Adafruit_BMP.BMP085 as BMP085
+import sensor
 
 from openweatherconfig import config
 
@@ -25,37 +26,21 @@ def fetchJSON(url):
 def processData(json):
     out = {}
 
-    sensor = BMP085.BMP085()
+    sensor_handler = sensor.sensor()
 
-    out['pressure'] = round(sensor.read_sealevel_pressure(35) / 100, 1)
+    bmp_180_sensor = BMP085.BMP085()
+
+    out['pressure'] = round(bmp_180_sensor.read_sealevel_pressure(35) / 100, 1)
     out['wind-direction'] = json["wind"]["deg"]
     out['wind-speed'] = json["wind"]["speed"]
 
     # FIXME this is a hack, whole process should be rewritten
-    save_value(2, round(sensor.read_sealevel_pressure(35) / 100, 1))
-    save_value(3, json["main"]["pressure"])
-    save_value(4, json["wind"]["speed"])
-    save_value(5, json["wind"]["deg"])
+    sensor_handler.save_value(2, round(bmp_180_sensor.read_sealevel_pressure(35) / 100, 1))
+    sensor_handler.save_value(3, json["main"]["pressure"])
+    sensor_handler.save_value(4, json["wind"]["speed"])
+    sensor_handler.save_value(5, json["wind"]["deg"])
 
     return out
-
-
-# FIXME create a module from it!
-def save_value(sensor, value):
-    global db_connection
-
-    if db_connection is None:
-        db_connection = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data-new.db')
-
-    c = db_connection.cursor()
-    c.execute('CREATE TABLE IF NOT EXISTS sensor_values(`Date` integer, `Sensor` integer, `Value` real)')
-    c.execute('CREATE INDEX IF NOT EXISTS SENSOR_A ON sensor_values(`Date`, `Sensor`)')
-
-    c.execute("INSERT INTO sensor_values(`Date`, `Sensor`, `Value`) VALUES(strftime('%s', 'now', 'localtime'), " + str(
-        sensor) + "," + str(value) + ")")
-
-    db_connection.commit()
-
 
 def saveSQLite(data):
     conn = sqlite3.connect(os.path.dirname(os.path.realpath(__file__)) + '/data.db')
