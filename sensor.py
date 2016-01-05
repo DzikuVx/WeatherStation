@@ -33,7 +33,7 @@ class sensor():
         sensor) + "," + str(value) + ")")
         c.close()
             
-    def save_value(sensor, value):
+    def save_value(self, sensor, value):
 
         c = self.conn.cursor()
         c.execute('CREATE TABLE IF NOT EXISTS sensor_values(`Date` integer, `Sensor` integer, `Value` real)')
