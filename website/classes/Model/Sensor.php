@@ -153,7 +153,7 @@ class Sensor
 					group by
 						strftime('%Y-%m-%d %H:00:00', `Date`, 'unixepoch', 'localtime')
 					ORDER BY
-						strftime('%Y-%m-%d %H:00:00', `Date`, 'unixepoch', 'localtime') {$orderBy}
+						`Date` {$orderBy}
 					");
 
             while ($tResult = $this->db->fetchAssoc($rResult)) {
