@@ -55,12 +55,11 @@ class Sensor
         $rResult = $this->cache->get($oKey);
 
         if ($rResult === false) {
-            $rResult = $this->db->fetch($this->db->execute("SELECT datetime(`Date`, 'unixepoch', 'localtime') AS `Date` FROM `sensor_values` ORDER BY `Date` DESC LIMIT 1"));
-            $this->cache->set($oKey, $rResult->Date, self::CACHE_INTERVAL_5_MINUTES);
-            return $rResult->Date;
-        } else {
-            return $rResult;
+            $rResult = $this->db->fetch($this->db->execute("SELECT * FROM `sensor_values` INDEXED BY SENSOR_A WHERE `Sensor` >= 0 ORDER BY `Date` DESC LIMIT 1"));
+            $rResult = date('Y-m-d H:i:s', $rResult->Date);
+            $this->cache->set($oKey, $rResult, self::CACHE_INTERVAL_5_MINUTES);
         }
+        return $rResult;
     }
 
     /**
