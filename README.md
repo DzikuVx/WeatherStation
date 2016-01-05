@@ -82,7 +82,7 @@ To serve its purpose, WeatherStation need to collect data on regular basis. That
 * Collect data from sensor `*/20 * * * * sudo python /home/pi/WeatherStation/get_data.py`
 * Collect from OpenWeatherMap.org (current pressure and wind) `*/20 * * * * python /home/pi/WeatherStation/get_external_data.py`
 * Upload data to OpenWeatherMap.org (because we like to share, don't we?) `*/30 * * * * python /home/pi/WeatherStation/upload_data.py`
-* For best webpage performance, prefetch forecast and history `*/30 * * * * wget http://weather.spychalski.info/cron.php`
+* For best webpage performance, prefetch forecast and history `*/15 * * * * wget -qO- http://weather.spychalski.info/cron.php &> /dev/null`
 
 # Example nginx configuration
 
@@ -94,12 +94,13 @@ server {
 
   access_log off;
 
-  root /home/pi/raspberry_temperature_log/website;
+  root /home/pi/WeatherStation/website;
   index index.php;
 
   # default try order
   location / {
     try_files $uri $uri/ /index.php?$args;
+    add_header Access-Control-Allow-Origin *;
   }
 
   # enable php
@@ -121,3 +122,20 @@ server {
 ![raspberry with sensor](/assets/img/2.jpg)
 ##Sensor
 ![raspberry with sensor](/assets/img/4.jpeg)
+
+#Internet Of Things - ThingSpeak integration
+
+Weather station provides simple [ThingSpeak](https://thingspeak.com/) integration using REST api. This allows to upload collected measurements to ThingSpeak.
+
+To enable ThingSpeak data upload:
+
+* [Create TS account](https://thingspeak.com/users/sign_up)
+* [Create TS Channel](https://thingspeak.com/channels/new)
+* Enable 3 fields for this channel and name them:
+** temperature
+** humidity
+** pressure
+* Copy Write API key and paste it to `thingspeakconfig.py`
+* To upload data to ThingSpeak run `python thingspeak_post.py`
+* You can automate whole process by adding it to crontab `*/30 * * * * python /home/pi/WeatherStation/thingspeak_post.py`
+
