@@ -55,7 +55,7 @@ class Sensor
         $rResult = $this->cache->get($oKey);
 
         if ($rResult === false) {
-            $rResult = $this->db->fetch($this->db->execute("SELECT datetime(`Date`, 'unixepoch', 'localtime') `Date2` FROM `sensor_values` INDEXED BY SENSOR_A WHERE `Sensor` >= 0 ORDER BY `Date` DESC LIMIT 1"));
+            $rResult = $this->db->fetch($this->db->execute("SELECT datetime(`Date`, 'unixepoch') `Date2` FROM `sensor_values` INDEXED BY SENSOR_A WHERE `Sensor` >= 0 ORDER BY `Date` DESC LIMIT 1"));
             $rResult = $rResult->Date2;
             $this->cache->set($oKey, $rResult, self::CACHE_INTERVAL_5_MINUTES);
         }
@@ -141,7 +141,7 @@ class Sensor
         if (!$this->cache->check($oKey)) {
 
             $rResult = $this->db->execute("select
-					strftime('%Y-%m-%d %H:00:00', `Date`, 'unixepoch', 'localtime') Date
+					strftime('%Y-%m-%d %H:00:00', `Date`, 'unixepoch') Date
 					, AVG(Value) Avg
 					, MIN(Value) Min
 					, MAX(Value) Max
@@ -150,7 +150,7 @@ class Sensor
 					where
 						`Date`>(SELECT strftime('%s', 'now', '-{$hours} hour')) AND Sensor=$sensor
 					group by
-						strftime('%Y-%m-%d %H:00:00', `Date`, 'unixepoch', 'localtime')
+						strftime('%Y-%m-%d %H:00:00', `Date`, 'unixepoch')
 					ORDER BY
 						`Date` {$orderBy}
 					");
@@ -177,7 +177,7 @@ class Sensor
         if (!$this->cache->check($oKey)) {
 
             $rResult = $this->db->execute("select
-					date(`Date`, 'unixepoch', 'localtime') Date
+					date(`Date`, 'unixepoch') Date
 					, AVG(Value) Avg
 					, MIN(Value) Min
 					, MAX(Value) Max
@@ -186,9 +186,9 @@ class Sensor
 					where
 						`Date`>(SELECT strftime('%s', 'now', '-{$days} day')) AND Sensor=$sensor
 					group by
-						date(`Date`, 'unixepoch', 'localtime')
+						date(`Date`, 'unixepoch')
 					ORDER BY
-						date(`Date`, 'unixepoch', 'localtime') {$orderBy}
+						date(`Date`, 'unixepoch') {$orderBy}
 					");
 
             while ($tResult = $this->db->fetchAssoc($rResult)) {
@@ -213,7 +213,7 @@ class Sensor
         if (!$this->cache->check($oKey)) {
 
             $rResult = $this->db->execute("select
-					strftime('%Y-%m', `Date`, 'unixepoch', 'localtime') Date
+					strftime('%Y-%m', `Date`, 'unixepoch') Date
 					, AVG(Value) Avg
 					, MIN(Value) Min
 					, MAX(Value) Max
@@ -222,9 +222,9 @@ class Sensor
 					where
 						`Date`>(SELECT strftime('%s', 'now', '-{$days} day')) AND Sensor=$sensor
 					group by
-						strftime('%Y-%m', `Date`, 'unixepoch', 'localtime')
+						strftime('%Y-%m', `Date`, 'unixepoch')
 					ORDER BY
-						strftime('%Y-%m', `Date`, 'unixepoch', 'localtime') {$orderBy}
+						strftime('%Y-%m', `Date`, 'unixepoch') {$orderBy}
 					");
 
             while ($tResult = $this->db->fetchAssoc($rResult)) {
