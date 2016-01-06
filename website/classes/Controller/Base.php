@@ -2,7 +2,12 @@
 
 namespace Controller;
 
-class Base implements \Interfaces\Singleton {
+use General\Config;
+use General\StaticUtils;
+use General\Templater;
+use Interfaces\Singleton;
+
+class Base implements Singleton {
 
 	protected $aExcluded = array();
 	protected $aGlobalExcluded = array('getName','getPermissionTranslation');
@@ -10,12 +15,11 @@ class Base implements \Interfaces\Singleton {
 
 	/**
 	 *
-	 * Metoda pobiera nazwę kontrolera
 	 * @return string
 	 */
 	public function getName() {
 			
-		$aClass = \General\StaticUtils::parseClassname(get_class($this));
+		$aClass = StaticUtils::parseClassname(get_class($this));
 			
 		return "{T:{$aClass['classname']}}";
 	}
@@ -27,9 +31,6 @@ class Base implements \Interfaces\Singleton {
 
 	private static $instance;
 
-	/**
-	 * Konstruktor prywatny
-	 */
 	private function __construct()
 	{
 
@@ -58,11 +59,15 @@ class Base implements \Interfaces\Singleton {
 			$sRetVal .= $sKey . '/' . $sValue;
 		}
 		
-		$sRetVal = \General\Config::getInstance()->get('baseUrl') . $sRetVal;
+		$sRetVal = Config::getInstance()->get('baseUrl') . $sRetVal;
 		return $sRetVal;
 	}
 
-	public function module(array $aParams, \General\Templater $template) {
+	/**
+	 * @param array $aParams
+	 * @param Templater $template
+     */
+	public function module(array $aParams, Templater $template) {
 	
 		if (isset($aParams['module'])) {
 	

@@ -1,4 +1,5 @@
 data.db
+data-new.db
 /.settings/
 /*.pyc
 diagram.ps
@@ -14,5 +15,3 @@ website/logs/error.log
 twitter/.idea
 
 website/config.env.php
-
-data-new.db

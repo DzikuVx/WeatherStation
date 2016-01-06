@@ -1,12 +1,13 @@
 <?php
 namespace View;
 
-abstract class Base implements \Interfaces\View {
+use Interfaces\View;
+
+abstract class Base implements View {
 	 
 	protected $aParams = null;
 	
 	/**
-	 * Konstruktor
 	 * @param array $aParams
 	 */
 	public function __construct(array $aParams) {
@@ -14,7 +15,6 @@ abstract class Base implements \Interfaces\View {
 	}
 	
 	/**
-	 * (non-PHPdoc)
 	 * @see Interfaces.View::get()
 	 */
 	public function get() {

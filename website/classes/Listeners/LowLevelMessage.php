@@ -1,13 +1,14 @@
 <?php
 
 namespace Listeners;
+use General\Templater;
+use Interfaces\Listener;
+use Interfaces\Singleton;
 
 /**
- * 
- * Listener messageów
  * @author Paweł
  */
-class LowLevelMessage implements \Interfaces\Singleton, \Interfaces\Listener {
+class LowLevelMessage implements Singleton, Listener {
 	
 	private static $instance;
         protected $message = array();
@@ -41,22 +42,17 @@ class LowLevelMessage implements \Interfaces\Singleton, \Interfaces\Listener {
 	
 	/**
 	 * 
-	 * Pobranie tablicy kolejki
 	 * @return array
 	 */
 	private function get() {
 		return $this->message;
 	}
 	
-	/**
-	 * Wyczyszczenie kolejki komunikatów
-	 */
 	private function clear() {
 		$this->set(null);
 	}
 	
 	/**
-	 * Wstawienie komunikatu do kolejki
 	 * @param string $sType success/info/warning/error
 	 * @param string $sMessage
 	 */
@@ -105,11 +101,10 @@ class LowLevelMessage implements \Interfaces\Singleton, \Interfaces\Listener {
 	}
 	
 	/**
-	* Rejestracja listenera
 	* @param array $aParams
-	* @param \General\Templater $template
+	* @param Templater $template
 	*/
-	public function register(array &$aParams, \General\Templater $template) {
+	public function register(array &$aParams, Templater $template) {
 	
 		$aArray = $this->get();
 	

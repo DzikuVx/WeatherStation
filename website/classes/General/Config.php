@@ -19,7 +19,6 @@ class Config implements \ArrayAccess{
 	}
 
 	/**
-	 * Konstruktor statyczny -> Singleton
 	 * @return Config
 	 */
 	public static function getInstance() {

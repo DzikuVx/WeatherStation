@@ -6,15 +6,6 @@ use General\Templater;
 
 class Forecast extends Base {
 
-	protected $model = null;
-	
-	public function __construct(array $aParams) {
-		parent::__construct($aParams);
-		
-		$this->model = new \Model\Readout();
-		
-	}
-	
 	public function mainpage()
 	{
 		$oTemplate = new Templater('forecast.html');

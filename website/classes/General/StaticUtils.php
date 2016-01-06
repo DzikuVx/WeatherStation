@@ -4,10 +4,6 @@ namespace General;
 
 class StaticUtils {
 
-	/**
-	 *
-	 * Konstruktor prywatny, klasa może być tylko statyczna
-	 */
 	private function __construct() {
 
 	}

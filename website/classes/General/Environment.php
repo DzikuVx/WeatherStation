@@ -6,12 +6,6 @@ use PhpCache\Memcached as Memcached;
 use PhpCache\PhpCache;
 use Translate\Controller;
 
-/**
- * 
- * Klasa ustawiająca zmienne środowiskowe projektu
- * @author Paweł
- *
- */
 class Environment extends StaticUtils {
 
     static public function setContentHtml() {

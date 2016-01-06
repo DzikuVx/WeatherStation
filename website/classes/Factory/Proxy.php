@@ -3,7 +3,8 @@
 namespace Factory;
 
 use Proxy\Forecast;
-use Proxy\History;
+use /** @noinspection PhpDeprecationInspection */
+		Proxy\History;
 use Interfaces\Factory;
 use Proxy\AbstractProxy;
 use Proxy\Current;

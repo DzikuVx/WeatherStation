@@ -1,3 +1,3 @@
 <?php
 
-$config ['db'] = '../data.db';
+$config ['db'] = '../data-new.db';
