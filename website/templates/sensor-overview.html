@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>{name}</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div id="chartHour{symbol}" class="chart" ></div>
+    </div>
+    <div class="col-md-3">
+        <table class="table table-striped statistics-box">
+            <tr>
+                <th>{T:24h average}</th>
+                <td>{1dAvg}{unit}</td>
+            </tr>
+            <tr>
+                <th>{T:24h min}</th>
+                <td>{1dMin}{unit}</td>
+            </tr>
+            <tr>
+                <th>{T:24h max}</th>
+                <td>{1dMax}{unit}</td>
+            </tr>
+            <tr>
+                <th>{T:7d average}</th>
+                <td>{7dAvg}{unit}</td>
+            </tr>
+            <tr>
+                <th>{T:7d min}</th>
+                <td>{7dMin}{unit}</td>
+            </tr>
+            <tr>
+                <th>{T:7d max}</th>
+                <td>{7dMax}{unit}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>

@@ -2,184 +2,158 @@
 
 namespace View;
 
+use Factory\Proxy as FactoryProxy;
+use General\Config;
 use General\Formater;
 use General\GoogleChart;
 use General\Templater;
 use Model\Sensor;
-use Factory\Proxy as FactoryProxy;
 
-class Overview extends Base {
+class Overview extends Base
+{
 
-	/**
-	 * @var Sensor
-	 */
-	protected $model = null;
-	
-	public function __construct(array $aParams) {
-		parent::__construct($aParams);
-		
-		$this->model = new Sensor();
-	}
-	
-	public function mainpage()
-	{
-		$oTemplate = new Templater('overview.html');
+    /**
+     * @var Sensor
+     */
+    protected $model = null;
 
-		$oCurrent = new \stdClass();
+    public function __construct(array $aParams)
+    {
+        parent::__construct($aParams);
+
+        $this->model = new Sensor();
+    }
+
+    public function mainpage()
+    {
+        $oTemplate = new Templater('overview.html');
+
+        $oCurrent = new \stdClass();
         $oCurrent->Temperature = Formater::formatFloat($this->model->getCurrent(Sensor::SENSOR_TEMPERATURE_EXTERNAL), 0);
         $oCurrent->Humidity = Formater::formatFloat($this->model->getCurrent(Sensor::SENSOR_HUMIDITY_EXTERNAL), 0);
-
-        $oTemplate->add($oCurrent);
-        $oTemplate->add('LastReadout', $this->model->getLastReadoutDate());
-
-		$oTemplate->add('1dTempAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 1), 2));
-		$oTemplate->add('1dHumidityAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_HUMIDITY_EXTERNAL, 1), 2));
-		
-		$oTemplate->add('1dTempMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 1), 2));
-		$oTemplate->add('1dHumidityMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_HUMIDITY_EXTERNAL, 1), 2));
-		
-		$oTemplate->add('1dTempMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 1), 2));
-		$oTemplate->add('1dHumidityMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_HUMIDITY_EXTERNAL, 1), 2));
-		
-		$oTemplate->add('7dTempAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 7), 2));
-		$oTemplate->add('7dHumidityAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_HUMIDITY_EXTERNAL, 7), 2));
-		
-		$oTemplate->add('7dTempMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 7), 2));
-		$oTemplate->add('7dHumidityMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_HUMIDITY_EXTERNAL, 7), 2));
-		
-		$oTemplate->add('7dTempMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 7), 2));
-		$oTemplate->add('7dHumidityMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_HUMIDITY_EXTERNAL, 7), 2));
-
-        /*
-         * External data from Open Weather Map
-         */
-		$oCurrent = new \stdClass();
-
         $oCurrent->Pressure = Formater::formatFloat($this->model->getCurrent(Sensor::SENSOR_PRESSURE_EXTERNAL), 0);
         $oCurrent->WindSpeed = Formater::formatFloat($this->model->getCurrent(Sensor::SENSOR_WIND_SPEED_API), 0);
         $oCurrent->WindDirection = Formater::formatFloat(round($this->model->getCurrent(Sensor::SENSOR_WIND_DIRECTION_API) / 10) * 10, 0);
 
-		$oTemplate->add($oCurrent);
-		
-		$oTemplate->add('1dPressureAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_PRESSURE_EXTERNAL, 1), 2));
-		$oTemplate->add('1dWindAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_WIND_SPEED_API, 1), 2));
-		
-		$oTemplate->add('1dPressureMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_PRESSURE_EXTERNAL, 1), 2));
-		$oTemplate->add('1dWindMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_WIND_SPEED_API, 1), 2));
-		
-		$oTemplate->add('1dPressureMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_PRESSURE_EXTERNAL, 1), 2));
-		$oTemplate->add('1dWindMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_WIND_SPEED_API, 1), 2));
-		
-		$oTemplate->add('7dPressureAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_PRESSURE_EXTERNAL, 7), 2));
-		$oTemplate->add('7dWindAvg', Formater::formatFloat($this->model->getAverage(Sensor::SENSOR_WIND_SPEED_API, 7), 2));
-		
-		$oTemplate->add('7dPressureMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_PRESSURE_EXTERNAL, 7), 2));
-		$oTemplate->add('7dWindMin', Formater::formatFloat($this->model->getMin(Sensor::SENSOR_WIND_SPEED_API, 7), 2));
-		
-		$oTemplate->add('7dPressureMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_PRESSURE_EXTERNAL, 7), 2));
-		$oTemplate->add('7dWindMax', Formater::formatFloat($this->model->getMax(Sensor::SENSOR_WIND_SPEED_API, 7), 2));
-		
-		$proxyFactory = new FactoryProxy();
-		
-		$oTemplate->add('proxyCurrent', $proxyFactory->create('Current')->get());
-		$oTemplate->add('proxyForecast', $proxyFactory->create('Forecast')->get());
+        $oTemplate->add($oCurrent);
+        $oTemplate->add('LastReadout', $this->model->getLastReadoutDate());
 
-		return (string) $oTemplate;
-	}
+        $sensors = Config::getInstance()->get('sensors');
 
-	public function charts()
-	{
-		$oTemplate = new Templater('charts.html');
-	
-		return (string) $oTemplate;
-	}
+        $sensorContent = '';
 
-	/**
-	 * render average temperature chart head for google charts
-	 * @return string
-	 */
-	public function chartHead() {
+        foreach ($sensors as $sensor) {
 
+            if (array_search('overview', $sensor['show-in']) === false) {
+                continue;
+            }
 
-		/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-		$t = \Translate\Controller::getDefault();
+            $sensorTemplate = new Templater('sensor-overview.html');
 
+            $id = $sensor['id'];
+            $decimals = $sensor['decimals'];
+
+            $sensorTemplate->add('unit', $sensor['unit']);
+            $sensorTemplate->add('name', $sensor['name']);
+            $sensorTemplate->add('symbol', $sensor['symbol']);
+
+            $sensorTemplate->add('1dAvg', Formater::formatFloat($this->model->getAverage($id, 1), $decimals));
+            $sensorTemplate->add('1dMin', Formater::formatFloat($this->model->getMin($id, 1), $decimals));
+            $sensorTemplate->add('1dMax', Formater::formatFloat($this->model->getMax($id, 1), $decimals));
+
+            $sensorTemplate->add('7dAvg', Formater::formatFloat($this->model->getAverage($id, 7), $decimals));
+            $sensorTemplate->add('7dMin', Formater::formatFloat($this->model->getMin($id, 7), $decimals));
+            $sensorTemplate->add('7dMax', Formater::formatFloat($this->model->getMax($id, 7), $decimals));
+
+            $sensorContent .= (string)$sensorTemplate;
+        }
+
+        $oTemplate->add('sensors', $sensorContent);
+
+        $proxyFactory = new FactoryProxy();
+
+        $oTemplate->add('proxyCurrent', $proxyFactory->create('Current')->get());
+        $oTemplate->add('proxyForecast', $proxyFactory->create('Forecast')->get());
+
+        return (string)$oTemplate;
+    }
+
+    public function charts()
+    {
+        $oTemplate = new Templater('charts.html');
+
+        return (string)$oTemplate;
+    }
+
+    /**
+     * render average temperature chart head for google charts
+     * @return string
+     */
+    public function chartHead()
+    {
         $oTemplate = new Templater('chartHead.html');
 
-        /**
-		 * Data from OpenWeatherMap.org
-		 */
-		$aHistory = $this->model->getHourAggregate(Sensor::SENSOR_PRESSURE_EXTERNAL, 168, "ASC");
+        $sensors = Config::getInstance()->get('sensors');
 
-		$oChartHourPressure = new GoogleChart();
-		$oChartHourPressure->setTitle($t->get('Pressure') . " [hPa]");
-		$oChartHourPressure->setDomID('chartHourPressure');
-		$oChartHourPressure->add('Hour', array());
-		$oChartHourPressure->add('Min', array());
-		
-		foreach ($aHistory as $oReadout) {
-			
-			$oChartHourPressure->push('Hour', Formater::formatTime($oReadout['Date']));
-			$oChartHourPressure->push('Min', number_format($oReadout['Min'],2,'.',''));
-			
-		}
-		$oTemplate->add('chartHourPressure',$oChartHourPressure->getHead());
+        $chartContent = '';
 
-        /* Wind speed chart */
+        foreach ($sensors as $sensor) {
 
-        $aHistory = $this->model->getHourAggregate(Sensor::SENSOR_WIND_SPEED_API, 168, "ASC");
+            if (array_search('overview', $sensor['show-in']) === false) {
+                continue;
+            }
+            $id = $sensor['id'];
+            $decimals = $sensor['graph-overview-setting']['decimals'];
 
-        $oChartHourWindSpeed = new GoogleChart();
-        $oChartHourWindSpeed->setTitle($t->get('Wind speed') . " [m/s]");
-        $oChartHourWindSpeed->setDomID('chartHourWindSpeed');
-        $oChartHourWindSpeed->add('Hour', array());
-        $oChartHourWindSpeed->add('Min', array());
+            $data = $this->model->getHourAggregate($id, 168, "ASC");
 
-        foreach ($aHistory as $oReadout) {
+            $chart = new GoogleChart();
+            $chart->setTitle('');
+            $chart->setDomID('chartHour' . $sensor['symbol']);
 
-            $oChartHourWindSpeed->push('Hour', Formater::formatTime($oReadout['Date']));
-            $oChartHourWindSpeed->push('Min', number_format($oReadout['Min'],2,'.',''));
+            $chart->add('{T:Time}', array());
 
-        }
-        $oTemplate->add('chartHourWindSpeed',$oChartHourWindSpeed->getHead());
+            $valuesToDisplay = $sensor['graph-overview-setting']['show'];
 
-		/*
-		 * Hour Aggregate charts
-		 */
-		$aHistory = $this->model->getHourAggregate(Sensor::SENSOR_TEMPERATURE_EXTERNAL, 168,"ASC");
-		
-		$oChartHourTemperature = new GoogleChart();
-		$oChartHourTemperature->setTitle($t->get('Temperature') . " [C]");
-		$oChartHourTemperature->setDomID('chartHourTemperature');
-		$oChartHourTemperature->add('Hour', array());
-		$oChartHourTemperature->add('Avg', array());
-		
-		foreach ($aHistory as $oReadout) {
-			
-			$oChartHourTemperature->push('Hour', Formater::formatTime($oReadout['Date']));
-			$oChartHourTemperature->push('Avg', number_format($oReadout['Avg'],2));
-			
-		}
-		$oTemplate->add('chartHourTemperature',$oChartHourTemperature->getHead());
+            $doMin = false;
+            $doAvg = false;
+            $doMax = false;
 
-        $aHistory = $this->model->getHourAggregate(Sensor::SENSOR_HUMIDITY_EXTERNAL, 168,"ASC");
+            if (array_search('avg', $valuesToDisplay) !== false) {
+                $chart->add('{T:Avg}', array());
+                $doAvg = true;
+            }
 
-        $oChartHourHumidity = new GoogleChart();
-        $oChartHourHumidity->setTitle($t->get('Humidity') . " [%]");
-        $oChartHourHumidity->setDomID('chartHourHumidity');
-        $oChartHourHumidity->add('Hour', array());
-        $oChartHourHumidity->add('Avg', array());
+            if (array_search('min', $valuesToDisplay) !== false) {
+                $chart->add('{T:Min}', array());
+                $doMin = true;
+            }
 
-        foreach ($aHistory as $oReadout) {
+            if (array_search('max', $valuesToDisplay) !== false) {
+                $chart->add('{T:Max}', array());
+                $doMax = true;
+            }
 
-            $oChartHourHumidity->push('Hour', Formater::formatTime($oReadout['Date']));
-            $oChartHourHumidity->push('Avg', number_format($oReadout['Avg'],2));
+            foreach ($data as $readout) {
 
+                $chart->push('{T:Time}', Formater::formatTime($readout['Date']));
+                if ($doMin) {
+                    $chart->push('{T:Min}', number_format($readout['Min'], $decimals, '.', ''));
+                }
+                if ($doAvg) {
+                    $chart->push('{T:Avg}', number_format($readout['Avg'], $decimals, '.', ''));
+                }
+                if ($doMax) {
+                    $chart->push('{T:Max}', number_format($readout['Max'], $decimals, '.', ''));
+                }
+            }
+
+            $chartContent .= $chart->getHead();
         }
 
-        $oTemplate->add('chartHourHumidity',$oChartHourHumidity->getHead());
+        $oTemplate->add('chart-data', $chartContent);
 
-		return (string) $oTemplate;
-	}
-	
+        return (string)$oTemplate;
+    }
+
 }
