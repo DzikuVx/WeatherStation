@@ -15,9 +15,12 @@ $config['memcachedPort'] = 11211;
 $config['useLocalDataMockup'] = false;
 
 /*
- *
  * @var int
  */
 $config['cityId'] = 3083829;
 $config['cityName'] = 'Szczecin,PL';
 $config['apiKey'] = '1111';
+
+$config['language'] = 'en';
+
+$config['timezone'] = 'Europe/Warsaw';

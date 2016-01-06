@@ -3,10 +3,10 @@
 $translationTable = array();
 
 $translationTable['en'] = array();
-$translationTable['en']['Product Name'] = 'Pogoda w Dobrej';
+$translationTable['en']['Product Name'] = 'Raspberry Pi WeatherStation';
+$translationTable['en']['Product Short Name'] = 'WeatherStation';
 
 $translationTable['pl'] = array();
-
 $translationTable['pl']['Product Name'] 	  	= 'Pogoda w Dobrej';
 $translationTable['pl']['Product Short Name'] 	= 'Pogoda w Dobrej';
 $translationTable['pl']['Overview'] 			= 'Przegląd';
