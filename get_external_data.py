@@ -14,9 +14,6 @@ import sensor
 
 from openweatherconfig import config
 
-db_connection = None
-
-
 def fetchJSON(url):
     req = urllib2.Request(url)
     response = urllib2.urlopen(req)
@@ -39,7 +36,7 @@ def processData(json):
     sensor_handler.save_value(3, json["main"]["pressure"])
     sensor_handler.save_value(4, json["wind"]["speed"])
     sensor_handler.save_value(5, json["wind"]["deg"])
-
+    sensor_handler.save_value(6, bmp_180_sensor.read_temperature()) # Save internal temperature readout
     return out
 
 def saveSQLite(data):
