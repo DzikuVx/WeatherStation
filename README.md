@@ -1,4 +1,4 @@
-# WeatherStation
+# WeatherStation 1.2.0
 
 Turn Raspberry Pi into weather station with DHT22 sensor and OpenWeatherMap.org
 
@@ -74,6 +74,19 @@ config = {
     'coords': 'lat=53.48&long=14.40&alt=100'
 }
 ```
+
+#Migration from previous versions
+
+Starting from release 1.2.0 WeatherStation starts to use new database with different tables and field names. If you have previous version running and want to update to 1.2.0 or newer you have to run migration scrit. 
+
+To run migration do as follows:
+* make a copy of `data.db`
+* update WeatherStation to new version
+* make sure that `data.db` was not overwiritten during update. If so, restore it if from a copy mada in step 1
+* run migration script `python migrate.py`
+* scripts requires few minutes to execute. When it finishes, compare sizes of `data.db` and `data-new.db`. They should be similar in size (up to 20% difference is acceptable)
+
+**If you are doing a fresh install, migration is not required** 
 
 #Crontab
 
