@@ -3,8 +3,9 @@
 namespace Controller;
 
 use Exception;
+use Interfaces\Singleton;
 
-class Forecast extends Base implements \Interfaces\Singleton {
+class Forecast extends Base implements Singleton {
 
 	protected $aExcluded = array();
 

@@ -3,8 +3,11 @@ namespace Controller;
 
 use Exception;
 use General\Environment;
+use General\Session;
+use General\Templater;
 use Interfaces\Singleton;
 use Listeners\LowLevelMessage;
+use Listeners\Message;
 use psDebug\CustomException;
 use psDebug\Debug;
 
@@ -43,22 +46,19 @@ class Main extends Base implements Singleton {
 	public function get() {
 
         Environment::setContentHtml();
-        \General\Session::start();
+        Session::start();
         Environment::set();
 
         /**
-         * @var \General\Templater
+         * @var Templater
          */
-        $template = new \General\Templater('index.html');
+        $template = new Templater('index.html');
 
 		try {
 
 			\Database\Factory::getInstance()->quoteAll($this->aParams);
 
-			/*
-			 * Rejestracja listenerów
-			*/
-			\Listeners\Message::getInstance()->register($this->aParams, $template);
+			Message::getInstance()->register($this->aParams, $template);
 
 			if (empty ( $this->aParams ['class'] )) {
 				$this->aParams ['class'] = 'Overview';
@@ -133,16 +133,16 @@ class Main extends Base implements Singleton {
 	private function paramsInjecter($matches)
 	{
 	
-		$retval = $matches [1];
-		$retval = mb_substr($retval, 8, - 1);
+		$retVal = $matches [1];
+		$retVal = mb_substr($retVal, 8, - 1);
 	
-		if (isset($this->aParams[$retval])) {
-			$retval = $this->aParams[$retval];
+		if (isset($this->aParams[$retVal])) {
+			$retVal = $this->aParams[$retVal];
 		}else {
-			$retval = '';
+			$retVal = '';
 		}
 		
-		return $retval;
+		return $retVal;
 	}
 	
 }

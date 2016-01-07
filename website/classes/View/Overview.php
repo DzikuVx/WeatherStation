@@ -5,17 +5,16 @@ namespace View;
 use Factory\Proxy as FactoryProxy;
 use General\Config;
 use General\Formater;
-use General\GoogleChart;
 use General\Templater;
 use Model\Sensor;
 
 class Overview extends Base
 {
 
-    /**
-     * @var Sensor
-     */
-    protected $model = null;
+    protected $methodName = 'getHourAggregate';
+    protected $period = 168;
+    protected $sensorUsageKey = 'overview';
+    protected $timeFormat = 'H:i';
 
     public function __construct(array $aParams)
     {
@@ -44,7 +43,7 @@ class Overview extends Base
 
         foreach ($sensors as $sensor) {
 
-            if (array_search('overview', $sensor['show-in']) === false) {
+            if (array_search($this->sensorUsageKey, $sensor['show-in']) === false) {
                 continue;
             }
 
@@ -74,77 +73,6 @@ class Overview extends Base
 
         $oTemplate->add('proxyCurrent', $proxyFactory->create('Current')->get());
         $oTemplate->add('proxyForecast', $proxyFactory->create('Forecast')->get());
-
-        return (string)$oTemplate;
-    }
-
-    /**
-     * render average temperature chart head for google charts
-     * @return string
-     */
-    public function chartHead()
-    {
-        $oTemplate = new Templater('chartHead.html');
-
-        $sensors = Config::getInstance()->get('sensors');
-
-        $chartContent = '';
-
-        foreach ($sensors as $sensor) {
-
-            if (array_search('overview', $sensor['show-in']) === false) {
-                continue;
-            }
-            $id = $sensor['id'];
-            $decimals = $sensor['graph-overview-setting']['decimals'];
-
-            $data = $this->model->getHourAggregate($id, 168, "ASC");
-
-            $chart = new GoogleChart();
-            $chart->setTitle('');
-            $chart->setDomID('chartHour' . $sensor['symbol']);
-
-            $chart->add('{T:Time}', array());
-
-            $valuesToDisplay = $sensor['graph-overview-setting']['show'];
-
-            $doMin = false;
-            $doAvg = false;
-            $doMax = false;
-
-            if (array_search('avg', $valuesToDisplay) !== false) {
-                $chart->add('{T:Avg}', array());
-                $doAvg = true;
-            }
-
-            if (array_search('min', $valuesToDisplay) !== false) {
-                $chart->add('{T:Min}', array());
-                $doMin = true;
-            }
-
-            if (array_search('max', $valuesToDisplay) !== false) {
-                $chart->add('{T:Max}', array());
-                $doMax = true;
-            }
-
-            foreach ($data as $readout) {
-
-                $chart->push('{T:Time}', Formater::formatTime($readout['Date']));
-                if ($doMin) {
-                    $chart->push('{T:Min}', number_format($readout['Min'], $decimals, '.', ''));
-                }
-                if ($doAvg) {
-                    $chart->push('{T:Avg}', number_format($readout['Avg'], $decimals, '.', ''));
-                }
-                if ($doMax) {
-                    $chart->push('{T:Max}', number_format($readout['Max'], $decimals, '.', ''));
-                }
-            }
-
-            $chartContent .= $chart->getHead();
-        }
-
-        $oTemplate->add('chart-data', $chartContent);
 
         return (string)$oTemplate;
     }

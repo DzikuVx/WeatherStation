@@ -2,26 +2,21 @@
 
 namespace View;
 
+use General\Config;
 use General\Formater;
-use General\GoogleChart;
 use General\Templater;
 use Model\Sensor;
 use Translate\Controller as TranslateController;
 
 class History extends Base
 {
-
     /**
      * @var \Model\Sensor
      */
     protected $model = null;
 
-
-//	protected $internalData = array();
-//	protected $externalData = array();
-
-    private $methodName = 'getDayAggregate';
-    private $period = 30;
+    protected $methodName = 'getDayAggregate';
+    protected $period = 30;
 
     public function __construct(array $aParams)
     {
@@ -34,11 +29,15 @@ class History extends Base
             case 'year':
                 $this->methodName = 'getMonthlyAggregate';
                 $this->period = 365;
+                $this->sensorUsageKey = 'history-365';
+                $this->timeFormat = 'Y-m';
                 break;
 
             default:
                 $this->methodName = 'getDayAggregate';
                 $this->period = 30;
+                $this->sensorUsageKey = 'history-30';
+                $this->timeFormat = 'm-d';
                 break;
 
         }
@@ -129,83 +128,30 @@ class History extends Base
     public function charts()
     {
         $oTemplate = new Templater('history-charts.html');
-
         $this->titleHelper($oTemplate);
 
-        return (string)$oTemplate;
-    }
+        $sensors = Config::getInstance()->get('sensors');
 
-    /**
-     * render average temperature chart head for google charts
-     * @return string
-     */
-    public function chartHead()
-    {
+        $sensorContent = '';
 
-        $t = TranslateController::getDefault();
+        foreach ($sensors as $sensor) {
 
-        $oTemplate = new Templater('history-chartHead.html');
+            if (array_search($this->sensorUsageKey, $sensor['show-in']) === false) {
+                continue;
+            }
 
-        $oTemplate->add('chartDailyPressure', $this->renderSensorChart(
-            new GoogleChart(),
-            $this->model->{$this->methodName}(Sensor::SENSOR_PRESSURE_EXTERNAL, $this->period, 'ASC'),
-            $t->get('Pressure'),
-            'chartDailyPressure',
-            true));
+            $sensorTemplate = new Templater('sensor-history.html');
 
-        $oTemplate->add('chartDailyTemperature', $this->renderSensorChart(
-            new GoogleChart(),
-            $this->model->{$this->methodName}(Sensor::SENSOR_TEMPERATURE_EXTERNAL, $this->period, 'ASC'),
-            $t->get('Temperature'),
-            'chartDailyTemperature',
-            true));
+            $sensorTemplate->add('unit', $sensor['unit']);
+            $sensorTemplate->add('name', $sensor['name']);
+            $sensorTemplate->add('symbol', $sensor['symbol']);
 
-        $oTemplate->add('chartDailyHumidity', $this->renderSensorChart(
-            new GoogleChart(),
-            $this->model->{$this->methodName}(Sensor::SENSOR_HUMIDITY_EXTERNAL, $this->period, 'ASC'),
-            $t->get('Humidity'),
-            'chartDailyHumidity',
-            false));
+            $sensorContent .= (string)$sensorTemplate;
+        }
+
+        $oTemplate->add('sensors-data', $sensorContent);
 
         return (string)$oTemplate;
-
-    }
-
-    /**
-     * @param GoogleChart $chart
-     * @param $data
-     * @param $title
-     * @param $domId
-     * @param bool $withMax
-     * @param bool $withMin
-     * @param int $decimals
-     * @return string
-     */
-    private function renderSensorChart($chart, $data, $title, $domId, $withMax = true, $withMin = true, $decimals = 2)
-    {
-        $chart->setTitle($title);
-        $chart->setDomID($domId);
-        $chart->add('Hour', array());
-        $chart->add('Avg', array());
-        if ($withMax) {
-            $chart->add('Max', array());
-        }
-        if ($withMin) {
-            $chart->add('Min', array());
-        }
-
-        foreach ($data as $oReadout) {
-            $chart->push('Hour', Formater::formatDate($oReadout['Date']));
-            $chart->push('Avg', number_format($oReadout['Avg'], $decimals, '.', ''));
-            if ($withMax) {
-                $chart->push('Max', number_format($oReadout['Max'], $decimals, '.', ''));
-            }
-            if ($withMin) {
-                $chart->push('Min', number_format($oReadout['Min'], $decimals, '.', ''));
-            }
-        }
-
-        return $chart->getHead();
     }
 
 }

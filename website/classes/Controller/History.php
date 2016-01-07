@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Exception;
+use General\Templater;
 
 class History extends Base implements \Interfaces\Singleton {
 
@@ -29,7 +30,7 @@ class History extends Base implements \Interfaces\Singleton {
 		return self::$instance;
 	}
 
-	public function render(array $aParams, \General\Templater $template) {
+	public function render(array $aParams, Templater $template) {
 
 		if (empty($aParams['type'])) {
 			$aParams['type'] = 'chart';
@@ -47,14 +48,14 @@ class History extends Base implements \Interfaces\Singleton {
 		switch ($aParams['type']) {
 				
 			case 'table':
-				$template->add('pageContent', $oView->tables());
+				$template->add('sensors', $oView->tables());
 				$template->add('submenu-active-table','active');
 				break;
 
 			case 'chart':
 			default:
-				$template->add('chartHead', $oView->chartHead());
-				$template->add('pageContent', $oView->charts());
+				$template->add('chartHead', $oView->chartHead('graph-history-setting'));
+				$template->add('sensors', $oView->charts());
 				$template->add('submenu-active-chart','active');
 				break;
 

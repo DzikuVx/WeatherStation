@@ -39,9 +39,7 @@ class Overview extends Base implements Singleton {
 
 		$oView = new \View\Overview($aParams);
 		$template->add('menu-active-overview','active');
-
 		$template->add('mainContent', $oView->mainpage());
-
-        $template->add('chartHead', $oView->chartHead());
+        $template->add('chartHead', $oView->chartHead('graph-overview-setting'));
 	}
 }
