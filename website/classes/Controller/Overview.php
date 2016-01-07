@@ -43,6 +43,5 @@ class Overview extends Base implements Singleton {
 		$template->add('mainContent', $oView->mainpage());
 
         $template->add('chartHead', $oView->chartHead());
-        $template->add('pageContent', $oView->charts());
 	}
 }

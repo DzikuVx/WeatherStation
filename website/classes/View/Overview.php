@@ -78,13 +78,6 @@ class Overview extends Base
         return (string)$oTemplate;
     }
 
-    public function charts()
-    {
-        $oTemplate = new Templater('charts.html');
-
-        return (string)$oTemplate;
-    }
-
     /**
      * render average temperature chart head for google charts
      * @return string

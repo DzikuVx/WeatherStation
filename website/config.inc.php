@@ -58,7 +58,7 @@ $config['sensors'] = array(
             'decimals' => 0
         ),
         'graph-history-setting' => array(
-            'show' => array('min', 'avg', 'max'),
+            'show' => array('min', 'avg'),
             'decimals' => 0
         ),
     ),
