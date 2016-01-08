@@ -4,8 +4,9 @@ namespace Controller;
 
 use Exception;
 use General\Templater;
+use Interfaces\Singleton;
 
-class History extends Base implements \Interfaces\Singleton {
+class History extends Base implements Singleton {
 
 	protected $aExcluded = array();
 

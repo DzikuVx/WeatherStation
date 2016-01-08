@@ -1,6 +1,7 @@
 <?php
 
 namespace Interfaces;
+use General\Templater;
 
 /**
  * 
@@ -11,8 +12,8 @@ interface Listener {
 	
 	/**
 	* @param array $aParams
-	* @param \General\Templater $template
+	* @param Templater $template
 	*/
-	public function register(array &$aParams, \General\Templater $template);
+	public function register(array &$aParams, Templater $template);
 	
 }

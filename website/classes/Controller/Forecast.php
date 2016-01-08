@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Exception;
+use General\Templater;
 use Interfaces\Singleton;
 
 class Forecast extends Base implements Singleton {
@@ -32,7 +33,7 @@ class Forecast extends Base implements Singleton {
 
 	
 
-	public function render(array $aParams, \General\Templater $template) {
+	public function render(array $aParams, Templater $template) {
 
 		if (empty($aParams['type'])) {
 			$aParams['type'] = 'chart';

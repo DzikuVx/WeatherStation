@@ -57,51 +57,48 @@ class History extends Base
 
         $this->titleHelper($oTemplate);
 
-        $aggregatedData = array();
+        $sensors = Config::getInstance()->get('sensors');
 
-        $data = $this->model->{$this->methodName}(Sensor::SENSOR_TEMPERATURE_EXTERNAL, $this->period, 'ASC');
-        foreach ($data as $key => $value) {
-            $aggregatedData[$value['Date']]['Temperature'] = $value['Avg'];
-            $aggregatedData[$value['Date']]['MinTemperature'] = $value['Min'];
-            $aggregatedData[$value['Date']]['MaxTemperature'] = $value['Max'];
+        $sensorContent = '';
+
+        foreach ($sensors as $sensor) {
+
+            if (array_search($this->sensorUsageKey, $sensor['show-in']) === false) {
+                continue;
+            }
+
+            $decimals = $sensor['decimals'];
+
+            $sensorTemplate = new Templater('sensor-table.html');
+
+            $sensorTemplate->add('unit', $sensor['unit']);
+            $sensorTemplate->add('name', $sensor['name']);
+            $sensorTemplate->add('symbol', $sensor['symbol']);
+
+            $rowPrototype = new Templater('sensor-table-row.html');
+
+            $data = $this->model->{$this->methodName}($sensor['id'], $this->period, 'ASC');
+
+            $rowContent = '';
+
+            foreach ($data as $key => $value) {
+
+                $rowTemplate = clone $rowPrototype;
+
+                $value['Avg'] = Formater::formatFloat($value['Avg'], $decimals);
+                $value['Min'] = Formater::formatFloat($value['Min'], $decimals);
+                $value['Max'] = Formater::formatFloat($value['Max'], $decimals);
+
+                $rowTemplate->add($value);
+                $rowContent .= (string) $rowTemplate;
+            }
+
+            $sensorTemplate->add('rows', $rowContent);
+
+            $sensorContent .= (string)$sensorTemplate;
         }
 
-        $data = $this->model->{$this->methodName}(Sensor::SENSOR_HUMIDITY_EXTERNAL, $this->period, 'ASC');
-        foreach ($data as $key => $value) {
-            $aggregatedData[$value['Date']]['Humidity'] = $value['Avg'];
-            $aggregatedData[$value['Date']]['MinHumidity'] = $value['Min'];
-            $aggregatedData[$value['Date']]['MaxHumidity'] = $value['Max'];
-        }
-
-        $data = $this->model->{$this->methodName}(Sensor::SENSOR_PRESSURE_EXTERNAL, $this->period, 'ASC');
-        foreach ($data as $key => $value) {
-            $aggregatedData[$value['Date']]['Pressure'] = $value['Avg'];
-            $aggregatedData[$value['Date']]['MinPressure'] = $value['Min'];
-            $aggregatedData[$value['Date']]['MaxPressure'] = $value['Max'];
-        }
-
-        ksort($aggregatedData);
-
-        /*
-         * Get daily aggregate
-        */
-        $sTable = '';
-        foreach ($aggregatedData as $date => $oReadout) {
-
-            $sTable .= '<tr>';
-            $sTable .= '<td>' . Formater::formatDate($date) . '</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['MinTemperature'], 2) . '&deg;C</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['Temperature'], 2) . '&deg;C</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['MaxTemperature'], 2) . '&deg;C</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['MinHumidity'], 2) . '%</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['Humidity'], 2) . '%</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['MinPressure'], 2) . 'hPa</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['Pressure'], 2) . 'hPa</td>';
-            $sTable .= '<td>' . Formater::formatFloat($oReadout['MaxPressure'], 2) . 'hPa</td>';
-            $sTable .= '</tr>';
-
-        }
-        $oTemplate->add('DailyTable', $sTable);
+        $oTemplate->add('sensor-data', $sensorContent);
 
         return (string)$oTemplate;
     }
