@@ -112,7 +112,11 @@ class Api extends Base implements Singleton {
         $aRetVal['WeatherIcon'] = $jCurrent->weather[0]->icon;
         $aRetVal['WeatherCode'] = $jCurrent->weather[0]->id;
         $aRetVal['TempMax'] = $jCurrent->main->temp_max;
-        $aRetVal['TempMin'] = $jCurrent->main->temp_min;
+        if (isset($jCurrent->main->temp_min)) {
+            $aRetVal['TempMin'] = $jCurrent->main->temp_min;
+        } else {
+            $aRetVal['TempMin'] = 0;
+        }
 
         if ($jCurrent->clouds) {
             $aRetVal['Clouds'] = $jCurrent->clouds->all;
