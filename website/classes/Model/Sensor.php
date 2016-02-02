@@ -25,6 +25,7 @@ class Sensor
     const SENSOR_WIND_SPEED_API = 4;
     const SENSOR_WIND_DIRECTION_API = 5;
     const SENSOR_TEMPERATURE_INTERNAL = 6;
+    const SENSOR_LIGHT_LEVEL = 7;
 
     /**
      * @var array
