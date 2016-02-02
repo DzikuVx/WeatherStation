@@ -15,5 +15,5 @@ twitter/.idea
 
 website/config.env.php
 
-#website/bower_components/*
+website/bower_components/*
 website/node_modules/
