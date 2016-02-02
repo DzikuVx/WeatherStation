@@ -6,6 +6,15 @@ apt-get update && apt-get dist-upgrade
 # Install requirements
 apt-get install -y apache2 build-essential checkinstall php5 php5-cli php5-mcrypt php5-gd php-apc git sqlite php5-sqlite curl php5-curl php5-dev php-pear php5-xdebug vim-nox msmtp-mta
 
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+apt-get install --yes nodejs
+
+sudo chmod 777 -R /usr/lib/node_modules
+sudo chmod 777 -R /usr/bin/npm
+
+npm install -g bower
+npm install --global gulp-cli
+
 # Install MySQL
 sudo debconf-set-selections <<< 'mysql-server-<version> mysql-server/root_password password root'
 sudo debconf-set-selections <<< 'mysql-server-<version> mysql-server/root_password_again password root'

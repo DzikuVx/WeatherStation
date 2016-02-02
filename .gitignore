@@ -7,7 +7,6 @@ aggregate.log
 dht22.log
 
 twitter/.idea/
-.idea/workspace.xml
 .idea/*
 
 website/.idea/*
@@ -15,3 +14,6 @@ website/logs/error.log
 twitter/.idea
 
 website/config.env.php
+
+#website/bower_components/*
+website/node_modules/
