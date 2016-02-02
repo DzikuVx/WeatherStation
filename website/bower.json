@@ -1,0 +1,21 @@
+{
+  "name": "WeatherStation",
+  "version": "0.1",
+  "description": "Raspberry Pi Weather Station",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "GNU GENERAL PUBLIC LICENSE v2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "2.1.1",
+    "bootstrap": "3.3.6",
+    "bootstrap-material-design": "0.1.0"
+  }
+}
