@@ -9,8 +9,8 @@ apt-get install -y apache2 build-essential checkinstall php5 php5-cli php5-mcryp
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 apt-get install --yes nodejs
 
-sudo chmod 777 -R /usr/lib/node_modules
-sudo chmod 777 -R /usr/bin/npm
+# sudo chmod 777 -R /usr/lib/node_modules
+# sudo chmod 777 -R /usr/bin/npm
 
 npm install -g bower
 npm install --global gulp-cli

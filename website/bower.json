@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "jquery": "2.1.1",
-    "bootstrap": "3.3.6",
+    "bootstrap": "3.2.0",
     "bootstrap-material-design": "0.1.0"
   }
 }
