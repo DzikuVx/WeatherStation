@@ -142,11 +142,7 @@ WeatherStation.overview = (function() {
 	};
 	
 	self.onError = function () {
-        new PNotify({
-            title: 'U la la...',
-            text: 'Chyba nie udało mi się pobrać wszystkich danych o pogodzie',
-            type: 'error'
-        });
+        console.log("failed to load weather data");
 	};
 	
 	/**
