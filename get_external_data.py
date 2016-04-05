@@ -65,6 +65,12 @@ def saveSQLite(data):
     conn.commit()
     conn.close()
 
+def convertToNumber(data):
+  return ((data[1] + (256 * data[0])) / 1.2)
+
+def readLight(addr=LIGHT_SENSOR_ADDR):
+  data = smbus.SMBus(I2C_BUS_NUMBER).read_i2c_block_data(addr,0x20)
+  return convertToNumber(data)
 
 def main():
     
@@ -87,6 +93,16 @@ def main():
             sensor_handler.save_value(7, light_level)
         except IOError as e:
             print "Failed to fetch light level"
+    
+     if (sensor_config['BH1750FVI_light_meter'] == True):
+        try:
+            light_level = readLight();
+        
+            sensor_handler = sensor.sensor()
+            sensor_handler.save_value(7, light_level)
+        except IOError as e:
+            print "Failed to fetch light level"
+    
     
     print "All data fetched"
     
