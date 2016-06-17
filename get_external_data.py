@@ -4,12 +4,10 @@
 '''
 Following script gets weather data from OpenWeathcerMap.org using 
 JSON API 
-
 Data acquisited:
 - Pressure
 - Wind speed
 - Wind Direction
-
 '''
 import urllib2
 import json
@@ -27,6 +25,7 @@ I2C_BUS_NUMBER = 1
 
 # define device address
 LIGHT_SENSOR_ADDR = 0x13
+BH1750FVI_ADDR = 0x23
 
 def fetchJSON(url):
     req = urllib2.Request(url)
@@ -65,6 +64,12 @@ def saveSQLite(data):
     conn.commit()
     conn.close()
 
+def convertToNumber(data):
+  return ((data[1] + (256 * data[0])) / 1.2)
+
+def readLight(addr=BH1750FVI_ADDR):
+  data = smbus.SMBus(I2C_BUS_NUMBER).read_i2c_block_data(addr,0x20)
+  return convertToNumber(data)
 
 def main():
     
@@ -88,7 +93,17 @@ def main():
         except IOError as e:
             print "Failed to fetch light level"
     
-    print "All data fetched"
+    elif (sensor_config['BH1750FVI_light_meter'] == True):
+        try:
+            light_level = readLight();
+        
+            sensor_handler = sensor.sensor()
+            sensor_handler.save_value(8, light_level)
+        except IOError as e:
+            print "Failed to fetch light level"
+    
+    
+print "All data fetched"
     
 if __name__ == "__main__":
     main()

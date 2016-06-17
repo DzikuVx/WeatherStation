@@ -5,5 +5,6 @@ config = {
     'dht22': True,
     'bmp180': True,
     'attiny_light_meter': False,
+    'BH1750FVI_light_meter': False,
     'openweathermap': True
 }
