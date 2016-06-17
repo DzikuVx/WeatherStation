@@ -1,0 +1,22 @@
+nginx:
+#    image: nginx:latest
+    build: ./nginx/
+    ports:
+        - 80:80
+    links:
+        - php
+    volumes_from:
+        - app
+
+php:
+    build: ./php/
+    expose:
+        - 9000
+    volumes_from:
+        - app
+
+app:
+    image: php:5.6-fpm
+    volumes:
+        - .:/var/www/html
+    command: "true"

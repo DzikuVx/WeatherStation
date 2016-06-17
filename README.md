@@ -8,7 +8,7 @@ Blog: http://shtr.eu/
 
 ![screenshot](/assets/img/screen1.png)
 
-#Electrical diagram
+# Electrical diagram
 
 ![diagram](/assets/img/WeatherStation_schem.png)
 
@@ -56,14 +56,14 @@ make install
 * configure Raspberry Pi web server, example configuration for nginx, PHP5-FMP and domain http://weather.spychalski.info included below
 * that's all
 
-#Configuration
+# Configuration
 
 To configure WeatherStation to work with OpenWeatherMap you need to set some data in a few places.
 
 For example, to get data for Szczecin, Poland you need to:
 * register at http://openweathermap.org/
 * get your API key
-* edit website/config.inc.php and set `$config['cityId'] = 3083829;`. Of course, 3083829 is city ID for Szczecin, Poland. For any other city you need to set other ID (but this is obvious). 
+* edit website/config.inc.php and set `$config['cityId'] = 3083829;`. Of course, 3083829 is city ID for Szczecin, Poland. For any other city you need to set other ID (but this is obvious).
 * replace openweatherconfig.py template with
 ```
 config = {
@@ -75,9 +75,9 @@ config = {
 }
 ```
 
-#Migration from previous versions
+# Migration from previous versions
 
-Starting from release 1.2.0 WeatherStation starts to use new database with different tables and field names. If you have previous version running and want to update to 1.2.0 or newer you have to run migration scrit. 
+Starting from release 1.2.0 WeatherStation starts to use new database with different tables and field names. If you have previous version running and want to update to 1.2.0 or newer you have to run migration scrit.
 
 To run migration do as follows:
 * make a copy of `data.db`
@@ -86,9 +86,9 @@ To run migration do as follows:
 * run migration script `python migrate.py`
 * scripts requires few minutes to execute. When it finishes, compare sizes of `data.db` and `data-new.db`. They should be similar in size (up to 20% difference is acceptable)
 
-**If you are doing a fresh install, migration is not required** 
+**If you are doing a fresh install, migration is not required**
 
-#Crontab
+# Crontab
 
 To serve its purpose, WeatherStation need to collect data on regular basis. That's why you need to configure some crontab jobs (`crontab -e`):
 
@@ -126,14 +126,14 @@ server {
 
 ```
 
-#Screenhoths
+# Screenhoths
 ## Forecast
 ![screenshot](/assets/img/screen2.png)
 ## Monthly history
 ![screenshot](/assets/img/screen3.png)
-##Sensor
+## Sensor
 ![raspberry with sensor](/assets/img/2.jpg)
-##Sensor
+## Sensor
 ![raspberry with sensor](/assets/img/4.jpeg)
 
 #Internet Of Things - ThingSpeak integration
@@ -152,3 +152,11 @@ To enable ThingSpeak data upload:
 * To upload data to ThingSpeak run `python thingspeak_post.py`
 * You can automate whole process by adding it to crontab `*/30 * * * * python /home/pi/WeatherStation/thingspeak_post.py`
 
+# Development
+
+To develop web interface:
+
+`docker-compose up -d`
+
+```cd website
+./node_modules/gulp/bin/gulp.js```
