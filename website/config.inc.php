@@ -97,5 +97,23 @@ $config['sensors'] = array(
             'show' => array('min', 'avg', 'max'),
             'decimals' => 1
         ),
+    ),
+    array(
+        'id' => 6,
+        'name' => '{T:Temperature Internal}',
+        'symbol' => 'TemperatureInternal',
+        'unit' => '&deg;C',
+        'decimals' => 1,
+        'show-in' => array(
+            'history-30', 'history-365', 'history-all'
+        ),
+//        'graph-overview-setting' => array(
+//            'show' => array('avg'),
+//            'decimals' => 1
+//        ),
+        'graph-history-setting' => array(
+            'show' => array('min', 'avg', 'max'),
+            'decimals' => 1
+        ),
     )
 );

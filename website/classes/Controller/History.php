@@ -55,7 +55,7 @@ class History extends Base implements Singleton {
 
 			case 'chart':
 			default:
-				$template->add('chartHead', $oView->chartHead('graph-history-setting'));
+				$template->add('chartHead', $oView->chartHead('graph-history-setting', 'history-30'));
 				$template->add('sensors', $oView->charts());
 				$template->add('submenu-active-chart','active');
 				break;

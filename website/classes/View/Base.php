@@ -40,9 +40,10 @@ abstract class Base implements View {
     /**
      * render average temperature chart head for google charts
      * @param $settingKey
+     * @param $section
      * @return string
      */
-	public function chartHead($settingKey)
+	public function chartHead($settingKey, $section)
 	{
 		$oTemplate = new Templater('chartHead.html');
 
@@ -50,9 +51,9 @@ abstract class Base implements View {
 
 		$chartContent = '';
 
-		foreach ($sensors as $sensor) {
+        foreach ($sensors as $sensor) {
 
-			if (array_search('overview', $sensor['show-in']) === false) {
+			if (array_search($section, $sensor['show-in']) === false) {
 				continue;
 			}
 			$id = $sensor['id'];

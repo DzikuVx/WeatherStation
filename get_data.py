@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 '''
 Raspberry Pi Temperature and Humidity logger using DHT22 Sensor
@@ -61,7 +61,7 @@ def main():
 
         # Get data from sensor
         sensor_data.trigger()
-        time.sleep(0.2)
+        time.sleep(0.5)
 
         humidity = sensor_data.humidity()
         temperature = sensor_data.temperature()
